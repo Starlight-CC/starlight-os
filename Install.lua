@@ -85,14 +85,14 @@ if nOption  == 1 then
     --GUI
     term.clear()
     
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSver.db")
-    local fh = fs.open("/temp/OSLst.db", "w")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSV.db")
+    local fh = fs.open("OSV.db", "w")
     fh.write(file.readAll())
     fh.close()
-    dofile("/temp/OSLst.db")
-    
+    local OSV = require("OSV.db")
+    local OSL = OSV{3}
     nOption = 2
-    local veramount = table.getn(OSL)-1
+    local veramount = table.getn(OSV[3])-1
     local function updatevars()
         OSVERS1 = OSL[nOption-1]
         OSVERS2 = OSL[nOption]
@@ -146,30 +146,15 @@ if nOption  == 1 then
     end
     term.clear()
     
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSurl.db")
-    local fh = fs.open("/temp/OSurl.db", "w")
-    fh.write(file.readAll())
-    fh.close()
-    dofile("/temp/OSurl.db")
-
+    local verurl = OSV[1]
     local file = http.get(verurl[nOption])
-    local fh = fs.open("/temp/OSR.db", "w")
+    local fh = fs.open("OSR.db", "w")
     fh.write(file.readAll())
     fh.close()
-    dofile("/temp/OSR.db")
+    OSR = require("OSR")
 
-    local file = http.get(OSR[1])
-    local fh = fs.open("/temp/OSN.db", "w")
-    fh.write(file.readAll())
-    fh.close()
-    dofile("/temp/OSN.db")
-
-    local file = http.get(OSR[2])
-    local fh = fs.open("/temp/OSL.db", "w")
-    fh.write(file.readAll())
-    fh.close()
-    dofile("/temp/OSL.db")
-
+    local OSF = OSR[2]
+    local OSN = OSR[1]
     term.clear()
     term.setCursorPos(1,1)
     for i,v in ipairs(OSF) do

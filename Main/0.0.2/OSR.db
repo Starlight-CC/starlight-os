@@ -1,4 +1,22 @@
 OSR = {
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/OSN.db",
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/OSL.db"
+    {
+        "STARLIGHT/Sys/BIOS.lua",
+        "STARLIGHT/Sys/Config.lua",
+        "STARLIGHT/Sys/Install.lua",
+        "STARLIGHT/Sys/OSboot.lua",
+        "STARLIGHT/Lib/OSUtils.lua",
+        "STARLIGHT/neofetch.lua",
+        "STARLIGHT/Data/COS.db"
+    },
+    {
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/BIOS.lua",
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/Config.lua",
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Install.lua",
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/OSboot.lua",
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Lib/OSUtils.lua".
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/neofetch.lua",
+        "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSCompat.db"
+    },
+    "0.0.2".
+    "STARLIGH_OS_0.0.2"
 }
