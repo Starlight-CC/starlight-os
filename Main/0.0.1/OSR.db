@@ -1,4 +1,4 @@
 OSR = {
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/OSN.db",
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/OSL.db"
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.1/OSN.db",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.1/OSL.db"
 }

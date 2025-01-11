@@ -69,6 +69,8 @@ if nOption  == 1 then
     local OSVERS1 = ""
     local OSVERS2 = ""
     local OSVERS3 = ""
+    local OSVERS4 = ""
+    local OSVERS5 = ""
 
     local function drawMenu2()
         term.clear()
@@ -95,6 +97,8 @@ if nOption  == 1 then
         OSVERS1 = OSL[nOption-1]
         OSVERS2 = OSL[nOption]
         OSVERS3 = OSL[nOption+1]
+        OSVERS4 = OSL[nOption+2]
+        OSVERS5 = OSL[nOption+3]
     end
 
     local function drawFrontend2()
@@ -104,7 +108,9 @@ if nOption  == 1 then
         printCentered(math.floor(h/2) + 0, ((nOption == nOption-1) and "[ "..OSVERS1.."]") or OSVERS1)
         printCentered(math.floor(h/2) + 1, ((nOption == nOption) and "[ "..OSVERS2.."]") or OSVERS2)
         printCentered(math.floor(h/2) + 2, ((nOption == nOption+1) and "[ "..OSVERS3.."]") or OSVERS3)
-        printCentered(math.floor(h/2) + 3, "")
+        printCentered(math.floor(h/2) + 3, ((nOption == nOption+2) and "[ "..OSVERS4.."]") or OSVERS4)
+        printCentered(math.floor(h/2) + 4, ((nOption == nOption+3) and "[ "..OSVERS5.."]") or OSVERS5)
+        printCentered(math.floor(h/2) + 5, "")
     end
      
     --Display

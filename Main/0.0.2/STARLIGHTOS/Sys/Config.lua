@@ -2,7 +2,7 @@
 
 local w,h = term.getSize()
  
-local function printCentered( y,s )
+function printCentered( y,s )
     local x = math.floor((w - string.len(s)) / 2)
     term.setCursorPos(x,y)
     term.clearLine()
@@ -14,7 +14,7 @@ end
 local diskStart = settings.get("enable_disk_startup")
 
 if diskStart == nill then
-    settings.set("enable_disk_startup", true)
+    settings.set("enable_disk_startup", false)
     settings.save()
     diskStart = settings.get("enable_disk_startup")
 end
@@ -49,7 +49,7 @@ end
 term.clear()
 local function drawFrontend()
     printCentered(math.floor(h/2) - 3, "")
-    printCentered(math.floor(h/2) - 2, "STARLIGHT BIOS" )
+    printCentered(math.floor(h/2) - 2, "STARLIGHT BIOS Config" )
     printCentered(math.floor(h/2) - 1, "")
     printCentered(math.floor(h/2) + 0, ((nOption == 1) and "[  Boot Order      ]") or "Boot Order       ")
     printCentered(math.floor(h/2) + 1, ((nOption == 2) and "[  Disk start      ]") or "Disk start       ")
@@ -65,17 +65,60 @@ end
 drawMenu()
 drawFrontend()
 
+while true do
+    local e,p = os.pullEvent()
+    if diskStartup == true then
+        diskStartup = "on"
+    else
+        diskStartup = "off"
+    end
+    w,h = term.getSize()
+    if e == "key" then
+        local key = p
+        if key == 265 or key == 200 then
+ 
+            if nOption > 1 then
+                nOption = nOption - 1
+                drawMenu()
+                drawFrontend()
+            end
+        elseif key == 264 or key == 208 then
+            if nOption < 7 then
+                nOption = nOption + 1
+                drawMenu()
+                drawFrontend()
+            end
+        elseif key == 257 or key == 28 then
+            --when enter pressed
+        break
+        end
+    end
+end
+term.clear()
+
 
 --Conditions
 if nOption  == 1 then
-    shell.run("STARLIGHTOS/sys/Boot")
-elseif nOption == 2 then
-    io.open("bootOrder.boot", r)
-    local bootO = io.readAll()
-    io.close()
+    shell.run("clear all")
+    local file2 = fs.open("STARLIGHTOS/Config/bootOrder.boot", "r")
+    local bootO = file2.readAll()
+    file2.close()
     printCentered(math.floor(h/2) + 2, "Boot order (0: disk, 1: Startup, 2: BIOS, 3: Shell)")
-    io.open("bootOrder.boot", w)
-    
+    local user = io.read()
+    io.open("bootOrder.boot", "w")
+    io.write(user)
+    io.close()
+elseif nOption == 2 then
+    shell.run("clear all")
+    printCentered(math.floor(h/2) + 0, diskStart)
+    printCentered(math.floor(h/2) + 2, "true or false")
+    local user = io.read()
+    if user == "true" or user == "True" then
+        settings.set("enable_disk_startup")
+    else
+       settings.set("enable_disk_startup") 
+    end
+    diskStart = settings.get("enable_disk_startup")
     
 elseif nOption == 3 then
     shell.run("STARLIGHTOS/Sys/Install")
