@@ -175,7 +175,7 @@ if nOption  == 1 then
     end
     print("OS installed and ready to use")
     sleep(3)
-    shell.run("STARLIGHTOS/Sys/BIOS.lua")
+    shell.run("STARLIGHT/Sys/BIOS.lua")
 else
     shell.run("rom/programs/shell.lua")
 end

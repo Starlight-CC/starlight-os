@@ -83,15 +83,15 @@ term.clear()
  
 --Conditions
 if nOption  == 1 then
-    shell.run("STARLIGHTOS/Sys/Update.lua")
+    shell.run("STARLIGHT/Sys/Update.lua")
 elseif nOption == 2 then
-    shell.run("STARLIGHTOS/Sys/Uninstall.lua")
+    shell.run("STARLIGHT/Sys/Uninstall.lua")
 elseif nOption == 3 then
-    shell.run("STARLIGHTOS/Sys/Install.lua")
+    shell.run("STARLIGHT/Sys/Install.lua")
 elseif nOption == 4 then
-    shell.run("STARLIGHTOS/Sys/Config.lua")
+    shell.run("STARLIGHT/Sys/Config.lua")
 elseif nOption == 5 then
-    shell.run("STARLIGHTOS/Sys/OSboot.lua")
+    shell.run("STARLIGHT/Sys/OSboot.lua")
 elseif nOption == 6 then
     term.setCursorPos(1,1)
     shell.run("rom/programs/shell.lua")

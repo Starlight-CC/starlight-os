@@ -22,7 +22,7 @@ end
 local c1 = 1
 local total = 1
 local list ={
-    "STARLIGHTOS/Sys/Startup.lua"
+    "STARLIGHT/Sys/Startup.lua"
 }
 --GUI
 term.clear()
