@@ -1,6 +1,3 @@
-io.open("STARLIGHTOS/Config/bootOrder.boot")
-local bootO = io.read()
-io.close()
 
 local w,h = term.getSize()
  
