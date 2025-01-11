@@ -152,11 +152,17 @@ if nOption  == 1 then
     fh.close()
     dofile("/temp/OSR.db")
 
-    local file = http.get(OSR[2])
+    local file = http.get(OSR[1])
     local fh = fs.open("/temp/OSN.db", "w")
     fh.write(file.readAll())
     fh.close()
     dofile("/temp/OSN.db")
+
+    local file = http.get(OSR[2])
+    local fh = fs.open("/temp/OSL.db", "w")
+    fh.write(file.readAll())
+    fh.close()
+    dofile("/temp/OSL.db")
 
     term.clear()
     term.setCursorPos(1,1)

@@ -1,3 +1,6 @@
 OSF = {
-    ""
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/STARLIGHTOS/Sys/BIOS.lua",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/STARLIGHTOS/Sys/Config.lua",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/STARLIGHTOS/Sys/Install.lua",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/1.0.0/STARLIGHTOS/Sys/OSboot.lua"
 }

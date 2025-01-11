@@ -1,3 +1,6 @@
 OSN = {
-    "STARLIGHT/Sys/BIOS.lua"
+    "STARLIGHT/Sys/BIOS.lua",
+    "STARLIGHT/Sys/Config.lua",
+    "STARLIGHT/Sys/Install.lua",
+    "STARLIGHT/Sys/OSBoot.lua"
 }
