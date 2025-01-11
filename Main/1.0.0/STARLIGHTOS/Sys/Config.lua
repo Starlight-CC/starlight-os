@@ -65,6 +65,32 @@ end
 drawMenu()
 drawFrontend()
 
+while true do
+    local e,p = os.pullEvent()
+    w,h = term.getSize()
+    if e == "key" then
+        local key = p
+        if key == 265 or key == 200 then
+ 
+            if nOption > 1 then
+                nOption = nOption - 1
+                drawMenu()
+                drawFrontend()
+            end
+        elseif key == 264 or key == 208 then
+            if nOption < 7 then
+                nOption = nOption + 1
+                drawMenu()
+                drawFrontend()
+            end
+        elseif key == 257 or key == 28 then
+            --when enter pressed
+        break
+        end
+    end
+end
+term.clear()
+
 
 --Conditions
 if nOption  == 1 then
