@@ -1,4 +1,4 @@
-dofile("/STARLIGHTOS/Config/COS.tab")
+dofile("/STARLIGHTOS/Data/COS.db")
 
 local w,h = term.getSize()
  

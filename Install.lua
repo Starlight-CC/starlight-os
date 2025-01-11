@@ -92,7 +92,7 @@ if nOption  == 1 then
     dofile("/temp/OSLst.db")
     
     nOption = 2
-    local veramount = table.getn(OSL)-3
+    local veramount = table.getn(OSL)-1
     local function updatevars()
         OSVERS1 = OSL[nOption-1]
         OSVERS2 = OSL[nOption]

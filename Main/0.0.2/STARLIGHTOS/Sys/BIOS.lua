@@ -94,7 +94,7 @@ elseif nOption == 5 then
     shell.run("STARLIGHT/Sys/OSboot.lua")
 elseif nOption == 6 then
     term.setCursorPos(1,1)
-    shell.run("rom/programs/shell.lua")
+    term.clear()
 else
     os.shutdown()
 end
