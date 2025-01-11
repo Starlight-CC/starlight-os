@@ -147,17 +147,31 @@ if nOption  == 1 then
     dofile("/temp/OSurl.db")
 
     local file = http.get(verurl[nOption])
-    local fh = fs.open("/temp/OSF.db", "w")
+    local fh = fs.open("/temp/OSR.db", "w")
     fh.write(file.readAll())
     fh.close()
-    dofile("/temp/OSF.db")
+    dofile("/temp/OSR.db")
+
+    local file = http.get(OSR[1])
+    local fh = fs.open("/temp/OSN.db", "w")
+    fh.write(file.readAll())
+    fh.close()
+    dofile("/temp/OSN.db")
+
+    local file = http.get(OSR[2])
+    local fh = fs.open("/temp/OSL.db", "w")
+    fh.write(file.readAll())
+    fh.close()
+    dofile("/temp/OSL.db")
+
+    term.clear()
+    term.setCursorPos(1,1)
     for i,v in ipairs(OSF) do
         local file = http.get(v)
-        local fh = fs.open("/temp/"..i..".lua", "w")
+        local fh = fs.open(OSN[i], "w")
         fh.write(file.readAll())
         fh.close()
-        print("/temp/"..i..".lua")
-        shell.run("/temp/"..i..".lua")
+        print("[OK] "..OSN[i].." Installed and ready")
     end
 else
     shell.run("rom/programs/shell.lua")
