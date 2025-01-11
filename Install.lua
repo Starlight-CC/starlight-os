@@ -89,6 +89,7 @@ if nOption  == 1 then
     local fh = fs.open("OSV.lua", "w")
     fh.write(file.readAll())
     fh.close()
+    package.preload(OSV)
     local OSV = require("OSV")
     local OSL = OSV{3}
     nOption = 2
@@ -148,9 +149,10 @@ if nOption  == 1 then
     
     local verurl = OSV[1]
     local file = http.get(verurl[nOption])
-    local fh = fs.open("OSR.lua", "w")
+    local fh = fs.open("OSR.db", "w")
     fh.write(file.readAll())
     fh.close()
+    package.preload(OSR)
     OSR = require("OSR")
 
     local OSF = OSR[2]
