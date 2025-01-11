@@ -85,11 +85,11 @@ if nOption  == 1 then
     --GUI
     term.clear()
     
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSV.db")
-    local fh = fs.open("OSV.db", "w")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSV.lua")
+    local fh = fs.open("OSV.lua", "w")
     fh.write(file.readAll())
     fh.close()
-    local OSV = require("OSV.db")
+    local OSV = require("OSV")
     local OSL = OSV{3}
     nOption = 2
     local veramount = table.getn(OSV[3])-1
@@ -148,7 +148,7 @@ if nOption  == 1 then
     
     local verurl = OSV[1]
     local file = http.get(verurl[nOption])
-    local fh = fs.open("OSR.db", "w")
+    local fh = fs.open("OSR.lua", "w")
     fh.write(file.readAll())
     fh.close()
     OSR = require("OSR")
