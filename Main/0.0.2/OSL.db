@@ -2,5 +2,8 @@ OSF = {
     "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/BIOS.lua",
     "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/Config.lua",
     "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Install.lua",
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/OSboot.lua"
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Sys/OSboot.lua",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/Lib/OSUtils.lua".
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/Main/0.0.2/STARLIGHTOS/neofetch.lua",
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/OSCompat.db"
 }
