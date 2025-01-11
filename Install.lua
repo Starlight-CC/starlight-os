@@ -89,7 +89,7 @@ if nOption  == 1 then
     local fh = fs.open("OSV.db", "w")
     fh.write(file.readAll())
     fh.close()
-    local OSV = require("OSV.db")
+    local OSV = loadfile("OSV.db")
     local OSL = OSV{3}
     nOption = 2
     local veramount = table.getn(OSV[3])-1
@@ -151,7 +151,7 @@ if nOption  == 1 then
     local fh = fs.open("OSR.db", "w")
     fh.write(file.readAll())
     fh.close()
-    OSR = require("OSR")
+    OSR = loadfile("OSR")
 
     local OSF = OSR[2]
     local OSN = OSR[1]
