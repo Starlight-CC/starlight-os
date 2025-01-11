@@ -171,8 +171,11 @@ if nOption  == 1 then
         local fh = fs.open(OSN[i], "w")
         fh.write(file.readAll())
         fh.close()
-        print("[OK] "..OSN[i].." Installed and ready")
+        print(OSN[i].." [OK]")
     end
+    print("OS installed and ready to use")
+    sleep(3)
+    shell.run("STARLIGHTOS/Sys/BIOS.lua")
 else
     shell.run("rom/programs/shell.lua")
 end
