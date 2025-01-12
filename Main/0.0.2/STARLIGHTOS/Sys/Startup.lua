@@ -1,3 +1,0 @@
-x = {
-    "STARLIGHTOS/Sys/"
-}
