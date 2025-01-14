@@ -1,0 +1,20 @@
+/
+    startup.lua
+    
+    boot/
+        kernel.lua
+    bin/
+    dev/
+    etc/
+        passwd
+    home/
+        $USERNAME/
+        ...
+    lib/
+        systemc/
+        sha256.lua
+    proc/
+        $PID/
+    root/
+    rom/
+    
