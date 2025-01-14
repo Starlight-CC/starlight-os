@@ -1,0 +1,36 @@
+{
+    "https://github.com/ASTRONAND/Starlight-OS/blob/main/Starlight_OS_Adv/Main/1.0.0/",
+    {
+        "root/",
+        "root/bin/",
+        "root/boot/",
+        "root/etc/",
+        "root/home/",
+        "root/lib/",
+        "root/media/",
+        "root/mnt/",
+        "root/opt/",
+        "root/proc/",
+        "root/root/",
+        "root/run/",
+        "root/sys/",
+        "root/tmp/",
+        "root/usr/",
+        "root/usr/bin/",
+        "root/usr/lib/",
+        "root/usr/local/",
+        "root/usr/share/",
+        "root/usr/src/",
+        "root/var/",
+        "root/var/cache/",
+        "root/var/lib/",
+        "root/var/log/",
+        "root/var/opt/",
+        "root/var/spool/",
+        "root/var/spool/mail/",
+        "root/var/tmp/"
+    },
+    {
+
+    }
+}
