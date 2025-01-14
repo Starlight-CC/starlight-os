@@ -6,4 +6,10 @@ function lib.dep()
     }
 end
 
+function lib.osData()
+    local output = {
+        "StarlightOS"
+    }
+end
+
 return lib
