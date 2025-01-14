@@ -12,6 +12,7 @@
     proc
     root
     run
+    rom
     sys
     tmp
     usr
@@ -28,3 +29,4 @@
         spool
             mail
         tmp
+    startup.lua

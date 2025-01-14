@@ -6,10 +6,9 @@ function lib.dep()
     }
 end
 
-function lib.osData()
-    local output = {
-        "StarlightOS"
-    }
+function lib.version()
+    return "1.0.0"
 end
 
+function lib.newProcess()
 return lib
