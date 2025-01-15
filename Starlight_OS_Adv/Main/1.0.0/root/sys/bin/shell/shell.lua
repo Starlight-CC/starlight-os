@@ -1,3 +1,8 @@
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.blue)
+print("StarlightOS 1.0.0")
+print("type GUI for graphical UI")
 local completion = require("cc.shell.completion")
 
 --custom LS and list 
