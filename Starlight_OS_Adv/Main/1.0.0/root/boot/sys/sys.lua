@@ -11,9 +11,9 @@ function lib.version()
 end
 
 function lib.loadGlobalAPIs()
-    local globals = fs.list("/lib/global/")
+    local globals = fs.list("/lib/sys/global/")
     for i,v in ipairs(globals) do
-        os.loadAPI("/lib/global/"..v)
+        os.loadAPI("/lib/sys/global/"..v)
     end
     return globals
 end
