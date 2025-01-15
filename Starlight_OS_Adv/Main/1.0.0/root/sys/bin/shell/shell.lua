@@ -4,7 +4,7 @@ term.setTextColor(colors.blue)
 print("StarlightOS 1.0.0")
 print("type GUI for graphical UI")
 
-local rootDir = "/Sys/bin/shell/shellOverides/"
+local rootDir = "/Sys/bin/shell/shellOverides/rom/programs/"
 local completion = require("cc.shell.completion")
 local tmp = {}
 
