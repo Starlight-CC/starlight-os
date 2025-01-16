@@ -7,7 +7,6 @@ local BG_COLOUR = 32768
 
 local LOGO_WIDTH = 25
 local LOGO_HEIGHT = 15
-
 -- TMP ENV
 USERNAME = "test"
 HOSTNAME = "test"
