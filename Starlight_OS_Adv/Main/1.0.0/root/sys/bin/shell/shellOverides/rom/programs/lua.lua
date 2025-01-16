@@ -35,7 +35,7 @@ do
 end
 
 if term.isColour() then
-    term.setTextColour(colours.yellow)
+    term.setTextColour(colours.blue)
 end
 print("Interactive Lua prompt.")
 print("Call exit() to exit.")

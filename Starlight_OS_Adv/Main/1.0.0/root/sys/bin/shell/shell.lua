@@ -6,31 +6,15 @@ print("type GUI for graphical UI")
 
 local rootDir = "/Sys/bin/shell/shellOverides/rom/programs/"
 local completion = require("cc.shell.completion")
-local tmp = {}
 
 for i,v in ipairs(shell.aliases()) do
     shell.clearAlias(v)
 end
 for i,v in ipairs(overides[1]) do
     shell.clearAlias(v)
-    table.insert(tmp,i,v)
 end
 for i,v in ipairs(overides[2]) do
-    shell.setAlias(tmp[i],v)
-end
-
--- Setup aliases
-shell.setAlias("ls", "list")
-shell.setAlias("dir", "list")
-shell.setAlias("cp", "copy")
-shell.setAlias("mv", "move")
-shell.setAlias("rm", "delete")
-shell.setAlias("clr", "clear")
-shell.setAlias("rs", "redstone")
-shell.setAlias("sh", "shell")
-if term.isColor() then
-    shell.setAlias("background", "bg")
-    shell.setAlias("foreground", "fg")
+    shell.setAlias(overides[i],v)
 end
 
 -- Setup completion functions
