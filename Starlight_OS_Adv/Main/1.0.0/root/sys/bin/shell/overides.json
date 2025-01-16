@@ -1,9 +1,5 @@
 {
     {
-        "ls",
-        "list",
-        "reboot",
-        "shutdown",
-        "about"
+        
     }
 }

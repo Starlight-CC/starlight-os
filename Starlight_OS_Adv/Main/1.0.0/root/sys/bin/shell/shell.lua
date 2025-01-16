@@ -13,7 +13,7 @@ end
 for i,v in ipairs(overides[1]) do
     shell.clearAlias(v)
 end
-for i,v in ipairs(overides[2]) do
+for i,v in ipairs(shell.programs) do
     shell.setAlias(overides[i],v)
 end
 
