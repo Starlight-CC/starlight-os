@@ -4,15 +4,9 @@
         "/",
         "/bin/",
         "/boot/",
-        "/boot/sys/",
         "/etc/",
         "/home/",
         "/lib/",
-        "/lib/sys/",
-        "/lib/sys/antivirus/",
-        "/lib/sys/antivirus/globals/",
-        "/lib/sys/global/",
-        "/lib/sys/util/",
         "/media/",
         "/mnt/",
         "/opt/",
@@ -22,21 +16,9 @@
         "/sys/",
         "/tmp/",
         "/usr/",
-        "/usr/bin/",
-        "/usr/lib/",
-        "/usr/local/",
-        "/usr/share/",
-        "/usr/src/",
         "/var/",
-        "/var/cache/",
-        "/var/lib/",
-        "/var/log/",
-        "/var/opt/",
-        "/var/spool/",
-        "/var/spool/mail/",
-        "/var/tmp/"
     },
     {
-
+        
     }
 }
