@@ -1,9 +1,11 @@
 {
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/",
     {
         "latest",
         "1.0.0"
     },
     {
-        ""
+        "1.0.0/Installer/Install.lua",
+        "1.0.0/Installer/Install.lua"
     }
 }
