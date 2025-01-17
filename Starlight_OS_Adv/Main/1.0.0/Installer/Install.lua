@@ -14,5 +14,6 @@ root = FS[1]
 l1 = FS[2]
 
 for i,v in ipairs(l1) do
-    
+    FS.makeDir(v)
+    print()
 end
