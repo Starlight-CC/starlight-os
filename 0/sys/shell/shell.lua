@@ -2,6 +2,8 @@
 --
 -- SPDX-License-Identifier: LicenseRef-CCPL
 
+local username = "Astronand"
+local hostname = "mainframe"
 --[[- The shell API provides access to CraftOS's command line interface.
 
 It allows you to [start programs][`run`], [add completion for a
@@ -727,7 +729,13 @@ else
     local function show_prompt()
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
-        write(shell.dir() .. "root:")
+        local pdir = ""
+        if shell.dir() == "home/"..username then
+            pdir = "~"
+        else
+            pdir = "/"..shell.dir()
+        end
+        write(username.."@"..hostname..":"..pdir.."$")
         term.setTextColour(textColour)
     end
 
