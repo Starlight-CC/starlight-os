@@ -9,7 +9,7 @@ shell.setCompletionFunction(root.."list.lua", completion.build(completion.dir))
 shell.setAlias("cd",root.."cd.lua")
 shell.setCompletionFunction("rom/programs/cd.lua", completion.build(completion.dir))
 
-shell.setAlias("lua",root.."lua.lua"
+shell.setAlias("lua",root.."lua.lua")
 
 term.clear()
 term.setCursorPos(1,1)
