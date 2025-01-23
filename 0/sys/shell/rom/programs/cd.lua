@@ -6,6 +6,9 @@ local tArgs = { ... }
 if #tArgs < 1 then
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
     print("Usage: " .. programName .. " <path>")
+    print("shortcuts:")
+    print("    ~ = user's home dir")
+    print("    .. = previous dir")
     return
 end
 
