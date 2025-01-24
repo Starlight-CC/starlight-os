@@ -1,0 +1,23 @@
+local roota = "/sbin/"
+local rootc = "sbin/"
+local completion = require("cc.shell.completion")
+
+shell.clearAlias("ls")
+shell.setAlias("ls",roota.."list.lua")
+shell.setAlias("list",roota.."list.lua")
+shell.setCompletionFunction(rootc.."list.lua", completion.build(completion.dir))
+
+shell.clearAlias("sh")
+shell.setAlias("sh",roota.."shell.lua")
+shell.setAlias("shell",roota.."shell.lua")
+
+shell.setAlias("cd",roota.."cd.lua")
+shell.setCompletionFunction(rootc.."cd.lua", completion.build(completion.dir))
+
+shell.setAlias("lua",roota.."lua.lua")
+shell.setAlias("pwd",roota.."pwd.lua")
+shell.setAlias("echo",roota.."echo.lua")
+
+term.clear()
+term.setCursorPos(1,1)
+shell.run("/sys/shell/shell.lua")
