@@ -27,8 +27,9 @@ shell.setAlias("help", "/"..rootdir.."help.lua")
 shell.setAlias("echo", "/"..rootdir.."echo.lua")
 shell.setAlias("lua", "/"..rootdir.."lua.lua")
 shell.setAlias("pwd", "/"..rootdir.."pwd.lua")
-shell.setAlias("import", "/"..rootdir.."import")
-
+shell.setAlias("import", "/"..rootdir.."import.lua")
+shell.setAlias("run", "/"..rootdir.."run.lua")
+shell.setAlias("cd", "/"..rootdir.."cd.lua")
 
 -- Setup completion functions
 
@@ -48,6 +49,7 @@ shell.setCompletionFunction(rootdir.."copy.lua", completion.build(
 shell.setCompletionFunction(rootdir.."delete.lua", completion.build({ completion.dirOrFile, many = true }))
 shell.setCompletionFunction(rootdir.."drive.lua", completion.build(completion.dir))
 shell.setCompletionFunction(rootdir.."edit.lua", completion.build(completion.file))
+shell.setCompletionFunction(rootdir.."run.lua", completion.build(completion.file))
 shell.setCompletionFunction(rootdir.."eject.lua", completion.build(completion.peripheral))
 shell.setCompletionFunction(rootdir.."gps.lua", completion.build({ completion.choice, { "host", "host ", "locate" } }))
 shell.setCompletionFunction(rootdir.."help.lua", completion.build(completion.help))
@@ -143,6 +145,7 @@ if turtle then
     ))
 end
 
+shell.run("/sys/shell/shell.lua")
 -- Run system autorun files
 if fs.exists("ect/autorun/") and fs.isDir("ect/autorun/") then
     local tFiles = fs.list("ect/autorun/")

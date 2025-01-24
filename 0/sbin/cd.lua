@@ -14,10 +14,12 @@ end
 
 local sNewDir = shell.resolve(tArgs[1])
 if sNewDir == "~" then
-    shell.setDir("home/"..username)
+    shell.setDir("/home/"..username)
 elseif fs.isDir(sNewDir) then
     shell.setDir(sNewDir)
 else
+    term.setTextColor(colors.red)
     print("Not a directory")
+    term.setTextColor(colors.white)
     return
 end
