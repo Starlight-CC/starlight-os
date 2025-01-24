@@ -1,1 +1,1 @@
-shell.run("sys/shell/shell.lua")
+shell.run("/sys/shell/shell.lua")

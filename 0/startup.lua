@@ -2,21 +2,33 @@
 --
 -- SPDX-License-Identifier: LicenseRef-CCPL
 
-local completion = require "cc.shell.completion"
-
+local completion = require("cc.shell.completion")
+local rootdir = "sbin/"
+local username = "Astronand"
+shell.setDir("home/"..username)
 -- Setup aliases
-shell.setAlias("ls", "list")
-shell.setAlias("dir", "list")
-shell.setAlias("cp", "copy")
-shell.setAlias("mv", "move")
-shell.setAlias("rm", "delete")
-shell.setAlias("clr", "clear")
-shell.setAlias("rs", "redstone")
-shell.setAlias("sh", "shell")
-if term.isColor() then
-    shell.setAlias("background", "bg")
-    shell.setAlias("foreground", "fg")
-end
+shell.clearAlias("ls")
+shell.clearAlias("dir")
+shell.clearAlias("sh")
+shell.clearAlias("cp")
+shell.clearAlias("mv")
+shell.clearAlias("rm")
+shell.clearAlias("clr")
+shell.clearAlias("rs")
+shell.setAlias("ls", "/"..rootdir.."list.lua")
+shell.setAlias("dir", "/"..rootdir.."list.lua")
+shell.setAlias("sh", "/"..rootdir.."shell.lua")
+shell.setAlias("cp", "/"..rootdir.."copy.lua")
+shell.setAlias("mv", "/"..rootdir.."move.lua")
+shell.setAlias("rm", "/"..rootdir.."delete.lua")
+shell.setAlias("clr", "/"..rootdir.."clear.lua")
+shell.setAlias("rs", "/"..rootdir.."redstone.lua")
+shell.setAlias("help", "/"..rootdir.."help.lua")
+shell.setAlias("echo", "/"..rootdir.."echo.lua")
+shell.setAlias("lua", "/"..rootdir.."lua.lua")
+shell.setAlias("pwd", "/"..rootdir.."pwd.lua")
+shell.setAlias("import", "/"..rootdir.."import")
+
 
 -- Setup completion functions
 
@@ -26,29 +38,29 @@ local function completePastebinPut(shell, text, previous)
     end
 end
 
-shell.setCompletionFunction("rom/programs/alias.lua", completion.build(nil, completion.program))
-shell.setCompletionFunction("rom/programs/cd.lua", completion.build(completion.dir))
-shell.setCompletionFunction("rom/programs/clear.lua", completion.build({ completion.choice, { "screen", "palette", "all" } }))
-shell.setCompletionFunction("rom/programs/copy.lua", completion.build(
+shell.setCompletionFunction(rootdir.."alias.lua", completion.build(nil, completion.program))
+shell.setCompletionFunction(rootdir.."cd.lua", completion.build(completion.dir))
+shell.setCompletionFunction(rootdir.."clear.lua", completion.build({ completion.choice, { "screen", "palette", "all" } }))
+shell.setCompletionFunction(rootdir.."copy.lua", completion.build(
     { completion.dirOrFile, true },
     completion.dirOrFile
 ))
-shell.setCompletionFunction("rom/programs/delete.lua", completion.build({ completion.dirOrFile, many = true }))
-shell.setCompletionFunction("rom/programs/drive.lua", completion.build(completion.dir))
-shell.setCompletionFunction("rom/programs/edit.lua", completion.build(completion.file))
-shell.setCompletionFunction("rom/programs/eject.lua", completion.build(completion.peripheral))
-shell.setCompletionFunction("rom/programs/gps.lua", completion.build({ completion.choice, { "host", "host ", "locate" } }))
-shell.setCompletionFunction("rom/programs/help.lua", completion.build(completion.help))
-shell.setCompletionFunction("rom/programs/id.lua", completion.build(completion.peripheral))
-shell.setCompletionFunction("rom/programs/label.lua", completion.build(
+shell.setCompletionFunction(rootdir.."delete.lua", completion.build({ completion.dirOrFile, many = true }))
+shell.setCompletionFunction(rootdir.."drive.lua", completion.build(completion.dir))
+shell.setCompletionFunction(rootdir.."edit.lua", completion.build(completion.file))
+shell.setCompletionFunction(rootdir.."eject.lua", completion.build(completion.peripheral))
+shell.setCompletionFunction(rootdir.."gps.lua", completion.build({ completion.choice, { "host", "host ", "locate" } }))
+shell.setCompletionFunction(rootdir.."help.lua", completion.build(completion.help))
+shell.setCompletionFunction(rootdir.."id.lua", completion.build(completion.peripheral))
+shell.setCompletionFunction(rootdir.."label.lua", completion.build(
     { completion.choice, { "get", "get ", "set ", "clear", "clear " } },
     completion.peripheral
 ))
-shell.setCompletionFunction("rom/programs/list.lua", completion.build(completion.dir))
-shell.setCompletionFunction("rom/programs/mkdir.lua", completion.build({ completion.dir, many = true }))
+shell.setCompletionFunction(rootdir.."list.lua", completion.build(completion.dir))
+shell.setCompletionFunction(rootdir.."mkdir.lua", completion.build({ completion.dir, many = true }))
 
 local complete_monitor_extra = { "scale" }
-shell.setCompletionFunction("rom/programs/monitor.lua", completion.build(
+shell.setCompletionFunction(rootdir.."monitor.lua", completion.build(
     function(shell, text, previous)
         local choices = completion.peripheral(shell, text, previous, true)
         for _, option in pairs(completion.choice(shell, text, previous, complete_monitor_extra, true)) do
@@ -73,28 +85,28 @@ shell.setCompletionFunction("rom/programs/monitor.lua", completion.build(
     }
 ))
 
-shell.setCompletionFunction("rom/programs/move.lua", completion.build(
+shell.setCompletionFunction(rootdir.."move.lua", completion.build(
     { completion.dirOrFile, true },
     completion.dirOrFile
 ))
-shell.setCompletionFunction("rom/programs/redstone.lua", completion.build(
+shell.setCompletionFunction(rootdir.."redstone.lua", completion.build(
     { completion.choice, { "probe", "set ", "pulse " } },
     completion.side
 ))
-shell.setCompletionFunction("rom/programs/rename.lua", completion.build(
+shell.setCompletionFunction(rootdir.."rename.lua", completion.build(
     { completion.dirOrFile, true },
     completion.dirOrFile
 ))
-shell.setCompletionFunction("rom/programs/shell.lua", completion.build({ completion.programWithArgs, 2, many = true }))
-shell.setCompletionFunction("rom/programs/type.lua", completion.build(completion.dirOrFile))
-shell.setCompletionFunction("rom/programs/set.lua", completion.build({ completion.setting, true }))
-shell.setCompletionFunction("rom/programs/advanced/bg.lua", completion.build({ completion.programWithArgs, 2, many = true }))
-shell.setCompletionFunction("rom/programs/advanced/fg.lua", completion.build({ completion.programWithArgs, 2, many = true }))
-shell.setCompletionFunction("rom/programs/fun/dj.lua", completion.build(
+shell.setCompletionFunction(rootdir.."shell.lua", completion.build({ completion.programWithArgs, 2, many = true }))
+shell.setCompletionFunction(rootdir.."type.lua", completion.build(completion.dirOrFile))
+shell.setCompletionFunction(rootdir.."set.lua", completion.build({ completion.setting, true }))
+shell.setCompletionFunction(rootdir.."advanced/bg.lua", completion.build({ completion.programWithArgs, 2, many = true }))
+shell.setCompletionFunction(rootdir.."advanced/fg.lua", completion.build({ completion.programWithArgs, 2, many = true }))
+shell.setCompletionFunction(rootdir.."fun/dj.lua", completion.build(
     { completion.choice, { "play", "play ", "stop " } },
     completion.peripheral
 ))
-shell.setCompletionFunction("rom/programs/fun/speaker.lua", completion.build(
+shell.setCompletionFunction(rootdir.."fun/speaker.lua", completion.build(
     { completion.choice, { "play ", "sound ", "stop " } },
     function(shell, text, previous)
         if previous[2] == "play" then return completion.file(shell, text, previous, true)
@@ -106,27 +118,27 @@ shell.setCompletionFunction("rom/programs/fun/speaker.lua", completion.build(
         end
     end
 ))
-shell.setCompletionFunction("rom/programs/fun/advanced/paint.lua", completion.build(completion.file))
-shell.setCompletionFunction("rom/programs/http/pastebin.lua", completion.build(
+shell.setCompletionFunction(rootdir.."fun/advanced/paint.lua", completion.build(completion.file))
+shell.setCompletionFunction(rootdir.."http/pastebin.lua", completion.build(
     { completion.choice, { "put ", "get ", "run " } },
     completePastebinPut
 ))
-shell.setCompletionFunction("rom/programs/rednet/chat.lua", completion.build({ completion.choice, { "host ", "join " } }))
-shell.setCompletionFunction("rom/programs/command/exec.lua", completion.build(completion.command))
-shell.setCompletionFunction("rom/programs/http/wget.lua", completion.build({ completion.choice, { "run " } }))
+shell.setCompletionFunction(rootdir.."rednet/chat.lua", completion.build({ completion.choice, { "host ", "join " } }))
+shell.setCompletionFunction(rootdir.."command/exec.lua", completion.build(completion.command))
+shell.setCompletionFunction(rootdir.."http/wget.lua", completion.build({ completion.choice, { "run " } }))
 
 if turtle then
-    shell.setCompletionFunction("rom/programs/turtle/go.lua", completion.build(
+    shell.setCompletionFunction(rootdir.."turtle/go.lua", completion.build(
         { completion.choice, { "left", "right", "forward", "back", "down", "up" }, true, many = true }
     ))
-    shell.setCompletionFunction("rom/programs/turtle/turn.lua", completion.build(
+    shell.setCompletionFunction(rootdir.."turtle/turn.lua", completion.build(
         { completion.choice, { "left", "right" }, true, many = true }
     ))
-    shell.setCompletionFunction("rom/programs/turtle/equip.lua", completion.build(
+    shell.setCompletionFunction(rootdir.."turtle/equip.lua", completion.build(
         nil,
         { completion.choice, { "left", "right" } }
     ))
-    shell.setCompletionFunction("rom/programs/turtle/unequip.lua", completion.build(
+    shell.setCompletionFunction(rootdir.."turtle/unequip.lua", completion.build(
         { completion.choice, { "left", "right" } }
     ))
 end
@@ -144,7 +156,7 @@ if fs.exists("ect/autorun/") and fs.isDir("ect/autorun/") then
     end
 end
 
-local usrpath = "/home/"..username.."/autorun"
+local usrpath = "/home/"..username.."/autorun/"
 
 -- Run user autorun files
 if fs.exists(usrpath) and fs.isDir(usrpath) then
