@@ -41,6 +41,8 @@ which program to run:
 @module[module] shell
 @changed 1.103.0 Added support for hashbangs.
 ]]
+term.clear()
+term.setCursorPos(1,1)
 
 local make_package = dofile("rom/modules/main/cc/require.lua").make
 
@@ -730,8 +732,10 @@ else
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
         local pdir = ""
-        if shell.dir() == "home/"..username then
-            pdir = "~"
+        local idk = string.sub(shell.dir(),1,5+#username)
+        if idk == "home/"..username then
+            local so = string.sub(shell.dir(),5+#username+1)
+            pdir = "~"..so
         else
             pdir = "/"..shell.dir()
         end
