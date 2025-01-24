@@ -9,6 +9,7 @@ if #tArgs < 1 then
     print("shortcuts:")
     print("    ~ = user's home dir")
     print("    .. = previous dir")
+    print("    / = root dir")
     return
 end
 
