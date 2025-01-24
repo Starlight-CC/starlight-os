@@ -14,8 +14,8 @@ if #tArgs < 1 then
 end
 
 local sNewDir = shell.resolve(tArgs[1])
-if tArgs[1] == "~" then
-    shell.setDir("/home/"..username)
+if string.sub(tArgs[1],1,1) == "~" then
+    shell.setDir("/home/"..username..string.sub(tArgs[1],2))
 elseif fs.isDir(sNewDir) then
     shell.setDir(sNewDir)
 else
