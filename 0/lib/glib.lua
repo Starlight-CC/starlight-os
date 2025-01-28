@@ -66,7 +66,21 @@ lib.sprite.example = {
 }
 
 function lib.buffer.print(b)
-
+  local a = b
+  local x = 1
+  local y = 1
+  local tx,ty = term.getSize()
+  while y < ty + 1 do
+    while x < tx + 1 do
+      term.setCursorPos(x,y)
+      term.setTextColor(a[tostring(x)..","..tostring(y).."t"])
+      term.setBackgroundColor(a[tostring(x)..","..tostring(y).."b"])
+      term.write(a[tostring(x)..","..tostring(y).."c"])
+      x = x + 1
+    end
+    y = y + 1
+    x = 1
+  end
 end
 
 function lib.buffer.create()
@@ -77,8 +91,8 @@ function lib.buffer.create()
   while y < ty + 1 do
     while x < tx + 1 do
       local tbx,tby = x,y
-      a[tostring(tbx)..","..tostring(tby).."t"] = "f"
-      a[tostring(tbx)..","..tostring(tby).."b"] = "f"
+      a[tostring(tbx)..","..tostring(tby).."t"] = 1
+      a[tostring(tbx)..","..tostring(tby).."b"] = 1
       a[tostring(tbx)..","..tostring(tby).."c"] = 0
       x = x + 1
     end
