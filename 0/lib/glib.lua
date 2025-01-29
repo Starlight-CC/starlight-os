@@ -83,7 +83,7 @@ function lib.buffer.print(b)
   end
 end
 
-function lib.buffer.create()
+function lib.buffer.create(t,b)
   local a = {}
   local x = 1
   local y = 1
@@ -91,8 +91,8 @@ function lib.buffer.create()
   while y < ty + 1 do
     while x < tx + 1 do
       local tbx,tby = x,y
-      a[tostring(tbx)..","..tostring(tby).."t"] = 1
-      a[tostring(tbx)..","..tostring(tby).."b"] = 1
+      a[tostring(tbx)..","..tostring(tby).."t"] = t
+      a[tostring(tbx)..","..tostring(tby).."b"] = b
       a[tostring(tbx)..","..tostring(tby).."c"] = 0
       x = x + 1
     end
@@ -101,5 +101,39 @@ function lib.buffer.create()
   end
   return a
 end
+
+function lib.sprite.collide(s1,x1,y1,s2,x2,y2)
+  local box1 = {}
+  local x = x1
+  local y = y1
+  while y < y1+s1[2] do
+    while x < x1+s1[1] do
+      table.insert(box1,1,tostring(x)..","..tostring(y))
+      x = x + 1
+    end
+    y = y + 1
+    x = 1
+  end
+  local box2 = {}
+  local x = x2
+  local y = y2
+  while y < y2+s2[2] do
+    while x < x2+s2[1] do
+      table.insert(box2,1,tostring(x)..","..tostring(y))
+      x = x + 1
+    end
+    y = y + 1
+    x = 1
+  end
+  for _,v in ipairs(box1) do
+    for _,i in ipairs(box2) do
+      if i == v then
+        return true
+      end
+    end
+  end
+  return false
+end
+
 
 return lib
