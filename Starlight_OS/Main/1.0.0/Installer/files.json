@@ -1,8 +1,0 @@
-{
-    "os/kernel.lua":"/boot/kernel.lua",
-    "lib/sha256.lua":"/lib/sha256.lua",
-    "os/startup.lua":"/startup.lua",
-    "os/systemc.lua":"/lib/systemc",
-    "programs/neofetch/neofetch.lua":"/bin/neofetch.lua",
-    "programs/neofetch/logo.txt":"/etc/neofetch/logo.txt"
-}
