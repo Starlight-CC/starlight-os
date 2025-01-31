@@ -3,9 +3,9 @@
 -- SPDX-License-Identifier: LicenseRef-CCPL
 
 local completion = require("cc.shell.completion")
-local rootdir = "bin/shell/"
+local rootdir = "usr/bin"
 local username = "Astronand"
-shell.setDir("home/"..username)
+shell.setDir("/home/"..username)
 -- Setup aliases
 shell.clearAlias("ls")
 shell.clearAlias("dir")
