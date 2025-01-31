@@ -2,8 +2,6 @@
 --
 -- SPDX-License-Identifier: LicenseRef-CCPL
 
-local username = "Astronand"
-local hostname = "mainframe"
 --[[- The shell API provides access to CraftOS's command line interface.
 
 It allows you to [start programs][`run`], [add completion for a
