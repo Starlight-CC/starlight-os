@@ -3,7 +3,7 @@
 -- SPDX-License-Identifier: LicenseRef-CCPL
 
 local completion = require("cc.shell.completion")
-local rootdir = "usr/bin/shell/"
+local rootdir = "usr/sbin/shell/"
 local username = "Astronand"
 shell.setDir("/home/"..username)
 -- Setup aliases
@@ -145,7 +145,7 @@ if turtle then
     ))
 end
 
-shell.run("/usr/bin/shell/shell.lua")
+shell.run("/usr/sbin/shell/shell.lua")
 -- Run system autorun files
 if fs.exists("/ect/autorun/") and fs.isDir("/ect/autorun/") then
     local tFiles = fs.list("/ect/autorun/")
