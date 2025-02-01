@@ -9,10 +9,10 @@ local LOGO_WIDTH = 25
 local LOGO_HEIGHT = 15
 
 -- TMP ENV
-USERNAME = "Astronand"
-HOSTNAME = "Mainframe"
+USERNAME = os.username()
+HOSTNAME = os.hostname()
 UNAME = {
-    OS="StarlightOS",
+    OS=os.version()
     KERNEL="1.0.0-sls"
 }
 
