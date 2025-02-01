@@ -1,5 +1,5 @@
 # Starlight OS 
-An OS for CC: Tweaked
+An OS for CC: Tweaked based on Unix/Linux
 
 ---
 ### Contributors
