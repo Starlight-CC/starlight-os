@@ -13,7 +13,7 @@ USERNAME = os.username()
 HOSTNAME = os.hostname()
 UNAME = {
     OS=os.version()
-    KERNEL="1.0.0-sls"
+    KERNEL=os.kernelVersion()
 }
 
 -- Functions

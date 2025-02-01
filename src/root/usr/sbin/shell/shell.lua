@@ -730,14 +730,14 @@ else
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
         local pdir = ""
-        local idk = string.sub(shell.dir(),1,5+#username)
-        if idk == "home/"..username then
-            local so = string.sub(shell.dir(),5+#username+1)
+        local idk = string.sub(shell.dir(),1,5+#os.username())
+        if idk == "home/"..os.username() then
+            local so = string.sub(shell.dir(),5+#os.username()+1)
             pdir = "~"..so
         else
             pdir = "/"..shell.dir()
         end
-        write(username.."@"..hostname..":"..pdir.."$")
+        write(os.username().."@"..os.hostname()..":"..pdir.."$")
         term.setTextColour(textColour)
     end
 
