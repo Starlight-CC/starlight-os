@@ -4,12 +4,12 @@ An OS for CC: Tweaked
 ---
 ### Contributors
 
-Astronand
+[Astronand](https://github.com/ASTRONAND)
 
-Huntabadday
+[Huntabadday](https://github.com/HuntaBadday)
 
-Ryan T
+[Ryan T](https://github.com/Ryan-Te)
 
-Minecartchris
+[Minecartchris](https://github.com/minecartchris)
 
-suboct / yabastar
+[suboct / yabastar](https://github.com/yabastar0)
