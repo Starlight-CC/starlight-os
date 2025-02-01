@@ -1,9 +1,8 @@
-Starlight OS 
-a OS for CC: Tweaked WIP 
+# Starlight OS 
+An OS for CC: Tweaked
 
-a Advanced linux-like OS for computercraft 
-
-Contributors-----------------------------------
+---
+### Contributors
 
 Astronand
 
