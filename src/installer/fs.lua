@@ -10,14 +10,15 @@
     "/usr/",
     "/var/"
   },
-  --kernel bin
+  --sys bin
   {
-    
+    "startup.lua"
   },
   --shell
   {
     
   },
+  --usr
   {
 
   }
