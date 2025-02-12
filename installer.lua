@@ -53,28 +53,30 @@ end
 --Display
 drawMenu(table)
 drawFrontend(table)
- 
-while true do
-    local e,p = os.pullEvent()
-    w,h = term.getSize()
-    if e == "key" then
-        local key = p
-        if key == keys.up then
- 
-            if nOption > 1 then
-                nOption = nOption - 1
-                drawMenu(table)
-                drawFrontend(table)
+
+local function Menu(t)
+    while true do
+        local e,p = os.pullEvent()
+        w,h = term.getSize()
+        if e == "key" then
+            local key = p
+            if key == keys.up then
+    
+                if nOption > 1 then
+                    nOption = nOption - 1
+                    drawMenu(1)
+                    drawFrontend(table)
+                end
+            elseif key == keys.down then
+                if nOption < #table+1 then
+                    nOption = nOption + 1
+                    drawMenu(table)
+                    drawFrontend(table)
+                end
+            elseif key == keys.enter then
+                --when enter pressed
+            break
             end
-        elseif key == keys.down then
-            if nOption < #table+1 then
-                nOption = nOption + 1
-                drawMenu(table)
-                drawFrontend(table)
-            end
-        elseif key == keys.enter then
-            --when enter pressed
-        break
         end
     end
 end
