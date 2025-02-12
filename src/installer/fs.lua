@@ -1,4 +1,4 @@
-{
+local ret = {
   {
     "startup.lua",
     "sys/login.lua",
@@ -16,3 +16,5 @@
     "usr/sbin/shell/edit.lua"
   }
 }
+
+return ret
