@@ -1,8 +1,4 @@
 term.clear()
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
-
 local completion = require("cc.shell.completion")
 local rootdir = "home/"..os.username().."/sbin/shell/"
 

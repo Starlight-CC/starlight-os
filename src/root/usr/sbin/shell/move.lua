@@ -1,6 +1,3 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
 
 local tArgs = { ... }
 if #tArgs < 2 then

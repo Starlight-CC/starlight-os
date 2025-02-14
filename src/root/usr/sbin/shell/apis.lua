@@ -1,7 +1,3 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
-
 local tApis = {}
 for k, v in pairs(_G) do
     if type(k) == "string" and type(v) == "table" and k ~= "_G" then

@@ -1,6 +1,3 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
 
 local nTime = os.time()
 local nDay = os.day()

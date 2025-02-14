@@ -1,7 +1,3 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
-
 local tArgs = { ... }
 
 -- Get where a directory is mounted

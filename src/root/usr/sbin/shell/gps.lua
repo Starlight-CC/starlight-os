@@ -1,6 +1,3 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
 
 local function printUsage()
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
