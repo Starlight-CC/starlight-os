@@ -14,7 +14,7 @@ local ret = {
     "usr/sbin/shell/drive.lua",
     "usr/sbin/shell/echo.lua",
     "usr/sbin/shell/edit.lua",
-    "usr/sbin/reboot.lua,
+    "usr/sbin/reboot.lua",
     "test.lua"
   }
 }
