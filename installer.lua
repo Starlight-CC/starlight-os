@@ -1,5 +1,7 @@
 local w,h = term.getSize()
- 
+term.setPaletteColor(colors.red,0xff0000)
+term.setPaletteColor(colors.green,0x00ff00)
+term.setPaletteColor(colors.blue,0x0000ff)
 function printCentered( y,s )
     local x = math.floor((w - string.len(s)) / 2)
     term.setCursorPos(x,y)
@@ -8,14 +10,12 @@ function printCentered( y,s )
 end
 local table = {
     {
-        "Install latest",
-        "Install ver   ",
+        "Install       ",
         "Configure     ",
         "Exit          "
     },
     {
-        "Installs latest",
-        "Install version of choice",
+        "Install OS",
         "Configure OS",
         "Exit to shell"
     }
@@ -64,14 +64,14 @@ local function Menu(t)
     
                 if nOption > 1 then
                     nOption = nOption - 1
-                    drawMenu(1)
-                    drawFrontend(table)
+                    drawMenu(t)
+                    drawFrontend(t)
                 end
             elseif key == keys.down then
-                if nOption < #table+1 then
+                if nOption < #t+1 then
                     nOption = nOption + 1
-                    drawMenu(table)
-                    drawFrontend(table)
+                    drawMenu(t)
+                    drawFrontend(t)
                 end
             elseif key == keys.enter then
                 --when enter pressed
@@ -84,11 +84,12 @@ term.clear()
  
 --Conditions
 if nOption  == 1 then
-    
+    shell.run("wget run "..)
 elseif nOption == 2 then
     
 elseif nOption == 3 then
     
+elseif nOption == 4 then
 else
     os.shutdown()
 end

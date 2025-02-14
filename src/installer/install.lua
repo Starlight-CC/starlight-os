@@ -6,13 +6,25 @@ fh.write(file.readAll())
 fh.close()
 local list = loadfile("tmp/installerData.lua")
 local iso = list()
-
+term.clear()
+term.setCursorPos(1,1)
+term.write("Welcome to")
+term.setTextColor(colors.blue)
+term.write(" Starlight OS")
+print("")
 for i,v in ipairs(iso[1]) do
-    print(v)
     local file = http.get(repoPath..v)
-    local fh = fs.open(v, "w")
-    fh.write(file.readAll())
-    fh.close()
+    if file == nil then 
+        term.setTextColor(colors.red) 
+        print(v..", failed to reach web address")
+        fs.delete(v)
+    else 
+        term.setTextColor(colors.green)
+        print(v) 
+        local fh = fs.open(v, "w")
+        fh.write(file.readAll())
+        fh.close()
+    end
 end
 
 fs.delete("tmp/installerData.lua")
