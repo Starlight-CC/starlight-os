@@ -1,10 +1,10 @@
 local repoPath = "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/root/"
 
 local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/installer/fs.lua")
-local fh = fs.open("tmp/installerData.lua", "w")
+local fh = fs.open("/tmp/installerData.lua", "w")
 fh.write(file.readAll())
 fh.close()
-local list = loadfile("tmp/installerData.lua")
+local list = loadfile("/tmp/installerData.lua")
 local iso = list()
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
