@@ -29,5 +29,14 @@ for i,v in ipairs(iso[1]) do
         fh.close()
     end
 end
-
 fs.delete("tmp/installerData.lua")
+term.setTextColor(colors.white)
+print("system restarting in 3")
+sleep(1)
+print("2")
+sleep(1)
+print("1")
+sleep(1)
+term.setTextColor(colors.green)
+print("SL.rebootService")
+shell.run("/sys/serv/reboot.lua")
