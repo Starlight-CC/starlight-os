@@ -1,6 +1,6 @@
 local repoPath = "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/root/"
 
-local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/installer/fs.lua")
+local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/installer/fs1.lua")
 local fh = fs.open("/tmp/installerData.lua", "w")
 fh.write(file.readAll())
 fh.close()
