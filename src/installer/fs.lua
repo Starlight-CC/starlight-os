@@ -5,7 +5,7 @@ local ret = {
     "startup.lua",
     "sys/login.lua",
     "boot/bios.lua",
-    "boot/login.lua",
+    "boot/startup.lua",
     "usr/sbin/shell/shell.lua"
   }
 }
