@@ -714,8 +714,8 @@ end
 local ok, err = pcall( function()
     parallel.waitForAny( 
         function()
-            if not term.isColour() then
-                os.run({}, "/sys/login.lua")
+            if term.isColour() then
+                os.run({}, "/usr/sbin/shell/shell.lua")
             else
                 printError("Use advanced computer...")
                 sleep(3)
@@ -723,6 +723,11 @@ local ok, err = pcall( function()
                 print("SL.shutdownService")
                 os.run({},"/sys/serv/shutdown.lua")
             end
+            print( "Internal error" )
+            print( "Press any key to continue" )
+            os.pullEvent( "key" )
+            term.setTextColor(colors.green)
+            print("SL.shutdownService")
             os.run( {}, "/sys/serv/shutdown.lua" )
         end,
         function()
@@ -746,4 +751,6 @@ if not ok then
 end
 
 -- End
+print( "Press any key to continue" )
+os.pullEvent( "key" )
 os.shutdown()
