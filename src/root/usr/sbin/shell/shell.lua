@@ -1,45 +1,8 @@
 
---[[- The shell API provides access to CraftOS's command line interface.
-
-It allows you to [start programs][`run`], [add completion for a
-program][`setCompletionFunction`], and much more.
-
-[`shell`] is not a "true" API. Instead, it is a standard program, which injects
-its API into the programs that it launches. This allows for multiple shells to
-run at the same time, but means that the API is not available in the global
-environment, and so is unavailable to other [APIs][`os.loadAPI`].
-
-## Programs and the program path
-When you run a command with the shell, either from the prompt or
-[from Lua code][`shell.run`], the shell API performs several steps to work out
-which program to run:
-
- 1. Firstly, the shell attempts to resolve [aliases][`shell.aliases`]. This allows
-    us to use multiple names for a single command. For example, the `list`
-    program has two aliases: `ls` and `dir`. When you write `ls /rom`, that's
-    expanded to `list /rom`.
-
- 2. Next, the shell attempts to find where the program actually is. For this, it
-    uses the [program path][`shell.path`]. This is a colon separated list of
-    directories, each of which is checked to see if it contains the program.
-
-    `list` or `list.lua` doesn't exist in `.` (the current directory), so the
-    shell now looks in `/rom/programs`, where `list.lua` can be found!
-
- 3. Finally, the shell reads the file and checks if the file starts with a
-    `#!`. This is a [hashbang][], which says that this file shouldn't be treated
-    as Lua, but instead passed to _another_ program, the name of which should
-    follow the `#!`.
-
-[hashbang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
-
-@module[module] shell
-@changed 1.103.0 Added support for hashbangs.
-]]
 term.clear()
 term.setCursorPos(1,1)
 
-local make_package = dofile("rom/modules/main/cc/require.lua").make
+local make_package = dofile("sys/modules/main/cc/require.lua").make
 
 local multishell = multishell
 local parentShell = shell
@@ -63,16 +26,16 @@ local function createShellEnv(dir)
     return env
 end
 
--- Set up a dummy require based on the current shell, for loading some of our internal dependencies.
+-- Set up a dummy require
 local require
 do
     local env = setmetatable(createShellEnv("/rom/programs"), { __index = _ENV })
     require = env.require
 end
-local expect = require("cc.expect").expect
-local exception = require "cc.internal.exception"
+local expect = require("sys.expect").expect
+local exception = require "sys.internal.exception"
 
--- Colours
+-- Colors
 local promptColour, textColour, bgColour
 if term.isColour() then
     promptColour = colours.cyan
@@ -101,10 +64,7 @@ local function tokenise(...)
     return tWords
 end
 
--- Execute a program using os.run, unless a shebang is present.
--- In that case, execute the program using the interpreter specified in the hashbang.
--- This may occur recursively, up to the maximum number of times specified by remainingRecursion
--- Returns the same type as os.run, which is a boolean indicating whether the program exited successfully.
+-- Execute a program
 local function executeProgram(remainingRecursion, path, args)
     local file, err = fs.open(path, "r")
     if not file then
@@ -190,18 +150,6 @@ local function executeProgram(remainingRecursion, path, args)
 end
 
 --- Run a program with the supplied arguments.
---
--- Unlike [`shell.run`], each argument is passed to the program verbatim. While
--- `shell.run("echo", "b c")` runs `echo` with `b` and `c`,
--- `shell.execute("echo", "b c")` runs `echo` with a single argument `b c`.
---
--- @tparam string command The program to execute.
--- @tparam string ... Arguments to this program.
--- @treturn boolean Whether the program exited successfully.
--- @since 1.88.0
--- @usage Run `paint my-image` from within your program:
---
---     shell.execute("paint", "my-image")
 function shell.execute(command, ...)
     expect(1, command, "string")
     for i = 1, select('#', ...) do
@@ -240,22 +188,6 @@ function shell.execute(command, ...)
     end
 end
 
--- Install shell API
-
---- Run a program with the supplied arguments.
---
--- All arguments are concatenated together and then parsed as a command line. As
--- a result, `shell.run("program a b")` is the same as `shell.run("program",
--- "a", "b")`.
---
--- @tparam string ... The program to run and its arguments.
--- @treturn boolean Whether the program exited successfully.
--- @usage Run `paint my-image` from within your program:
---
---     shell.run("paint", "my-image")
--- @see shell.execute Run a program directly without parsing the arguments.
--- @changed 1.80pr1 Programs now get their own environment instead of sharing the same one.
--- @changed 1.83.0 `arg` is now added to the environment.
 function shell.run(...)
     local tWords = tokenise(...)
     local sCommand = tWords[1]
@@ -266,31 +198,16 @@ function shell.run(...)
 end
 
 --- Exit the current shell.
---
--- This does _not_ terminate your program, it simply makes the shell terminate
--- after your program has finished. If this is the toplevel shell, then the
--- computer will be shutdown.
 function shell.exit()
     bExit = true
 end
 
---- Return the current working directory. This is what is displayed before the
--- `> ` of the shell prompt, and is used by [`shell.resolve`] to handle relative
--- paths.
---
--- @treturn string The current working directory.
--- @see setDir To change the working directory.
+--- Return the current working directory.
 function shell.dir()
     return sDir
 end
 
 --- Set the current working directory.
---
--- @tparam string dir The new working directory.
--- @throws If the path does not exist or is not a directory.
--- @usage Set the working directory to "rom"
---
---     shell.setDir("rom")
 function shell.setDir(dir)
     expect(1, dir, "string")
     if not fs.isDir(dir) then
@@ -300,42 +217,17 @@ function shell.setDir(dir)
 end
 
 --- Set the path where programs are located.
---
--- The path is composed of a list of directory names in a string, each separated
--- by a colon (`:`). On normal turtles will look in the current directory (`.`),
--- `/rom/programs` and `/rom/programs/turtle` folder, making the path
--- `.:/rom/programs:/rom/programs/turtle`.
---
--- @treturn string The current shell's path.
--- @see setPath To change the current path.
 function shell.path()
     return sPath
 end
 
 --- Set the [current program path][`path`].
---
--- Be careful to prefix directories with a `/`. Otherwise they will be searched
--- for from the [current directory][`shell.dir`], rather than the computer's root.
---
--- @tparam string path The new program path.
--- @since 1.2
 function shell.setPath(path)
     expect(1, path, "string")
     sPath = path
 end
 
 --- Resolve a relative path to an absolute path.
---
--- The [`fs`] and [`io`] APIs work using absolute paths, and so we must convert
--- any paths relative to the [current directory][`dir`] to absolute ones. This
--- does nothing when the path starts with `/`.
---
--- @tparam string path The path to resolve.
--- @usage Resolve `startup.lua` when in the `rom` folder.
---
---     shell.setDir("rom")
---     print(shell.resolve("startup.lua"))
---     -- => rom/startup.lua
 function shell.resolve(path)
     expect(1, path, "string")
     local sStartChar = string.sub(path, 1, 1)
@@ -357,16 +249,6 @@ local function pathWithExtension(_sPath, _sExt)
 end
 
 --- Resolve a program, using the [program path][`path`] and list of [aliases][`aliases`].
---
--- @tparam string command The name of the program
--- @treturn string|nil The absolute path to the program, or [`nil`] if it could
--- not be found.
--- @since 1.2
--- @changed 1.80pr1 Now searches for files with and without the `.lua` extension.
--- @usage Locate the `hello` program.
---
---      shell.resolveProgram("hello")
---      -- => rom/programs/fun/hello.lua
 function shell.resolveProgram(command)
     expect(1, command, "string")
     -- Substitute aliases firsts
@@ -406,12 +288,6 @@ function shell.resolveProgram(command)
 end
 
 --- Return a list of all programs on the [path][`shell.path`].
---
--- @tparam[opt] boolean include_hidden Include hidden files. Namely, any which
--- start with `.`.
--- @treturn { string } A list of available programs.
--- @usage textutils.tabulate(shell.programs())
--- @since 1.2
 function shell.programs(include_hidden)
     expect(1, include_hidden, "boolean", "nil")
 
@@ -511,21 +387,6 @@ local function completeProgramArgument(sProgram, nArgument, sPart, tPreviousPart
 end
 
 --- Complete a shell command line.
---
--- This accepts an incomplete command, and completes the program name or
--- arguments. For instance, `l` will be completed to `ls`, and `ls ro` will be
--- completed to `ls rom/`.
---
--- Completion handlers for your program may be registered with
--- [`shell.setCompletionFunction`].
---
--- @tparam string sLine The input to complete.
--- @treturn { string }|nil The list of possible completions.
--- @see _G.read For more information about completion.
--- @see shell.completeProgram
--- @see shell.setCompletionFunction
--- @see shell.getCompletionInfo
--- @since 1.74
 function shell.complete(sLine)
     expect(1, sLine, "string")
     if #sLine > 0 then
@@ -564,44 +425,12 @@ function shell.complete(sLine)
 end
 
 --- Complete the name of a program.
---
--- @tparam string program The name of a program to complete.
--- @treturn { string } A list of possible completions.
--- @see cc.shell.completion.program
 function shell.completeProgram(program)
     expect(1, program, "string")
     return completeProgram(program)
 end
 
---- Set the completion function for a program. When the program is entered on
--- the command line, this program will be called to provide auto-complete
--- information.
---
--- The completion function accepts four arguments:
---
---  1. The current shell. As completion functions are inherited, this is not
---     guaranteed to be the shell you registered this function in.
---  2. The index of the argument currently being completed.
---  3. The current argument. This may be the empty string.
---  4. A list of the previous arguments.
---
--- For instance, when completing `pastebin put rom/st` our pastebin completion
--- function will receive the shell API, an index of 2, `rom/st` as the current
--- argument, and a "previous" table of `{ "put" }`. This function may then wish
--- to return a table containing `artup.lua`, indicating the entire command
--- should be completed to `pastebin put rom/startup.lua`.
---
--- You completion entries may also be followed by a space, if you wish to
--- indicate another argument is expected.
---
--- @tparam string program The path to the program. This should be an absolute path
--- _without_ the leading `/`.
--- @tparam function(shell: table, index: number, argument: string, previous: { string }):({ string }|nil) complete
--- The completion function.
--- @see cc.shell.completion Various utilities to help with writing completion functions.
--- @see shell.complete
--- @see _G.read For more information about completion.
--- @since 1.74
+--- Set the completion function for a program.
 function shell.setCompletionFunction(program, complete)
     expect(1, program, "string")
     expect(2, complete, "function")
@@ -611,20 +440,11 @@ function shell.setCompletionFunction(program, complete)
 end
 
 --- Get a table containing all completion functions.
---
--- This should only be needed when building custom shells. Use
--- [`setCompletionFunction`] to add a completion function.
---
--- @treturn { [string] = { fnComplete = function } } A table mapping the
--- absolute path of programs, to their completion functions.
 function shell.getCompletionInfo()
     return tCompletionInfo
 end
 
 --- Returns the path to the currently running program.
---
--- @treturn string The absolute path to the running program.
--- @since 1.3
 function shell.getRunningProgram()
     if #tProgramStack > 0 then
         return tProgramStack[#tProgramStack]
@@ -633,13 +453,6 @@ function shell.getRunningProgram()
 end
 
 --- Add an alias for a program.
---
--- @tparam string command The name of the alias to add.
--- @tparam string program The name or path to the program.
--- @since 1.2
--- @usage Alias `vim` to the `edit` program
---
---     shell.setAlias("vim", "edit")
 function shell.setAlias(command, program)
     expect(1, command, "string")
     expect(2, program, "string")
@@ -647,24 +460,12 @@ function shell.setAlias(command, program)
 end
 
 --- Remove an alias.
---
--- @tparam string command The alias name to remove.
 function shell.clearAlias(command)
     expect(1, command, "string")
     tAliases[command] = nil
 end
 
 --- Get the current aliases for this shell.
---
--- Aliases are used to allow multiple commands to refer to a single program. For
--- instance, the `list` program is aliased to `dir` or `ls`. Running `ls`, `dir`
--- or `list` in the shell will all run the `list` program.
---
--- @treturn { [string] = string } A table, where the keys are the names of
--- aliases, and the values are the path to the program.
--- @see shell.setAlias
--- @see shell.resolveProgram This uses aliases when resolving a program name to
--- an absolute path.
 function shell.aliases()
     -- Copy aliases
     local tCopy = {}
