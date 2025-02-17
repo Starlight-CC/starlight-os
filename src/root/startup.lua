@@ -1,2 +1,2 @@
 term.clear()
-shell.run("/sys/login.lua")
+shell.run("/boot/bios.lua")

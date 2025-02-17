@@ -1,185 +1,7 @@
 
-local nativegetfenv = getfenv
-if _VERSION == "Lua 5.1" then
-    -- If we're on Lua 5.1, install parts of the Lua 5.2/5.3 API so that programs can be written against it
-    local nativeload = load
-    local nativeloadstring = loadstring
-    local nativesetfenv = setfenv
-    function load( x, name, mode, env )
-        if type( x ) ~= "string" and type( x ) ~= "function" then
-            error( "bad argument #1 (expected string or function, got " .. type( x ) .. ")", 2 ) 
-        end
-        if name ~= nil and type( name ) ~= "string" then
-            error( "bad argument #2 (expected string, got " .. type( name ) .. ")", 2 ) 
-        end
-        if mode ~= nil and type( mode ) ~= "string" then
-            error( "bad argument #3 (expected string, got " .. type( mode ) .. ")", 2 ) 
-        end
-        if env ~= nil and type( env) ~= "table" then
-            error( "bad argument #4 (expected table, got " .. type( env ) .. ")", 2 ) 
-        end
-        if mode ~= nil and mode ~= "t" then
-            error( "Binary chunk loading prohibited", 2 )
-        end
-        local ok, p1, p2 = pcall( function()        
-            if type(x) == "string" then
-                local result, err = nativeloadstring( x, name )
-                if result then
-                    if env then
-                        env._ENV = env
-                        nativesetfenv( result, env )
-                    end
-                    return result
-                else
-                    return nil, err
-                end
-            else
-                local result, err = nativeload( x, name )
-                if result then
-                    if env then
-                        env._ENV = env
-                        nativesetfenv( result, env )
-                    end
-                    return result
-                else
-                    return nil, err
-                end
-            end
-        end )
-        if ok then
-            return p1, p2
-        else
-            error( p1, 2 )
-        end        
-    end
-    table.unpack = unpack
-    table.pack = function( ... ) return { n = select( "#", ... ), ... } end
-
-    -- Install the bit32 api
-    local nativebit = bit
-    bit32 = {}
-    bit32.arshift = nativebit.brshift
-    bit32.band = nativebit.band
-    bit32.bnot = nativebit.bnot
-    bit32.bor = nativebit.bor
-    bit32.btest = function( a, b ) return nativebit.band(a,b) ~= 0 end
-    bit32.bxor = nativebit.bxor
-    bit32.lshift = nativebit.blshift
-    bit32.rshift = nativebit.blogic_rshift
-
-    if _CC_DISABLE_LUA51_FEATURES then
-        -- Remove the Lua 5.1 features that will be removed when we update to Lua 5.2, for compatibility testing.
-        -- See "disable_lua51_functions" in ComputerCraft.cfg
-        setfenv = nil
-        getfenv = nil
-        loadstring = nil
-        unpack = nil
-        math.log10 = nil
-        table.maxn = nil
-        bit = nil
-    end
-end
-
-if _VERSION == "Lua 5.3" then
-    -- If we're on Lua 5.3, install the bit32 api from Lua 5.2
-    -- (Loaded from a string so this file will still parse on <5.3 lua)
-    load( [[
-        bit32 = {}
-
-        function bit32.arshift( n, bits )
-            if type(n) ~= "number" or type(bits) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return n >> bits
-        end
-
-        function bit32.band( m, n )
-            if type(m) ~= "number" or type(n) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return m & n
-        end
-
-        function bit32.bnot( n )
-            if type(n) ~= "number" then
-                error( "Expected number", 2 )
-            end
-            return ~n
-        end
-
-        function bit32.bor( m, n )
-            if type(m) ~= "number" or type(n) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return m | n
-        end
-
-        function bit32.btest( m, n )
-            if type(m) ~= "number" or type(n) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return (m & n) ~= 0
-        end
-
-        function bit32.bxor( m, n )
-            if type(m) ~= "number" or type(n) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return m ~ n
-        end
-
-        function bit32.lshift( n, bits )
-            if type(n) ~= "number" or type(bits) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return n << bits
-        end
-
-        function bit32.rshift( n, bits )
-            if type(n) ~= "number" or type(bits) ~= "number" then
-                error( "Expected number, number", 2 )
-            end
-            return n >> bits
-        end
-    ]] )()
-end
-
-if string.find( _HOST, "ComputerCraft" ) == 1 then
-    -- Prevent access to metatables or environments of strings, as these are global between all computers
-    local nativegetmetatable = getmetatable
-    local nativeerror = error
-    local nativetype = type
-    local string_metatable = nativegetmetatable("")
-    function getmetatable( t )
-        local mt = nativegetmetatable( t )
-        if mt == string_metatable then
-            nativeerror( "Attempt to access string metatable", 2 )
-        else
-            return mt
-        end
-    end
-    if _VERSION == "Lua 5.1" and not _CC_DISABLE_LUA51_FEATURES then
-        local string_env = nativegetfenv(("").gsub)
-        function getfenv( env )
-            if env == nil then
-                env = 2
-            elseif nativetype( env ) == "number" and env > 0 then
-                env = env + 1
-            end
-            local fenv = nativegetfenv(env)
-            if fenv == string_env then
-                --nativeerror( "Attempt to access string metatable", 2 )
-                return nativegetfenv( 0 )
-            else
-                return fenv
-            end
-        end
-    end
-end
-
 -- Install lua parts of the os api
 function os.version()
-    return "CraftOS 1.8"
+    return "SLK 1.0.0"
 end
 
 function os.pullEventRaw( sFilter )
@@ -849,10 +671,10 @@ end
 
 -- Load APIs
 local bAPIError = false
-local tApis = fs.list( "rom/apis" )
+local tApis = fs.list( "lib/apis" )
 for n,sFile in ipairs( tApis ) do
     if string.sub( sFile, 1, 1 ) ~= "." then
-        local sPath = fs.combine( "rom/apis", sFile )
+        local sPath = fs.combine( "lib/apis", sFile )
         if not fs.isDir( sPath ) then
             if not os.loadAPI( sPath ) then
                 bAPIError = true
@@ -861,62 +683,18 @@ for n,sFile in ipairs( tApis ) do
     end
 end
 
-if turtle and fs.isDir( "rom/apis/turtle" ) then
-    -- Load turtle APIs
-    local tApis = fs.list( "rom/apis/turtle" )
-    for n,sFile in ipairs( tApis ) do
-        if string.sub( sFile, 1, 1 ) ~= "." then
-            local sPath = fs.combine( "rom/apis/turtle", sFile )
-            if not fs.isDir( sPath ) then
-                if not os.loadAPI( sPath ) then
-                    bAPIError = true
-                end
-            end
-        end
-    end
-end
-
-if pocket and fs.isDir( "rom/apis/pocket" ) then
+if pocket and fs.isDir( "lib/apis/pocket" ) then
     -- Load pocket APIs
-    local tApis = fs.list( "rom/apis/pocket" )
+    local tApis = fs.list( "lib/apis/pocket" )
     for n,sFile in ipairs( tApis ) do
         if string.sub( sFile, 1, 1 ) ~= "." then
-            local sPath = fs.combine( "rom/apis/pocket", sFile )
+            local sPath = fs.combine( "lib/apis/pocket", sFile )
             if not fs.isDir( sPath ) then
                 if not os.loadAPI( sPath ) then
                     bAPIError = true
                 end
             end
         end
-    end
-end
-
-if commands and fs.isDir( "rom/apis/command" ) then
-    -- Load command APIs
-    if os.loadAPI( "rom/apis/command/commands.lua" ) then
-        -- Add a special case-insensitive metatable to the commands api
-        local tCaseInsensitiveMetatable = {
-            __index = function( table, key )
-                local value = rawget( table, key )
-                if value ~= nil then
-                    return value
-                end
-                if type(key) == "string" then
-                    local value = rawget( table, string.lower(key) )
-                    if value ~= nil then
-                        return value
-                    end
-                end
-                return nil
-            end
-        }
-        setmetatable( commands, tCaseInsensitiveMetatable )
-        setmetatable( commands.async, tCaseInsensitiveMetatable )
-
-        -- Add global "exec" function
-        exec = commands.exec
-    else
-        bAPIError = true
     end
 end
 
@@ -925,43 +703,6 @@ if bAPIError then
     os.pullEvent( "key" )
     term.clear()
     term.setCursorPos( 1,1 )
-end
-
--- Set default settings
-settings.set( "shell.allow_startup", true )
-settings.set( "shell.allow_disk_startup", (commands == nil) )
-settings.set( "shell.autocomplete", true )
-settings.set( "edit.autocomplete", true ) 
-settings.set( "edit.default_extension", "lua" )
-settings.set( "paint.default_extension", "nfp" )
-settings.set( "lua.autocomplete", true )
-settings.set( "list.show_hidden", false )
-if term.isColour() then
-    settings.set( "bios.use_multishell", true )
-end
-if _CC_DEFAULT_SETTINGS then
-    for sPair in string.gmatch( _CC_DEFAULT_SETTINGS, "[^,]+" ) do
-        local sName, sValue = string.match( sPair, "([^=]*)=(.*)" )
-        if sName and sValue then
-            local value
-            if sValue == "true" then
-                value = true
-            elseif sValue == "false" then
-                value = false
-            elseif sValue == "nil" then
-                value = nil
-            elseif tonumber(sValue) then
-                value = tonumber(sValue)
-            else
-                value = sValue
-            end
-            if value ~= nil then
-                settings.set( sName, value )
-            else
-                settings.unset( sName )
-            end
-        end
-    end
 end
 
 -- Load user settings
@@ -973,18 +714,24 @@ end
 local ok, err = pcall( function()
     parallel.waitForAny( 
         function()
-            local sShell
-            if term.isColour() and settings.get( "bios.use_multishell" ) then
-                sShell = "rom/programs/advanced/multishell.lua"
+            if not term.isColour() then
+                os.run({}, "/sys/login.lua")
             else
-                sShell = "rom/programs/shell.lua"
+                printError("Use advanced computer...")
+                sleep(3)
+                term.setTextColor(colors.green)
+                print("SL.shutdownService")
+                os.run({},"/sys/serv/shutdown.lua")
             end
-            os.run( {}, sShell )
-            os.run( {}, "rom/programs/shutdown.lua" )
+            os.run( {}, "/sys/serv/shutdown.lua" )
         end,
         function()
-            rednet.run()
-        end )
+            while true do
+                sleep(1)
+            end
+        end 
+    )
+    
 end )
 
 -- If the shell errored, let the user read it.

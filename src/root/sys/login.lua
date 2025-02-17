@@ -26,5 +26,7 @@ function os.getUsers()
   file.close()
   return e 
 end
-
-if f
+shell.run("mkdir /home/Astronand/")
+os.username("Astronand")
+os.hostname("Mainframe")
+shell.run("/boot/startup.lua")
