@@ -1,4 +1,5 @@
 os.util = {}
+os._auth = {}
 function os.version()
     return "SLK 1.0.0"
 end
@@ -208,9 +209,33 @@ function os.util.subHome(e)
     end
     return ret
 end
+
+function os._auth.verify(e)
+    
+end
+
+function os._auth.set(e)
+end
+
+function os._auth.checkFilePerms(e)
+end
+
+function os.help(e)
+    if e == nil then
+        print("The OS API is how programs")
+        print("interface with the kernel.")
+        print("anything with a '_' at the start")
+        print("of the function is only meant to")
+        print("be used by the os. if a program")
+        print("uses them it will be terminated.")
+    else
+        if fs.exists("sys/help/"..e..".txt")
+    end
+end
+
 -- Load APIs
 local bAPIError = false
-local tApis = fs.list( "/lib/apis" )
+local tApis = fs.list("/lib/apis")
 for n,sFile in ipairs( tApis ) do
     if string.sub( sFile, 1, 1 ) ~= "." then
         local sPath = fs.combine( "/lib/apis", sFile )
