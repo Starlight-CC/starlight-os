@@ -3,7 +3,7 @@ os.hostname("EMU")
 term.clear()
 term.setCursorPos(1,1)
 
-local make_package = dofile("sys/modules/main/cc/require.lua").make
+local make_package = dofile("sys/modules/require.lua").make
 
 local multishell = multishell
 local parentShell = shell

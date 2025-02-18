@@ -1,4 +1,4 @@
-
+os.util = {}
 function os.version()
     return "SLK 1.0.0"
 end
@@ -175,7 +175,7 @@ function os.hostname(e)
 end
 
 function os.getUsers()
-  file = fs.open(".users","r")
+  file = fs.open("/.users","r")
   local e = file.readAll()
   file.close()
   return e 
@@ -184,24 +184,24 @@ end
 function os.home(e)
     if e == nil then
         if os.username() == "root" then
-            return "/root/"
+            return "root/"
         else
-            return "/home/"..os.username()
+            return "home/"..os.username()
         end
     else
         if e == "root" then
-            return "/root/"
+            return "root/"
         else
-            return "/home/"..e
+            return "home/"..e
         end
     end
 end
 
 function os.util.subHome(e)
     local ret
-    local idk = string.sub(e,1,5+#os.username())
-    if idk == "home/"..os.username() then
-        local so = string.sub(e,5+#os.username()+1)
+    local idk = string.sub(e,1,#os.home())
+    if idk == os.home() then
+        local so = string.sub(e,#os.home()+1)
         ret = "~"..so
     else
         ret = "/"..e
@@ -254,7 +254,7 @@ local ok, err = pcall( function()
     parallel.waitForAny( 
         function()
             if term.isColour() then
-                os.run({}, "/usr/sbin/shell/shell.lua")
+                os.run({}, "/sbin/shell/shell.lua")
             else
                 printError("Use advanced computer...")
                 sleep(3)
