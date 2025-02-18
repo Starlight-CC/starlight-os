@@ -156,12 +156,6 @@ function os.reboot()
     end
 end
 
-function os.createEnv(env, dir)
-    local env = { shell = shell, multishell = multishell }
-    env.require, env.package = make_package(env, dir)
-    return env
-end
-
 -- Load APIs
 local bAPIError = false
 local tApis = fs.list( "/lib/apis" )
