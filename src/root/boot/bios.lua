@@ -156,6 +156,58 @@ function os.reboot()
     end
 end
 
+function os.username(e)
+  if user == nil and not e == nil then
+    user = e
+    return true
+  else
+    return user
+  end
+end
+
+function os.hostname(e)
+  if host == nil and not e == nil then
+    host = e
+    return true
+  else
+    return host
+  end
+end
+
+function os.getUsers()
+  file = fs.open(".users","r")
+  local e = file.readAll()
+  file.close()
+  return e 
+end
+
+function os.home(e)
+    if e == nil then
+        if os.username() == "root" then
+            return "/root/"
+        else
+            return "/home/"..os.username()
+        end
+    else
+        if e == "root" then
+            return "/root/"
+        else
+            return "/home/"..e
+        end
+    end
+end
+
+function os.util.subHome(e)
+    local ret
+    local idk = string.sub(e,1,5+#os.username())
+    if idk == "home/"..os.username() then
+        local so = string.sub(e,5+#os.username()+1)
+        ret = "~"..so
+    else
+        ret = "/"..e
+    end
+    return ret
+end
 -- Load APIs
 local bAPIError = false
 local tApis = fs.list( "/lib/apis" )
