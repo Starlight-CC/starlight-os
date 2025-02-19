@@ -221,6 +221,9 @@ function os._auth.checkFilePerms(e)
 end
 
 function os.help(e)
+    if os.username() == nil then
+        return "root/"
+    end
     if e == nil then
         print("The OS API is how programs")
         print("interface with the kernel.")
@@ -229,7 +232,14 @@ function os.help(e)
         print("be used by the os. if a program")
         print("uses them it will be terminated.")
     else
-        if fs.exists("sys/help/"..e..".txt")
+        if fs.exists("sys/help/"..e..".txt") then
+            local File = fs.open("sys/help/"..e..".txt", "rb")
+            print(File.readAll())
+            File.close()
+        else
+            term.setTextColor(colors.red)
+            print("No help file found")
+        end
     end
 end
 
