@@ -16,18 +16,6 @@ function os.pullEvent( sFilter )
     return table.unpack( eventData, 1, eventData.n )
 end
 
-function printError( ... )
-    local oldColour
-    if term.isColor() then
-        oldColour = term.getTextColor()
-        term.setTextColor( colors.red )
-    end
-    print( ... )
-    if term.isColor() then
-        term.setTextColor( oldColour )
-    end
-end
-
 loadfile = function( _sFile, _tEnv )
     if type( _sFile ) ~= "string" then
         error( "bad argument #1 (expected string, got " .. type( _sFile ) .. ")", 2 ) 
@@ -56,91 +44,6 @@ dofile = function( _sFile )
     end
 end
 
-function os.run( _tEnv, _sPath, ... )
-    if type( _tEnv ) ~= "table" then
-        error( "bad argument #1 (expected table, got " .. type( _tEnv ) .. ")", 2 ) 
-    end
-    if type( _sPath ) ~= "string" then
-        error( "bad argument #2 (expected string, got " .. type( _sPath ) .. ")", 2 ) 
-    end
-    local tArgs = table.pack( ... )
-    local tEnv = _tEnv
-    setmetatable( tEnv, { __index = _G } )
-    local fnFile, err = loadfile( _sPath, tEnv )
-    if fnFile then
-        local ok, err = pcall( function()
-            fnFile( table.unpack( tArgs, 1, tArgs.n ) )
-        end )
-        if not ok then
-            if err and err ~= "" then
-                printError( err )
-            end
-            return false
-        end
-        return true
-    end
-    if err and err ~= "" then
-        printError( err )
-    end
-    return false
-end
-
-local tAPIsLoading = {}
-function os.loadAPI( _sPath )
-    if type( _sPath ) ~= "string" then
-        error( "bad argument #1 (expected string, got " .. type( _sPath ) .. ")", 2 ) 
-    end
-    local sName = fs.getName( _sPath )
-    if sName:sub(-4) == ".lua" then
-        sName = sName:sub(1,-5)
-    end
-    if tAPIsLoading[sName] == true then
-        printError( "API "..sName.." is already being loaded" )
-        return false
-    end
-    tAPIsLoading[sName] = true
-
-    local tEnv = {}
-    setmetatable( tEnv, { __index = _G } )
-    local fnAPI, err = loadfile( _sPath, tEnv )
-    if fnAPI then
-        local ok, err = pcall( fnAPI )
-        if not ok then
-            printError( err )
-            tAPIsLoading[sName] = nil
-            return false
-        end
-    else
-        printError( err )
-        tAPIsLoading[sName] = nil
-        return false
-    end
-    
-    local tAPI = {}
-    for k,v in pairs( tEnv ) do
-        if k ~= "_ENV" then
-            tAPI[k] =  v
-        end
-    end
-
-    _G[sName] = tAPI    
-    tAPIsLoading[sName] = nil
-    return true
-end
-
-function os.unloadAPI( _sName )
-    if type( _sName ) ~= "string" then
-        error( "bad argument #1 (expected string, got " .. type( _sName ) .. ")", 2 ) 
-    end
-    if _sName ~= "_G" and type(_G[_sName]) == "table" then
-        _G[_sName] = nil
-    end
-end
-
-function os.sleep( nTime )
-    sleep( nTime )
-end
-
 local nativeShutdown = os.shutdown
 function os.shutdown()
     nativeShutdown()
@@ -158,22 +61,24 @@ function os.reboot()
 end
 
 function os.username(e)
-  if user == nil and not e == nil then
+  if user == nil then
     user = e
     return true
   else
     return user
   end
 end
+os.username("Astronand")
 
 function os.hostname(e)
-  if host == nil and not e == nil then
+  if host == nil then
     host = e
     return true
   else
     return host
   end
 end
+os.hostname("EMU")
 
 function os.getUsers()
   file = fs.open("/.users","r")
@@ -183,6 +88,9 @@ function os.getUsers()
 end
 
 function os.home(e)
+    if os.username() == nil then
+        return "root/"
+    end
     if e == nil then
         if os.username() == "root" then
             return "root/"
@@ -199,7 +107,7 @@ function os.home(e)
 end
 
 function os.util.subHome(e)
-    local ret
+    local ret = ""
     local idk = string.sub(e,1,#os.home())
     if idk == os.home() then
         local so = string.sub(e,#os.home()+1)

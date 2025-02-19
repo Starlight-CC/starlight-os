@@ -1,0 +1,1 @@
+shell.run("sbin/shell/shell.lua")

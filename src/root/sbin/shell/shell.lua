@@ -1,9 +1,8 @@
-os.username("Astronand")
-os.hostname("EMU")
+
 term.clear()
 term.setCursorPos(1,1)
 
-local make_package = dofile("sys/modules/require.lua").make
+local make_package = dofile("sys/modules/require.la").make
 
 local multishell = multishell
 local parentShell = shell
@@ -528,7 +527,8 @@ else
     local function show_prompt()
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
-        local pdir = os.util.subHome(shell.dir())
+        local pdir = "/"
+        pdir = os.util.subHome(shell.dir())
         write(os.username().."@"..os.hostname()..":"..pdir.."$")
         term.setTextColour(textColour)
     end
@@ -541,7 +541,7 @@ else
 
     -- Run the startup program
     if parentShell == nil then
-        shell.run("/rom/startup.lua")
+        shell.run("/boot/startup.lua")
     end
 
     -- Read commands and execute them
@@ -573,7 +573,7 @@ else
                 term.setCursorBlink(false)
 
                 -- Run the import script with the provided files
-                local ok, err = require("cc.internal.import")(event[2].getFiles())
+                local ok, err = require("internal.import")(event[2].getFiles())
                 if not ok and err then printError(err) end
 
                 -- And attempt to restore the prompt.

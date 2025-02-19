@@ -1,6 +1,7 @@
 return {
     {
         "boot/bios.lua",
+        "boot/startup.lua"
         "sbin/shell/shell.lua",
         "sys/modules/internal/syntax/errors.la",
         "sys/modules/internal/syntax/init.la",
@@ -15,6 +16,8 @@ return {
         "sys/modules/pretty.la",
         "sys/modules/strings.la",
         "sys/modules/expect.la",
-        "sys/modules/require.la"
+        "sys/modules/require.la",
+        "sys/serv/reboot.lua",
+        "sys/serv/shutdown.lua"
     }
 }
