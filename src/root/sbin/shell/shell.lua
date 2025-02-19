@@ -33,8 +33,8 @@ do
     local env = setmetatable(createShellEnv(os.home()), { __index = _ENV })
     require = env.require
 end
-local expect = require("sys.modules.expect").expect
-local exception = require "sys.modules.internal.exception"
+local expect = require("expect").expect
+local exception = require "internal.exception"
 
 -- Colors
 local promptColour, textColour, bgColour
@@ -123,7 +123,7 @@ local function executeProgram(remainingRecursion, path, args)
         -- We had a syntax error. Attempt to run it through our own parser if
         -- the file is "small enough", otherwise report the original error.
         if #contents < 1024 * 128 then
-            local parser = require "cc.internal.syntax"
+            local parser = require "internal.syntax.init"
             if parser.parse_program(contents) then printError(err) end
         else
             printError(err)

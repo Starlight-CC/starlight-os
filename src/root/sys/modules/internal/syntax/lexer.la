@@ -27,8 +27,8 @@ are some design choices worth drawing attention to:
 @local
 ]]
 
-local errors = require "cc.internal.syntax.errors"
-local tokens = require "cc.internal.syntax.parser".tokens
+local errors = require "internal.syntax.errors"
+local tokens = require "internal.syntax.parser".tokens
 local sub, find = string.sub, string.find
 
 local keywords = {

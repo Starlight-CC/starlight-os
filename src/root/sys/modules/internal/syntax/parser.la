@@ -18,7 +18,7 @@ hence being mostly unreadable!
 local errors = setmetatable({}, {
     __index = function(self, key)
         setmetatable(self, nil)
-        for k, v in pairs(require "cc.internal.syntax.errors") do self[k] = v end
+        for k, v in pairs(require "internal.syntax.errors") do self[k] = v end
 
         return self[key]
     end,

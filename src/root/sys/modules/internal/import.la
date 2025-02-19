@@ -11,7 +11,7 @@
 @local
 ]]
 
-local completion = require "cc.completion"
+local completion = require "completion"
 
 --- @tparam { file_transfer.TransferredFile ...} files The files to upload.
 return function(files)

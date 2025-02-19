@@ -24,7 +24,7 @@ custom environment.
     print(r, r2)
 ]]
 
-local expect = require and require("cc.expect") or dofile("rom/modules/main/cc/expect.lua")
+local expect = require and require("expect") or dofile("sys/modules/expect.lua")
 local expect = expect.expect
 
 local function preload(package)
@@ -140,7 +140,7 @@ local function make_package(env, dir)
         end
     end
 
-    package.path = "?;?.lua;?/init.lua;/rom/modules/main/?;/rom/modules/main/?.lua;/rom/modules/main/?/init.lua;/lib/?;/lib/?/.lua;/lib/?;/lib/?/init.lua;"
+    package.path = "?;?.lua;?.la;/sys/modules/?;/sys/modules/?.lua;/sys/modules/?.la;/?;/?.lua;/?.la"
     if turtle then
         package.path = package.path .. ";/rom/modules/turtle/?;/rom/modules/turtle/?.lua;/rom/modules/turtle/?/init.lua"
     elseif commands then

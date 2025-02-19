@@ -11,11 +11,11 @@
 @local
 ]]
 
-local expect = require "cc.expect".expect
+local expect = require "expect".expect
 
-local lex_one = require "cc.internal.syntax.lexer".lex_one
-local parser = require "cc.internal.syntax.parser"
-local error_printer = require "cc.internal.error_printer"
+local lex_one = require "internal.syntax.lexer".lex_one
+local parser = require "internal.syntax.parser"
+local error_printer = require "internal.error_printer"
 
 local error_sentinel = {}
 

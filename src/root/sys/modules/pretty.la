@@ -31,7 +31,7 @@ The structure of this module is based on [A Prettier Printer][prettier].
     pretty.print(pretty.group(pretty.text("hello") .. pretty.space_line .. pretty.text("world")))
 ]]
 
-local expect = require "cc.expect"
+local expect = require "expect"
 local expect, field = expect.expect, expect.field
 
 local type, getmetatable, setmetatable, colours, str_write, tostring = type, getmetatable, setmetatable, colours, write, tostring
