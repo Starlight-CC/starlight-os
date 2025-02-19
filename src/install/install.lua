@@ -4,7 +4,7 @@ if fs.exists("tmp/installerData.lua") then
     local list = loadfile("tmp/installerData.lua")
     local iso = list()
 else
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/start.lua")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.lua")
     local fh = fs.open("tmp/installerData.lua", "w")
     fh.write(file.readAll())
     fh.close()
@@ -25,6 +25,7 @@ if iso[2] == "end" then
     term.setTextColor(colors.green)
     sleep(1)
     fs.move("sys/startup.lua","startup.lua")
+    fs.delete("tmp/installerData.lua")
     print("Install complete rebooting...")
     sleep(1)
     print("SL.reboot service started")
@@ -57,6 +58,10 @@ else
         end
     end
     fs.delete("tmp/installerData.lua")
+    local file = http.get(iso[2])
+    local fh = fs.open("tmp/installerData.lua", "w")
+    fh.write(file.readAll())
+    fh.close()
     if start then
         fs.move(shell.getRunningProgram(),"startup.lua")
         term.setTextColor(colors.white)
