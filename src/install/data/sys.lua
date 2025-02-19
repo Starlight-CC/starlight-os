@@ -1,7 +1,7 @@
 return {
     {
         "boot/bios.lua",
-        "boot/startup.lua"
+        "boot/startup.lua",
         "sbin/shell/shell.lua",
         "sys/modules/internal/syntax/errors.la",
         "sys/modules/internal/syntax/init.la",
