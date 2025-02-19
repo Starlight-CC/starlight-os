@@ -15,6 +15,6 @@ return {
         "sys/modules/pretty.la",
         "sys/modules/strings.la",
         "sys/modules/expect.la",
-        "sys/modules/require.la",
+        "sys/modules/require.la"
     }
 }
