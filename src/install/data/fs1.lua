@@ -2,8 +2,19 @@ return {
     {
         "boot/bios.lua",
         "sbin/shell/shell.lua",
-        "sys/modules/internal/exception.lua",
-        "sys/modules/expect.lua",
-        "sys/modules/require.lua"
+        "sys/modules/internal/syntax/errors.la",
+        "sys/modules/internal/syntax/init.la",
+        "sys/modules/internal/syntax/lexer.la",
+        "sys/modules/internal/syntax/parser.la",
+        "sys/modules/internal/exception.la",
+        "sys/modules/internal/error_printer.la",
+        "sys/modules/internal/event.la",
+        "sys/modules/internal/import.la",
+        "sys/modules/shell/completion.la",
+        "sys/modules/completion.la",
+        "sys/modules/pretty.la",
+        "sys/modules/strings.la",
+        "sys/modules/expect.la",
+        "sys/modules/require.la",
     }
 }
