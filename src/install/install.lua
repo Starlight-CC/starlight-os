@@ -3,14 +3,14 @@ local start = false
 if fs.exists("tmp/installerData.lua") then
     local list = loadfile("tmp/installerData.lua")
     local iso = list()
-    start = true
 else
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.lua")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/start.lua")
     local fh = fs.open("tmp/installerData.lua", "w")
     fh.write(file.readAll())
     fh.close()
     local list = loadfile("tmp/installerData.lua")
     local iso = list()
+    start = true
 end
 if iso[2] == "end" then
     term.setPaletteColor(colors.red,0xff0000)
