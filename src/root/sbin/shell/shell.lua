@@ -14,7 +14,7 @@ end
 
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
-local sPath = parentShell and parentShell.path() or ".:"..os.home()
+local sPath = parentShell and parentShell.path() or ".:/sbin/shell/cmd/"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
