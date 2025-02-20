@@ -38,7 +38,7 @@ return {
     "sbin/shell/cmd/type.lua",
     "sbin/shell/start/autorun.lua",
     "sbin/shell/start/autocomplete.lua",
-    "sbin/shell/start/startup.lua"
+    "sbin/shell/startup.lua"
   },
   "end",
   {
