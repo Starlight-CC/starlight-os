@@ -1,15 +1,15 @@
 local repoPath = "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/root/"
 local start = false
 os.pullEvent = os.pullEventRaw
-if fs.exists("tmp/installerData.lua") then
-    local list = loadfile("tmp/installerData.lua")
+if fs.exists("tmp/installerData.dat") then
+    local list = loadfile("tmp/installerData.dat")
     iso = list()
 else
-    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.lua")
-    local fh = fs.open("tmp/installerData.lua", "w")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.dat")
+    local fh = fs.open("tmp/installerData.dat", "w")
     fh.write(file.readAll())
     fh.close()
-    local list = loadfile("tmp/installerData.lua")
+    local list = loadfile("tmp/installerData.dat")
     iso = list()
     start = true
 end
@@ -44,7 +44,7 @@ for i,v in ipairs(iso[3]) do
     print(v)
     shell.run(v)
 end
-fs.delete("tmp/installerData.lua")
+fs.delete("tmp/installerData.dat")
 if iso[2] == "end" then
     term.setPaletteColor(colors.red,0xff0000)
     term.setPaletteColor(colors.green,0x00ff00)
@@ -59,14 +59,14 @@ if iso[2] == "end" then
     sleep(1)
     fs.move("startup.lua","sbin/SLInstall.lua")
     fs.move("sys/startup.lua","startup.lua")
-    fs.delete("tmp/installerData.lua")
+    fs.delete("tmp/installerData.dat")
     print("Install complete rebooting...")
     sleep(1)
     print("SL.reboot service started")
     shell.run("/sys/serv/reboot.lua")
 end
 local file = http.get(iso[2])
-local fh = fs.open("tmp/installerData.lua", "w")
+local fh = fs.open("tmp/installerData.dat", "w")
 fh.write(file.readAll())
 fh.close()
 if start then
@@ -76,7 +76,7 @@ if start then
         end
         fs.move("startup.lua","startup.lua.old")
     end
-     local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.lua")
+     local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/install.lua")
     local fh = fs.open("startup.lua", "w")
     fh.write(file.readAll())
     fh.close()
