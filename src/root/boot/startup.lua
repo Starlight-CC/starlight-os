@@ -23,7 +23,6 @@ shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
 -- Setup completion functions
-
 local function completePastebinPut(shell, text, previous)
     if previous[2] == "put" then
         return fs.complete(text, shell.dir(), true, false)

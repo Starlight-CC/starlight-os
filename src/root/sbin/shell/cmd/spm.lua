@@ -301,24 +301,12 @@ if need(data, { "verify" }) then
         end
     end
 
-    if not fs.isDir("tmp") then
-        fs.makeDir("tmp")
+    if not fs.isDir("/tmp/") then
+        fs.makeDir("/tmp/")
     end
 
-    if not fs.isDir("var") then
-        fs.makeDir("var")
-    end
-
-    if not fs.isDir("var/lib") then
-        fs.makeDir("var/lib")
-    end
-
-    if not fs.isDir("var/lib/spm") then
-        fs.makeDir("var/lib/spm")
-    end
-
-    if not fs.isDir("var/lib/spm/lists") then
-        fs.makeDir("var/lib/spm/lists")
+    if not fs.isDir("/var/lib/spm/lists/") then
+        fs.makeDir("/var/lib/spm/lists/")
     end
 
     if missing > 0 then
