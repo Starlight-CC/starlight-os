@@ -13,7 +13,7 @@ local running = true
 local tCommandHistory = {}
 local tEnv = {
     ["exit"] = setmetatable({}, {
-        __tostring = function() return "Call exit() to exit." end,
+        __tostring = function() return running = false end,
         __call = function() running = false end,
     }),
     ["_echo"] = function(...)
@@ -40,11 +40,11 @@ term.setTextColour(colours.white)
 
 local chunk_idx, chunk_map = 1, {}
 while running do
-    --if term.isColour() then
-    --    term.setTextColour( colours.yellow )
-    --end
+    if term.isColour() then
+        term.setTextColour( colors.green )
+    end
     write("lua: ")
-    --term.setTextColour( colours.white )
+    term.setTextColour( colours.white )
 
     local input = read(nil, tCommandHistory, function(sLine)
         if settings.get("lua.autocomplete") then
@@ -104,7 +104,7 @@ while running do
             exception.report(results[2], results[3], chunk_map)
         end
     else
-        local parser = require "cc.internal.syntax"
+        local parser = require "internal.syntax"
         if parser.parse_repl(input) then printError(err) end
     end
 
