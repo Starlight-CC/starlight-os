@@ -29,7 +29,7 @@ end
 -- Set up a dummy require
 local require
 do
-    local env = setmetatable(createShellEnv(os.home()), { __index = _ENV })
+    local env = setmetatable(createShellEnv("sbin/shell/cmd/"), { __index = _ENV })
     require = env.require
 end
 local expect = require("expect").expect
