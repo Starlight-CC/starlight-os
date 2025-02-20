@@ -1,6 +1,7 @@
 return {
   {
     "sbin/shell/cmd/about.lua",
+    "sbin/shell/cmd/addusr.lua,
     "sbin/shell/cmd/alias.lua",
     "sbin/shell/cmd/apis.lua",
     "sbin/shell/cmd/cd.lua",
@@ -38,6 +39,7 @@ return {
   },
   "end",
   {
-    "copy sbin/chell/ usr/sbin/"
+    "copy sbin/chell/ usr/sbin/",
+    "mkdir lib/apis/"
   }
 }
