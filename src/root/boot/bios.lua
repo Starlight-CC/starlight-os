@@ -1,5 +1,7 @@
 os.util = {}
 os._auth = {}
+local expect = dofile("sys/modules/expect.la")
+local expect, field = expect.expect, expect.field
 function os.version()
     return "SLK 1.0.0"
 end
@@ -119,7 +121,6 @@ function os.util.subHome(e)
 end
 
 function os._auth.verify(e)
-    
 end
 
 function os._auth.set(e)
