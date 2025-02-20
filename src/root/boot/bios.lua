@@ -91,17 +91,17 @@ end
 
 function os.home(e)
     if os.username() == nil then
-        return "root/"
+        return "root"
     end
     if e == nil then
         if os.username() == "root" then
-            return "root/"
+            return "root"
         else
             return "home/"..os.username()
         end
     else
         if e == "root" then
-            return "root/"
+            return "root"
         else
             return "home/"..e
         end
@@ -130,9 +130,6 @@ function os._auth.checkFilePerms(e)
 end
 
 function os.help(e)
-    if os.username() == nil then
-        return "root/"
-    end
     if e == nil then
         print("The OS API is how programs")
         print("interface with the kernel.")
