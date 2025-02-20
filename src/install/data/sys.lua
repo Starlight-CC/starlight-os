@@ -18,7 +18,8 @@ return {
         "sys/modules/expect.la",
         "sys/modules/require.la",
         "sys/serv/reboot.lua",
-        "sys/serv/shutdown.lua"
+        "sys/serv/shutdown.lua",
+        "sys/startup.lua"
     },
     "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/shell.lua",
     {
