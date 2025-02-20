@@ -4,7 +4,7 @@ term.setCursorPos(1,1)
 
 local shell = {} --- @export 
 function shell.homeDir()
-    return ""
+    return "sbin/shell/"
 end
 
 local make_package = dofile("sys/modules/require.la").make
@@ -33,7 +33,7 @@ end
 -- Set up a dummy require
 local require
 do
-    local env = setmetatable(createShellEnv(".:"..shell.homeDir().."cmd/"), { __index = _ENV })
+    local env = setmetatable(createShellEnv(shell.homeDir().."cmd/"), { __index = _ENV })
     require = env.require
 end
 local expect = require("expect").expect
