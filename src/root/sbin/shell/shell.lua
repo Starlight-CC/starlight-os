@@ -14,13 +14,7 @@ end
 
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
-
-local shell = {} --- @export 
-function shell.homeDir()
-    return "sbin/shell/"
-end
-
-local sPath = parentShell and parentShell.path() or ".:/"..shell.homeDir().."cmd/"
+local sPath = parentShell and parentShell.path() or ".:/sbin/shellcmd/"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
@@ -31,6 +25,10 @@ local function createShellEnv(dir)
     return env
 end
 
+local shell = {} --- @export 
+function shell.homeDir()
+    return "sbin/shell/"
+end
 -- Set up a dummy require
 local require
 do
