@@ -475,6 +475,15 @@ function shell.aliases()
     return tCopy
 end
 
+function shell.homeDir()
+    if e == nil then
+        e = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12)
+    else
+        return e
+    end
+end
+shell.homeDir()
+
 if multishell then
     --- Open a new [`multishell`] tab running a command.
     --
