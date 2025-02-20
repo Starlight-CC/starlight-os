@@ -27,6 +27,8 @@ shell.setAlias("import", "/"..rootdir.."import.lua")
 shell.setAlias("run", "/"..rootdir.."run.lua")
 shell.setAlias("cd", "/"..rootdir.."cd.lua")
 shell.setAlias("edit", "/"..rootdir.."edit.lua")
+shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
+shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
 -- Setup completion functions
 
