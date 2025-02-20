@@ -56,6 +56,7 @@ if iso[2] == "end" then
     print("")
     term.setTextColor(colors.green)
     sleep(1)
+    fs.move("startup.lua","sbin/SLInstall.lua")
     fs.move("sys/startup.lua","startup.lua")
     fs.delete("tmp/installerData.lua")
     print("Install complete rebooting...")
