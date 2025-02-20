@@ -35,7 +35,10 @@ return {
     "sbin/shell/cmd/shell.lua",
     "sbin/shell/cmd/spm.lua",
     "sbin/shell/cmd/time.lua",
-    "sbin/shell/cmd/type.lua"
+    "sbin/shell/cmd/type.lua",
+    "sbin/shell/start/autorun.lua",
+    "sbin/shell/start/autocomplete.lua",
+    "sbin/shell/start/startup.lua"
   },
   "end",
   {
