@@ -1,5 +1,5 @@
 
-local pp = require "cc.pretty"
+local pp = require "pretty"
 
 local tArgs = { ... }
 if #tArgs == 0 then

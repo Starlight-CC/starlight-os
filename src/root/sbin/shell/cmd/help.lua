@@ -14,7 +14,7 @@ if sTopic == "index" then
     return
 end
 
-local strings = require "cc.strings"
+local strings = require "strings"
 
 local function min_of(a, b, default)
     if not a and not b then return default end
@@ -254,7 +254,7 @@ while true do
             offset = print_height - content_height
             draw()
         elseif param == keys.q then
-            require "cc.internal.event".discard_char()
+            require "internal.event".discard_char()
             break
         end
     elseif event == "mouse_scroll" then

@@ -1,5 +1,5 @@
 
-require "cc.completion"
+require "completion"
 
 print("Drop files to transfer them to this computer")
 
@@ -19,5 +19,5 @@ if #files == 0 then
   return
 end
 
-local ok, err = require("cc.internal.import")(files)
+local ok, err = require("internal.import")(files)
 if not ok and err then printError(err) end

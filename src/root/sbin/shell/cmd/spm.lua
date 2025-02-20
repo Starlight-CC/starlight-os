@@ -38,7 +38,7 @@ end
 
 local json = false
 local function checkJSON()
-    if not fs.exists("var/lib/spm/json.lua") then
+    if not fs.exists("/var/lib/spm/json.lua") then
         err_print("JSON interpreter not found. Run 'spm verify' to verify your installation.")
         error("", 0)
     else
@@ -50,7 +50,7 @@ end
 
 local libdef = false
 local function check_libdef()
-    if not fs.exists("var/lib/spm/libdef.lua") then
+    if not fs.exists("/var/lib/spm/libdef.lua") then
         err_print("libdef.lua not found. Run 'spm verify' to verify your installation.")
         error("", 0)
     else
@@ -123,7 +123,7 @@ local function parse_archive(tmpjdata)
                 if flags[1] ~= "s" then
                     work_print("Retreived content link "..file.content_link)
                 end
-                local tmpparse = fs.open("tmp/parsetmp","r")
+                local tmpparse = fs.open("/tmp/parsetmp","r")
                 local tmpparsedat = tmpparse.readAll()
                 tmpparse.close()
                 fs.delete("tmp/parsetmp")
@@ -167,7 +167,7 @@ local function upt_archive(tmpjdata,upt)
                     if flags[1] ~= "s" then
                         work_print("Retreived content link "..file.content_link)
                     end
-                    local tmpchk = fs.open("tmp/chktmp","r")
+                    local tmpchk = fs.open("/tmp/chktmp","r")
                     local tmpchkdat = tmpchk.readAll()
                     tmpchk.close()
 
@@ -197,7 +197,7 @@ local function upt_archive(tmpjdata,upt)
                     if flags[1] ~= "s" then
                         work_print("Retreived content link "..file.content_link)
                     end
-                    local tmpchk = fs.open("tmp/chktmp","r")
+                    local tmpchk = fs.open("/tmp/chktmp","r")
                     local tmpchkdat = tmpchk.readAll()
                     tmpchk.close()
                     fs.delete("tmp/chktmp")
@@ -374,12 +374,12 @@ elseif need(data, { "help" }) then
 elseif need(data, { "list" }) then
     checkJSON()
 
-    if not fs.exists("var/lib/spm/lists/meta.json") then
+    if not fs.exists("/var/lib/spm/lists/meta.json") then
         err_print("meta.json not found. Run 'spm verify' to download it.")
         error("", 0)
     end
 
-    local tmp = fs.open("var/lib/spm/lists/meta.json", "r")
+    local tmp = fs.open("/var/lib/spm/lists/meta.json", "r")
     local fdat = tmp.readAll()
     tmp.close()
 
@@ -396,7 +396,7 @@ elseif need(data, { "list" }) then
     end
 elseif need(data, { "installed" }) then
     checkJSON()
-    local tmp = fs.open("var/lib/spm/status", "r")
+    local tmp = fs.open("/var/lib/spm/status", "r")
     local tmpdata = tmp.readAll()
     tmp.close()
     if tmpdata ~= "" then
@@ -411,12 +411,12 @@ elseif need(data, { "download" }, true) or need(data, { "install" }, true) or ne
     checkJSON()
     check_libdef()
 
-    if not fs.exists("var/lib/spm/lists/meta.json") then
+    if not fs.exists("/var/lib/spm/lists/meta.json") then
         err_print("meta.json not found. Run 'spm verify' to download it.")
         error("", 0)
     end
 
-    local tmp = fs.open("var/lib/spm/lists/meta.json", "r")
+    local tmp = fs.open("/var/lib/spm/lists/meta.json", "r")
     local fdat = tmp.readAll()
     tmp.close()
     local metadata = json.decode(fdat)
@@ -452,7 +452,7 @@ elseif need(data, { "download" }, true) or need(data, { "install" }, true) or ne
 
         local t_size = 0
         for _,install in ipairs(required_installs) do
-            if not fs.exists("tmp/"..(install.source)) then
+            if not fs.exists("/tmp/"..(install.source)) then
                 local response, _ = http.head(base..(install.source), "")
 
                 if response then
@@ -489,18 +489,18 @@ elseif need(data, { "download" }, true) or need(data, { "install" }, true) or ne
             end
             wget(get(base .. install.source), " tmp/"..install.source)
 
-            tmp = fs.open("tmp/"..install.source,"r")
+            tmp = fs.open("/tmp/"..install.source,"r")
             local tmpdata = tmp.readAll()
             tmp.close()
             local ngzdata = libdef:DecompressGzip(tmpdata)
             local tmpjdata = json.decode(ngzdata)
             local written_to = parse_archive(tmpjdata)
 
-            if not fs.exists("var/lib/spm/status") then
-                tmp = fs.open("var/lib/spm/status", "w")
+            if not fs.exists("/var/lib/spm/status") then
+                tmp = fs.open("/var/lib/spm/status", "w")
                 tmp.close()
             end
-            tmp = fs.open("var/lib/spm/status", "r")
+            tmp = fs.open("/var/lib/spm/status", "r")
             tmpdata = tmp.readAll()
             tmp.close()
             if not tmpdata == "" then
@@ -510,7 +510,7 @@ elseif need(data, { "download" }, true) or need(data, { "install" }, true) or ne
             end
 
             table.insert(tmpjdata, #tmpjdata+1, {install.name,install.version,install.source,written_to})
-            tmp = fs.open("var/lib/spm/status", "w")
+            tmp = fs.open("/var/lib/spm/status", "w")
             tmp.write(json.encode(tmpjdata))
             tmp.close()
             if flags[1] ~= "s" then
@@ -520,7 +520,7 @@ elseif need(data, { "download" }, true) or need(data, { "install" }, true) or ne
     end
 elseif need(data, { "delete" }, true) or need(data, { "del" }, true) then
     checkJSON()
-    local tmp = fs.open("var/lib/spm/status", "r")
+    local tmp = fs.open("/var/lib/spm/status", "r")
     local tmpdata = tmp.readAll()
     tmp.close()
     if tmpdata ~= "" then
@@ -557,7 +557,7 @@ elseif need(data, { "update" }) or need(data, { "update" }, true) or need(data, 
     check_libdef()
 
     if flags[1] ~= "m" then
-        local tmp = fs.open("var/lib/spm/status", "r")
+        local tmp = fs.open("/var/lib/spm/status", "r")
         local tmpdata = tmp.readAll()
         tmp.close()
         if tmpdata ~= "" then
@@ -580,7 +580,7 @@ elseif need(data, { "update" }) or need(data, { "update" }, true) or need(data, 
             err_print("Package not installed")
             error("", 0)
         end
-        tmp = fs.open("var/lib/spm/lists/meta.json", "r")
+        tmp = fs.open("/var/lib/spm/lists/meta.json", "r")
         local fdat = tmp.readAll()
         tmp.close()
         local metadata = json.decode(fdat)
@@ -605,7 +605,7 @@ elseif need(data, { "check" }, true) then
     checkJSON()
     check_libdef()
 
-    local tmp = fs.open("var/lib/spm/status", "r")
+    local tmp = fs.open("/var/lib/spm/status", "r")
     local tmpdata = tmp.readAll()
     tmp.close()
     if tmpdata ~= "" then
@@ -630,7 +630,7 @@ elseif need(data, { "check" }, true) then
         err_print("Package not installed")
         error("", 0)
     end
-    tmp = fs.open("var/lib/spm/lists/meta.json", "r")
+    tmp = fs.open("/var/lib/spm/lists/meta.json", "r")
     local fdat = tmp.readAll()
     tmp.close()
     local metadata = json.decode(fdat)
