@@ -20,7 +20,7 @@ return {
         "sys/serv/reboot.lua",
         "sys/serv/shutdown.lua"
     },
-    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/shell.lua"
+    "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/shell.lua",
     {
         
     }
