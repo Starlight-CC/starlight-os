@@ -1,5 +1,5 @@
 term.clear()
-local rootdir = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12)
+local rootdir = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12).."cmd/"
 
 -- Setup aliases
 shell.clearAlias("ls")
@@ -21,11 +21,11 @@ shell.setAlias("rs", "/"..rootdir.."redstone.lua")
 shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
--- Run system autorun files
-if fs.exists("/ect/autorun/") and fs.isDir("/ect/autorun/") then
-    local tFiles = fs.list("/ect/autorun/")
+rootdir = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12).."start/"
+if fs.exists(rootdir) and fs.isDir(rootdir) then
+    local tFiles = fs.list(rootdir)
     for _, sFile in ipairs(tFiles) do
-        local sPath = "/ect/autorun/" .. sFile
+        local sPath = rootdir .. sFile
         if not fs.isDir(sPath) then
             shell.run("run "..sPath)
         end
