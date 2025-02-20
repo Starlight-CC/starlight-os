@@ -545,7 +545,7 @@ else
 
     -- Run the startup program
     if parentShell == nil then
-        shell.run(shell.homeDir().."start/")
+        shell.run(shell.homeDir().."startup.lua")
     end
 
     -- Read commands and execute them
