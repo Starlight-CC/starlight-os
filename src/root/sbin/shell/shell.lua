@@ -1,11 +1,6 @@
 
 term.clear()
-term.setCursorPos(1,1)
-
-local shell = {} --- @export 
-function shell.homeDir()
-    return "sbin/shell/"
-end
+term.setCursorPos(1,1
 
 local make_package = dofile("sys/modules/require.la").make
 
@@ -15,6 +10,11 @@ local parentTerm = term.current()
 
 if multishell then
     multishell.setTitle(multishell.getCurrent(), "shell")
+end
+
+local shell = {} --- @export 
+function shell.homeDir()
+    return "sbin/shell/"
 end
 
 local bExit = false
