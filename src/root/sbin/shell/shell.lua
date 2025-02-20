@@ -12,13 +12,14 @@ if multishell then
     multishell.setTitle(multishell.getCurrent(), "shell")
 end
 
+local bExit = false
+local sDir = parentShell and parentShell.dir() or ""
+
 local shell = {} --- @export 
 function shell.homeDir()
     return "sbin/shell/"
 end
 
-local bExit = false
-local sDir = parentShell and parentShell.dir() or ""
 local sPath = parentShell and parentShell.path() or ".:/"..shell.homeDir().."cmd/"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
