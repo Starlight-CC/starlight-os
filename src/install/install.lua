@@ -76,7 +76,12 @@ if start then
         end
         fs.move("startup.lua","startup.lua.old")
     end
-    fs.move(shell.getRunningProgram(),"startup.lua")
+     local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/sys.lua")
+    local fh = fs.open("startup.lua", "w")
+    fh.write(file.readAll())
+    fh.close()
+    term.setTextcolor(colors.green)
+    print("Updateing Installer")
     term.setTextColor(colors.white)
     print("system will restart in 3")
     sleep(1)
