@@ -40,6 +40,7 @@ return {
   "end",
   {
     "copy sbin/chell/ usr/sbin/",
-    "mkdir lib/apis/"
+    "mkdir lib/apis/",
+    "spm verify"
   }
 }
