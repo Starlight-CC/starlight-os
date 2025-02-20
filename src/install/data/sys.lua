@@ -3,6 +3,7 @@ return {
         "boot/bios.lua",
         "boot/startup.lua",
         "sbin/shell/shell.lua",
+        "sys/modules/audio/dfpwm.la",
         "sys/modules/internal/syntax/errors.la",
         "sys/modules/internal/syntax/init.la",
         "sys/modules/internal/syntax/lexer.la",
