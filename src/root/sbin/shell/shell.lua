@@ -2,6 +2,11 @@
 term.clear()
 term.setCursorPos(1,1)
 
+local shell = {} --- @export 
+function shell.homeDir()
+    return ""
+end
+
 local make_package = dofile("sys/modules/require.la").make
 
 local multishell = multishell
@@ -14,12 +19,11 @@ end
 
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
-local sPath = parentShell and parentShell.path() or ".:/sbin/shell/cmd/"
+local sPath = parentShell and parentShell.path() or ".:"..shell.homeDir().."cmd/"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
 
-local shell = {} --- @export
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
     env.require, env.package = make_package(env, dir)
@@ -29,7 +33,7 @@ end
 -- Set up a dummy require
 local require
 do
-    local env = setmetatable(createShellEnv("sbin/shell/cmd/"), { __index = _ENV })
+    local env = setmetatable(createShellEnv(".:"..shell.homeDir().."cmd/"), { __index = _ENV })
     require = env.require
 end
 local expect = require("expect").expect
@@ -475,15 +479,6 @@ function shell.aliases()
     return tCopy
 end
 
-function shell.homeDir()
-    if e == nil then
-        e = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12)
-    else
-        return e
-    end
-end
-shell.homeDir()
-
 if multishell then
     --- Open a new [`multishell`] tab running a command.
     --
@@ -550,7 +545,7 @@ else
 
     -- Run the startup program
     if parentShell == nil then
-        shell.run("/boot/startup.lua")
+        shell.run(shell.homeDir().."start/")
     end
 
     -- Read commands and execute them
