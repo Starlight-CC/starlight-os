@@ -1,6 +1,6 @@
 
 term.clear()
-term.setCursorPos(1,1
+term.setCursorPos(1,1)
 
 local make_package = dofile("sys/modules/require.la").make
 
@@ -12,9 +12,14 @@ if multishell then
     multishell.setTitle(multishell.getCurrent(), "shell")
 end
 
+local shell = {} --- @export 
+function shell.homeDir()
+    return "sbin/shell/"
+end
+
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
-local sPath = parentShell and parentShell.path() or ".:/sbin/shellcmd/"
+local sPath = parentShell and parentShell.path() or ".:/"..shell.homeDir().."cmd/"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
@@ -25,10 +30,6 @@ local function createShellEnv(dir)
     return env
 end
 
-local shell = {} --- @export 
-function shell.homeDir()
-    return "sbin/shell/"
-end
 -- Set up a dummy require
 local require
 do
