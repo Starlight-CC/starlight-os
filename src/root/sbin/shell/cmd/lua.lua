@@ -104,7 +104,7 @@ while running do
             exception.report(results[2], results[3], chunk_map)
         end
     else
-        local parser = require "internal.syntax"
+        local parser = require "internal.syntax.init"
         if parser.parse_repl(input) then printError(err) end
     end
 
