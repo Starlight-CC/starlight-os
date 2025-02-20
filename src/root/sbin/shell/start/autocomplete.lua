@@ -1,4 +1,4 @@
-local rootdir = string.sub(shell.getRunningProgram(),1,#shell.getRunningProgram()-12)
+local rootdir = shell.homeDir()
 local completion = require("shell.completion")
 
 -- Setup completion functions
