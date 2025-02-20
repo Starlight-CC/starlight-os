@@ -147,5 +147,3 @@ if fs.exists("/ect/autorun/") and fs.isDir("/ect/autorun/") then
         end
     end
 end
-
-shell.run("/sys/login.lua")
