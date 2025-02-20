@@ -228,8 +228,9 @@ end
 function os.about()
     if fs.exists("/sys/about.txt") then
         file = fs.open("/sys/about.txt","r")
-        return file.readAll
+        local e = file.readAll
         file.close()
+        return e
     else
         return "file not found"
     end
