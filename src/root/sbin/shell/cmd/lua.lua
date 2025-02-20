@@ -6,8 +6,8 @@ if #tArgs > 0 then
     return
 end
 
-local pretty = require "cc.pretty"
-local exception = require "cc.internal.exception"
+local pretty = require "pretty"
+local exception = require "internal.exception"
 
 local running = true
 local tCommandHistory = {}
@@ -26,7 +26,7 @@ setmetatable(tEnv, { __index = _ENV })
 -- rather than from /rom/programs. This makes it more friendly to use and closer
 -- to what you'd expect.
 do
-    local make_package = require "cc.require".make
+    local make_package = require "require".make
     local dir = shell.dir()
     _ENV.require, _ENV.package = make_package(_ENV, dir)
 end
