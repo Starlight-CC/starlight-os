@@ -1,7 +1,7 @@
 return {
   {
     "sbin/shell/cmd/about.lua",
-    "sbin/shell/cmd/addusr.lua,
+    "sbin/shell/cmd/addusr.lua",
     "sbin/shell/cmd/alias.lua",
     "sbin/shell/cmd/apis.lua",
     "sbin/shell/cmd/cd.lua",
