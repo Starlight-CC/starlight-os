@@ -68,7 +68,7 @@ function os.username(e)
     return user
   end
 end
-os.username("Astronand")
+os.username("root")
 
 function os.hostname(e)
   if host == nil then
@@ -78,7 +78,7 @@ function os.hostname(e)
     return host
   end
 end
-os.hostname("EMU")
+os.hostname("CC")
 
 function os.getUsers()
   file = fs.open("/.users","r")
