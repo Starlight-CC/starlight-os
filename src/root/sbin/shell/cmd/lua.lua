@@ -13,7 +13,7 @@ local running = true
 local tCommandHistory = {}
 local tEnv = {
     ["exit"] = setmetatable({}, {
-        __tostring = function() running = false, return "exiting" end,
+        __tostring = function() return "Type exit() to exit" end,
         __call = function() running = false end,
     }),
     ["_echo"] = function(...)
