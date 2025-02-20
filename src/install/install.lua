@@ -70,6 +70,9 @@ fh.write(file.readAll())
 fh.close()
 if start then
     if fs.exists("startup.lua") then
+        if fs.exists("startup.lua.old") then
+            fs.delete("startup.lua.old")
+        end
         fs.move("startup.lua","startup.lua.old")
     end
     fs.move(shell.getRunningProgram(),"startup.lua")
