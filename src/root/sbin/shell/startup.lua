@@ -21,7 +21,7 @@ shell.setAlias("rs", "/"..rootdir.."redstone.lua")
 shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
-rootdir = shell.homeDir().."start/"
+rootdir = "/"..shell.homeDir().."start/"
 if fs.exists(rootdir) and fs.isDir(rootdir) then
     local tFiles = fs.list(rootdir)
     for _, sFile in ipairs(tFiles) do
