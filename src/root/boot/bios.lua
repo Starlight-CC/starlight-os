@@ -141,8 +141,8 @@ function os.help(e)
         print("be used by the os. if a program")
         print("uses them it will be terminated.")
     else
-        if fs.exists("sys/help/"..e..".txt") then
-            local File = fs.open("sys/help/"..e..".txt", "rb")
+        if fs.exists("/sys/help/"..e..".txt") then
+            local File = fs.open("/sys/help/"..e..".txt", "rb")
             print(File.readAll())
             File.close()
         else
@@ -223,6 +223,16 @@ function fs.complete(sPath, sLocation, bIncludeFiles, bIncludeDirs)
     end
 
     return {}
+end
+
+function os.about()
+    if fs.exists("/sys/about.txt") then
+        file = fs.open("/sys/about.txt","r")
+        return file.readAll
+        file.close()
+    else
+        return "file not found"
+    end
 end
 
 -- Load APIs
