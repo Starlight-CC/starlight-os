@@ -1,4 +1,3 @@
-username = os.username()
 local tArgs = { ... }
 if #tArgs < 1 then
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
@@ -12,7 +11,11 @@ end
 
 local sNewDir = shell.resolve(tArgs[1])
 if string.sub(tArgs[1],1,1) == "~" then
-    shell.setDir("/home/"..username..string.sub(tArgs[1],2))
+    if os.username() == "root" then
+        shell.setDir("/root/"..string.sub(tArgs[1],2))
+    else
+        shell.setDir("/home/"..os.username()..string.sub(tArgs[1],2))
+    end
 elseif fs.isDir(sNewDir) then
     shell.setDir(sNewDir)
 else

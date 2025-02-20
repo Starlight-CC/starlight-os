@@ -41,6 +41,7 @@ return {
   {
     "copy sbin/chell/ usr/sbin/",
     "mkdir lib/apis/",
+    "mkdir root/",
     "spm verify"
   }
 }
