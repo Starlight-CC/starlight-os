@@ -80,7 +80,7 @@ if start then
     local fh = fs.open("startup.lua", "w")
     fh.write(file.readAll())
     fh.close()
-    term.setTextcolor(colors.green)
+    term.setTextColor(colors.green)
     print("Updateing Installer")
     term.setTextColor(colors.white)
     print("system will restart in 3")
