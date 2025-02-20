@@ -80,7 +80,6 @@ if start then
     print("1")
     sleep(1)
 end
-if is
 term.setTextColor(colors.green)
 print("SL.reboot service started")
 shell.run("/sys/serv/reboot.lua")
