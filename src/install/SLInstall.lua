@@ -37,8 +37,10 @@ while true do
     if k == keys.y then
         break
     elseif k == keys.n then
+        os.pullEvent = pullEvent
         error("Install terminated")
     else
     end
 end
+print("installing")
 
