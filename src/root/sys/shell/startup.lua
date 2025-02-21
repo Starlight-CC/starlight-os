@@ -22,8 +22,7 @@ Edits are filed under GNU General Public License.
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
 term.clear()
-local rootdir = shell.homeDir().."cmd/"
-local dir = shell.homeDir().."start/"
+local rootdir = shell.cmdDir()
 -- Setup aliases
 shell.clearAlias("ls")
 shell.clearAlias("dir")
@@ -44,5 +43,12 @@ shell.setAlias("rs", "/"..rootdir.."redstone.lua")
 shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
-shell.run(dir.."autocomplete.lua")
-shell.run(dir.."autorun.lua")
+if fs.exists("/sys/shell/startups/") and fs.isDir("/sys/shell/startups/") then
+  local tFiles = fs.list("/sys/shell/startups/")
+  for _, sFile in ipairs(tFiles) do
+      local sPath = "/sys/shell/startups/" .. sFile
+      if not fs.isDir(sPath) then
+          shell.run("run "..sPath)
+      end
+  end
+end

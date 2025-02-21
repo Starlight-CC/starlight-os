@@ -39,9 +39,13 @@ function shell.homeDir()
     return "sbin/shell/"
 end
 
+function shell.cmdDir()
+    return shell.homeDir().."cmd/"
+end
+
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
-local sPath = parentShell and parentShell.path() or ".:/"..shell.homeDir().."cmd/"
+local sPath = parentShell and parentShell.path() or ".:/"..shell.cmdDir()
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
@@ -55,7 +59,7 @@ end
 -- Set up a dummy require
 local require
 do
-    local env = setmetatable(createShellEnv(shell.homeDir().."cmd/"), { __index = _ENV })
+    local env = setmetatable(createShellEnv(shell.cmdDir()), { __index = _ENV })
     require = env.require
 end
 local expect = require("expect").expect
@@ -567,7 +571,7 @@ else
 
     -- Run the startup program
     if parentShell == nil then
-        shell.run(shell.homeDir().."startup.lua")
+        shell.run("sys/shell/startup.lua")
     end
 
     -- Read commands and execute them

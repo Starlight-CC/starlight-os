@@ -1,8 +1,6 @@
 --[[
-SPDX-FileCopyrightText: 2023 The CC: Tweaked Developers
-SPDX-License-Identifier: MPL-2.0
-Edited by Starlight-OS team for use in Starlight-OS.
-Edits are filed under GNU General Public License.
+Made for use in StarlightOS
+filed under GNU General Public License.
     Copyright (C) 2025  StarlightOS
 
     This program is free software: you can redistribute it and/or modify
@@ -21,6 +19,4 @@ Edits are filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
-local nTime = os.time()
-local nDay = os.day()
-print("The time is " .. textutils.formatTime(nTime, false) .. " on Day " .. nDay)
+print(os.date())
