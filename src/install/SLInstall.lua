@@ -19,6 +19,8 @@ Starlight OS
 
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
+>>>
+
 ]]
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/src/root/"
 term.setTextColor(colors.cyan)
@@ -28,4 +30,14 @@ print("Connecting to "..API)
 sleep(1.5)
 term.clear()
 term.setCursorPos(1,1)
-print(Copyright)
+textutils.pagedPrint(Copyright)
+print("Y/N")
+while true do
+    local k = os.pullEvent("key")
+    if k == keys.y then
+        break
+    elseif k == keys.n then
+        
+    else
+    end
+end
