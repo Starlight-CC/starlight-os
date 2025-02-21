@@ -24,7 +24,7 @@ local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/src/ro
 term.setTextColor(colors.cyan)
 print("Installing")
 term.setTextColor(colors.white)
-print(API)
+print("Connecting to "..API)
 sleep(1.5)
 term.clear()
 term.setCursorPos(1,1)
