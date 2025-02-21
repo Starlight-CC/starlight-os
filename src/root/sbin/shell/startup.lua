@@ -1,6 +1,6 @@
 term.clear()
 local rootdir = shell.homeDir().."cmd/"
-
+local dir = shell.homeDir().."start/"
 -- Setup aliases
 shell.clearAlias("ls")
 shell.clearAlias("dir")
@@ -21,13 +21,5 @@ shell.setAlias("rs", "/"..rootdir.."redstone.lua")
 shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
-rootdir = "/"..shell.homeDir().."start/"
-if fs.exists(rootdir) and fs.isDir(rootdir) then
-    local tFiles = fs.list(rootdir)
-    for _, sFile in ipairs(tFiles) do
-        local sPath = rootdir .. sFile
-        if not fs.isDir(sPath) then
-            shell.run("run "..sPath)
-        end
-    end
-end
+shell.run(dir.."autocomplete.lua")
+shell.run(dir.."autorun.lua")
