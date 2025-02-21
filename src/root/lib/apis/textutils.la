@@ -1,7 +1,26 @@
--- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
---
--- SPDX-License-Identifier: LicenseRef-CCPL
+--[[
+SPDX-FileCopyrightText: 2023 The CC: Tweaked Developers
+SPDX-License-Identifier: MPL-2.0
+Edited by Starlight-OS team for use in Starlight-OS.
+Edits are filed under GNU General Public License.
+    Copyright (C) 2025  StarlightOS
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>
+
+    contacts-
+      <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
+]]
 --- The @{textutils} API provides helpful utilities for formatting and
 -- manipulating strings.
 --
@@ -9,12 +28,12 @@
 -- @since 1.2
 
 local pgk_env = setmetatable({}, { __index = _ENV })
-pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
+pgk_env.require = dofile("sys/modules/require.lua").make(pgk_env, "sys/modules")
 local require = pgk_env.require
 
-local expect = require("cc.expect")
+local expect = require("expect")
 local expect, field = expect.expect, expect.field
-local wrap = require("cc.strings").wrap
+local wrap = require("strings").wrap
 
 --- Slowly writes string text at current cursor position,
 -- character-by-character.
