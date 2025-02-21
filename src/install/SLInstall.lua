@@ -33,7 +33,7 @@ term.setCursorPos(1,1)
 textutils.pagedPrint(Copyright)
 print("Y/N")
 while true do
-    local k = os.pullEvent("key")
+    local _,k,_ = os.pullEvent("key")
     if k == keys.y then
         break
     elseif k == keys.n then
