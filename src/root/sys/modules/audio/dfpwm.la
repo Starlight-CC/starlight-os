@@ -1,4 +1,3 @@
-
 --[[-
 Convert between streams of DFPWM audio data and a list of amplitudes.
 
