@@ -84,7 +84,7 @@ if start then
     fh.write(file.readAll())
     fh.close()
     term.setTextColor(colors.green)
-    print("Updateing Installer")
+    print("Updating Installer")
     term.setTextColor(colors.white)
     print("system will restart in 3")
     sleep(1)
