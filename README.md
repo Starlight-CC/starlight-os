@@ -13,3 +13,8 @@ An OS for CC: Tweaked based on Unix/Linux
 [Minecartchris](https://github.com/minecartchris)
 
 [suboct / yabastar](https://github.com/yabastar0)
+
+---
+### Legal
+
+Check the "legal" folder. idk what to say to you...
