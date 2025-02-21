@@ -19,7 +19,6 @@ filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
-local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/src/root/"
 os.pullEvent = os.pullEventRaw
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
@@ -31,7 +30,9 @@ term.setTextColor(colors.blue)
 term.write(" Starlight OS")
 print("")
 print("")
+term.setTextColor(colors.cyan)
 print("Updating Installer")
+print("")
 local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install.lua")
 local fh = fs.open("sbin/SLInstall.lua", "w")
 fh.write(file.readAll())
@@ -39,6 +40,4 @@ fh.close()
 sleep(1)
 term.setTextColor(colors.green)
 print("SL.install service started")
-term.setTextColor(colors.cyan)
-print("Installing")
 shell.run("sbin/SLInstall.lua")
