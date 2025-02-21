@@ -37,7 +37,8 @@ while true do
     if k == keys.y then
         break
     elseif k == keys.n then
-        
+        error("Install terminated")
     else
     end
 end
+
