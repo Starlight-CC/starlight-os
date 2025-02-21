@@ -2,6 +2,7 @@ return {
     {
         "boot/bios.lua",
         "sbin/shell/shell.lua",
+        "lib/apis/fs.la",
         "sys/modules/internal/syntax/errors.la",
         "sys/modules/internal/syntax/init.la",
         "sys/modules/internal/syntax/lexer.la",
