@@ -58,7 +58,7 @@ if iso[2] == "end" then
     term.setTextColor(colors.green)
     sleep(1)
     if fs.exists("sbin/SLInstall.lua") then
-        rs.delete("sbin/SLInstall.lua")
+        fs.delete("sbin/SLInstall.lua")
     end
     fs.move("startup.lua","sbin/SLInstall.lua")
     fs.move("sys/startup.lua","startup.lua")
