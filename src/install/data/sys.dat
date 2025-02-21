@@ -23,5 +23,6 @@ return {
     "https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/data/shell.dat",
     {
 
-    }
+    },
+    "sys"
 }

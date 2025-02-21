@@ -25,6 +25,7 @@ if start then
     print("")
     sleep(1)
 end
+print("installing "..iso[4])
 for i,v in ipairs(iso[1]) do
     local file = http.get(repoPath..v)
     if file == nil then 
