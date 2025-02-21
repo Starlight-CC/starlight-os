@@ -1,4 +1,4 @@
-local rootdir = shell.homeDir()
+local rootdir = shell.homeDir().."cmd/"
 local completion = require("shell.completion")
 
 -- Setup completion functions
