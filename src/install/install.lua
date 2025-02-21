@@ -76,7 +76,7 @@ if start then
         end
         fs.move("startup.lua","startup.lua.old")
     end
-     local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/install.lua")
+    local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/install.lua")
     local fh = fs.open("startup.lua", "w")
     fh.write(file.readAll())
     fh.close()
