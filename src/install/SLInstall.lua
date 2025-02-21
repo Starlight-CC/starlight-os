@@ -38,7 +38,7 @@ while true do
         break
     elseif k == keys.n then
         os.pullEvent = pullEvent
-        error("Install terminated")
+        error("Install terminated",0)
     else
     end
 end
