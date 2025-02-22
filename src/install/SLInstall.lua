@@ -701,9 +701,9 @@ local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/src/ro
 term.setTextColor(colors.white)
 print("Connecting to "..API)
 sleep(1.5)
+term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-term.setBackgroundColor(colors.blue)
 textutils.pagedPrint(Copyright)
 print("")
 print("(Y/N)")
@@ -712,6 +712,9 @@ while true do
     if k == keys.y then
         break
     elseif k == keys.n then
+        term.setBackgroundColor(colors.blue)
+        term.clear()
+        term.setCursorPos(1,1)
         os.pullEvent = pullEvent
         error("Install terminated",0)
     else
