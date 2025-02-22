@@ -703,9 +703,10 @@ print("Connecting to "..API)
 sleep(1.5)
 term.clear()
 term.setCursorPos(1,1)
+term.setBackroundColor(colors.blue)
 textutils.pagedPrint(Copyright)
 print("")
-print("Y/N")
+print("(Y/N)")
 while true do
     local _,k,_ = os.pullEvent("key")
     if k == keys.y then

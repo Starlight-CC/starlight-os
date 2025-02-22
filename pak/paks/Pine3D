@@ -1,5 +1,6 @@
 {
     "metadata": {
+        "name": "Pine3D",
         "created_at": "1-2-2025",
         "author": "Xella37",
         "description": "Pine3D 3D graphics engine"
