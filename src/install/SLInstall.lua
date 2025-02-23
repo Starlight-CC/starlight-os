@@ -29,19 +29,18 @@ local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starl
 
 local tAPIsLoading = {}
 os.loadAPI = function(_sPath)
-    local sName = fs.getName(_sPath)
-    if sName:sub(-4) == ".lua" then
-        sName = sName:sub(1, -5)
-    end
-    if tAPIsLoading[sName] == true then
-        printError("API " .. sName .. " is already being loaded")
-        return false
-    end
-    tAPIsLoading[sName] = true
-
     local tEnv = {}
     setmetatable(tEnv, { __index = _G })
     if type(_sPath) == "string" then
+        local sName = fs.getName(_sPath)
+        if sName:sub(-4) == ".lua" then
+            sName = sName:sub(1, -5)
+        end
+        if tAPIsLoading[sName] == true then
+            printError("API " .. sName .. " is already being loaded")
+            return false
+        end
+        tAPIsLoading[sName] = true
         local fnAPI, err = loadfile(_sPath, nil, tEnv)
     elseif type(_sPath) == "function" then
         local fnAPI = _sPath
@@ -68,7 +67,7 @@ os.loadAPI = function(_sPath)
     tAPIsLoading[sName] = nil
     return true
 end
-os.unloadAPI(textutils)
+os.unloadAPI("textutils")
 os.loadAPI(load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/apis/textutils.la").readAll()))
 
 function go(s)
@@ -135,7 +134,7 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
-        os.unloadAPI(textutils)
+        os.unloadAPI("textutils")
         os.loadAPI("rom/apis/textutils.lua")
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
@@ -156,7 +155,7 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
-        os.unloadAPI(textutils)
+        os.unloadAPI("textutils")
         os.loadAPI("rom/apis/textutils.lua")
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
