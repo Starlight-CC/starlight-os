@@ -29,7 +29,11 @@ local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
-local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/spm/data/primeUI/PrimeUI.la").readAll())()
+local file = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/spm/data/primeUI/PrimeUI.la")
+local fh = fs.open("tmp/PrimeUI.lua", "w")
+fh.write(file.readAll())
+fh.close()
+local PrimeUI = require "tmp/PrimeUI"
 
 local pgk_env = setmetatable({}, { __index = _ENV })
 pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
