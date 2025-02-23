@@ -151,7 +151,7 @@ sleep(1.5)
 term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-textutils.pagedPrintSkip(Copyright.readAll(),keys.s)
+textutils.pagedPrintSkip(Copyright.readAll(),"s")
 print("")
 print("(Y/N)")
 while true do
