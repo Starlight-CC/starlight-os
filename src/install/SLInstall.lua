@@ -49,7 +49,7 @@ while true do
 end
 term.setTextColor(colors.cyan)
 print("Installing")
-function do(s)
+function go(s)
     term.blit("[ DO ] ","77ee777","fffffff")
     print(s)
 end
@@ -61,7 +61,7 @@ function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
     for i,v in ipairs(con) do
         if v["type"] == "file" then
-            do(string.sub(v["path"],#VER+1))
+            go(string.sub(v["path"],#VER+1))
             local file = http.get(v["download_url"])
             local fh = fs.open(string.sub(v["path"],#VER+1), "w")
             fh.write(file.readAll())
