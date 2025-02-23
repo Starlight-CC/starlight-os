@@ -19,6 +19,9 @@ filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
+term.setPaletteColor(colors.red,0xff0000)
+term.setPaletteColor(colors.green,0x00ff00)
+term.setPaletteColor(colors.blue,0x0000ff)
 local pullEvent = os.pullEvent
 local txt = textutils
 os.pullEvent = os.pullEventRaw
