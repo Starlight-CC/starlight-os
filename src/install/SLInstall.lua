@@ -25,30 +25,6 @@ local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/random/lib/json.la").readAll())()
-term.setTextColor(colors.white)
-print("Connecting to "..API)
-sleep(1.5)
-term.setBackgroundColor(colors.blue)
-term.clear()
-term.setCursorPos(1,1)
-textutils.pagedPrint(Copyright.readAll())
-print("")
-print("(Y/N)")
-while true do
-    local _,k,_ = os.pullEvent("key")
-    if k == keys.y then
-        break
-    elseif k == keys.n then
-        term.setBackgroundColor(colors.blue)
-        term.clear()
-        term.setCursorPos(1,1)
-        os.pullEvent = pullEvent
-        error("Install terminated",0)
-    else
-    end
-end
-term.setTextColor(colors.cyan)
-print("Installing")
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
     print(s)
@@ -74,8 +50,78 @@ function getFolder(a,dir)
         end
     end
 end
+local function deleteFiles(directory, exceptions)
+    for _, entry in ipairs(fs.list(directory)) do
+      local fullPath = fs.combine(directory, entry)
+      if fs.isDir(fullPath) then
+        if not exceptions[entry] then
+          deleteFiles(fullPath, exceptions)
+          fs.delete(fullPath) -- Delete the folder after deleting its contents
+          print("Deleted "..fullPath)
+        end
+      elseif not exceptions[entry] then
+        fs.delete(fullPath) -- Delete the file
+        print("Deleted "..fullPath)
+      end
+    end
+  end
+  
+  local exceptions = {
+    ["rom"] = true,
+    ["sbin/SLInstall.lua"] = true
+  }
+  
+term.setTextColor(colors.white)
+print("Connecting to "..API)
+sleep(1.5)
+term.setBackgroundColor(colors.blue)
+term.clear()
+term.setCursorPos(1,1)
+textutils.pagedPrint(Copyright.readAll())
+print("")
+print("(Y/N)")
+while true do
+    local _,k,_ = os.pullEvent("key")
+    if k == keys.y then
+        break
+    elseif k == keys.n then
+        term.setBackgroundColor(colors.blue)
+        term.clear()
+        term.setCursorPos(1,1)
+        os.pullEvent = pullEvent
+        fs.delete("sbin/SLInstall.lua")
+        error("Install terminated",0)
+    else
+    end
+end
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+print("This will delete EVERYTHING on / are you sure you want to install")
+print("(Y/N)")
+while true do
+    local _,k,_ = os.pullEvent("key")
+    if k == keys.y then
+        break
+    elseif k == keys.n then
+        term.setBackgroundColor(colors.blue)
+        term.clear()
+        term.setCursorPos(1,1)
+        os.pullEvent = pullEvent
+        fs.delete("sbin/SLInstall.lua")
+        error("Install terminated",0)
+    else
+    end
+end
+term.setTextColor(colors.purple)
+print("cleaming drive")
+deleteFiles("/",exceptions)
+term.setTextColor(colors.white)
+print("Installing")
 getFolder(API,VER.."/root/")
-
-
-
-
+term.setTextColor(colors.gray)
+print("Rebboting ...")
+sleep(1)
+term.setTextColor(colors.green)
+print("SL.reboot service started")
+shell.run("sys/serv/reboot.lua")
