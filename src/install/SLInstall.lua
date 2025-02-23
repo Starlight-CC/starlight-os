@@ -50,11 +50,11 @@ end
 term.setTextColor(colors.cyan)
 print("Installing")
 function go(s)
-    term.blit("[ DO ] ","77ee777","fffffff")
+    term.blit("[ DO ] ","77ee777","bbbbbbb")
     print(s)
 end
 function ok(s)
-    term.blit("[ OK ] ","7755777","fffffff")
+    term.blit("[ OK ] ","7755777","bbbbbbb")
     print(s)
 end
 function getFolder(a,dir)
