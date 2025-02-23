@@ -98,7 +98,7 @@ local function makePagedScrollS(_term, _nFreeLines,a,b)
                 _term.setCursorPos(1, h)
                 _term.write("Press any key to continue, press "..a.." to skip, press "..b.." to quit")
                 k = os.pullEvent("key") 
-                if k == keys[a} then
+                if k == keys[a] then
                     break
                 elseif k = keys[b] then
                     error("Install terminated",0)
