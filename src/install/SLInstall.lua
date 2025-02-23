@@ -21,15 +21,17 @@ filed under GNU General Public License.
 ]]
 local pullEvent = os.pullEvent
 os.pullEvent = os.pullEventRaw
-local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/src/install/TOSPrint.txt")
-local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/src/root/"
+local VER = "src"
+local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
+local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
+local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/random/lib/json.la").readAll())()
 term.setTextColor(colors.white)
 print("Connecting to "..API)
 sleep(1.5)
 term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-textutils.pagedPrint(Copyright)
+textutils.pagedPrint(Copyright.readAll())
 print("")
 print("(Y/N)")
 while true do
@@ -47,5 +49,11 @@ while true do
 end
 term.setTextColor(colors.cyan)
 print("Installing")
+function getFolder(a,dir)
+    local con = http.get(a..dir).readAll
+    for i,v in ipairs(con) do
+        if v["type"] == file then
+
+
 
 
