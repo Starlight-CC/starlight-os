@@ -138,7 +138,7 @@ end
 
 function textutils.pagedPrintSkip(s,sk,q)
     function pPrint() 
-        pagedPrintS(s) 
+        pagedPrintS(s,sk,q) 
     end
     function skip() 
         while true do
