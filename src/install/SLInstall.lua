@@ -85,22 +85,110 @@ local function deleteFiles(directory, exceptions)
     ["sbin"] = true
   }
 
+function write(sText)
+    expect(1, sText, "string", "number")
+
+    local w, h = term.getSize()
+    local x, y = term.getCursorPos()
+
+    local nLinesPrinted = 0
+    local function newLine()
+        if y + 1 <= h then
+            term.setCursorPos(1, y + 1)
+        else
+            term.setCursorPos(1, h)
+            term.scroll(1)
+        end
+        x, y = term.getCursorPos()
+        nLinesPrinted = nLinesPrinted + 1
+    end
+
+    -- Print the line with proper word wrapping
+    sText = tostring(sText)
+    while #sText > 0 do
+        local whitespace = string.match(sText, "^[ \t]+")
+        if whitespace then
+            -- Print whitespace
+            term.write(whitespace)
+            x, y = term.getCursorPos()
+            sText = string.sub(sText, #whitespace + 1)
+        end
+
+        local newline = string.match(sText, "^\n")
+        if newline then
+            -- Print newlines
+            newLine()
+            sText = string.sub(sText, 2)
+        end
+
+        local text = string.match(sText, "^[^ \t\n]+")
+        if text then
+            sText = string.sub(sText, #text + 1)
+            if #text > w then
+                -- Print a multiline word
+                while #text > 0 do
+                    if x > w then
+                        newLine()
+                    end
+		    s = term.write(text)
+                    if s == true then
+			break
+		    end
+                    text = string.sub(text, w - x + 2)
+                    x, y = term.getCursorPos()
+                end
+            else
+                -- Print a word normally
+                if x + #text - 1 > w then
+                    newLine()
+                end
+                s = term.write(text)
+		if s == true then
+			break
+		    end
+                x, y = term.getCursorPos()
+            end
+        end
+    end
+
+    return nLinesPrinted
+end
+
+function print(...)
+    local nLinesPrinted = 0
+    local nLimit = select("#", ...)
+    for n = 1, nLimit do
+        local s = tostring(select(n, ...))
+        if n < nLimit then
+            s = s .. "\t"
+        end
+        nLinesPrinted = nLinesPrinted + write(s)
+    end
+    nLinesPrinted = nLinesPrinted + write("\n")
+    return nLinesPrinted
+end
+
 local function makePagedScrollS(_term, _nFreeLines)
     local nativeScroll = _term.scroll
     local nFreeLines = _nFreeLines or 0
     return function(_n)
         for _ = 1, _n do
             nativeScroll(1)
-
+	    skip = false
             if nFreeLines <= 0 then
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
                 _term.write("Press any key to continue, press s to skip, press q to quit")
                 _,k = os.pullEvent("key") 
                 if k == keys.s then
+		    skip = true
                     break
                 elseif k == keys.q then
+		    term.setBackgroundColor(colors.black)
+		    term.clear()
+		    term.setCursorPos(1,1)
                     error("Install terminated",0)
+		else
                 end 
                 _term.clearLine()
                 _term.setCursorPos(1, h)
@@ -108,10 +196,11 @@ local function makePagedScrollS(_term, _nFreeLines)
                 nFreeLines = nFreeLines - 1
             end
         end
+    	return skip
     end
 end
 
-local function pagedPrintS(text, free_lines,a,b)
+local function pagedPrintS(text, free_lines)
     expect(2, free_lines, "number", "nil")
     -- Setup a redirector
     local oldTerm = term.current()
@@ -119,7 +208,7 @@ local function pagedPrintS(text, free_lines,a,b)
     for k, v in pairs(oldTerm) do
         newTerm[k] = v
     end
-    newTerm.scroll = makePagedScrollS(oldTerm, free_lines,a,b)
+    newTerm.scroll = makePagedScrollS(oldTerm, free_lines)
     term.redirect(newTerm)
 
     -- Print the text
@@ -142,8 +231,8 @@ local function pagedPrintS(text, free_lines,a,b)
     return result
 end
 
-function textutils.pagedPrintSkip(s,sk,q)
-    pagedPrintS(s,nil,sk,q)
+function textutils.pagedPrintSkip(s)
+    pagedPrintS(s)
 end
 term.setTextColor(colors.white)
 print("Connecting to "..API)
@@ -151,15 +240,7 @@ sleep(1.5)
 term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-textutils.pagedPrintSkip(Copyright.readAll(),"s","q")
-if quit then
-    term.setBackgroundColor(colors.blue)
-    term.clear()
-    term.setCursorPos(1,1)
-    os.pullEvent = pullEvent
-    fs.delete("sbin/SLInstall.lua")
-    error("Install terminated",0)
-end
+textutils.pagedPrintSkip(Copyright.readAll())
 print("")
 print("(Y/N)")
 while true do
