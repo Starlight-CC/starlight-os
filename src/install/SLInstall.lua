@@ -28,7 +28,7 @@ local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
 
 local tAPIsLoading = {}
-function os.loadAPI(_sPath)
+os.loadAPI = function(_sPath)
     local sName = fs.getName(_sPath)
     if sName:sub(-4) == ".lua" then
         sName = sName:sub(1, -5)
