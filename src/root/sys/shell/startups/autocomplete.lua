@@ -21,7 +21,7 @@ Edits are filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
-local rootdir = shell.homeDir().."cmd/"
+local rootdir = shell.cmdDir()
 local completion = require("shell.completion")
 
 -- Setup completion functions
@@ -120,7 +120,7 @@ shell.setCompletionFunction(rootdir.."http/pastebin.lua", completion.build(
 ))
 shell.setCompletionFunction(rootdir.."rednet/chat.lua", completion.build({ completion.choice, { "host ", "join " } }))
 shell.setCompletionFunction(rootdir.."command/exec.lua", completion.build(completion.command))
-shell.setCompletionFunction(rootdir.."http/wget.lua", completion.build({ completion.choice, { "run " } }))
+shell.setCompletionFunction(rootdir.."wget.lua", completion.build({ completion.choice, { "run " } }))
 
 if turtle then
     shell.setCompletionFunction(rootdir.."turtle/go.lua", completion.build(
