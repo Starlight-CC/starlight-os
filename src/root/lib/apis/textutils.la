@@ -28,7 +28,7 @@ Edits are filed under GNU General Public License.
 -- @since 1.2
 
 local pgk_env = setmetatable({}, { __index = _ENV })
-pgk_env.require = dofile("sys/modules/require.la").make(pgk_env, "sys/modules/require.la")
+pgk_env.require = dofile("sys/modules/require.la").make(pgk_env, "sys/modules")
 local require = pgk_env.require
 
 local expect = require("expect")
