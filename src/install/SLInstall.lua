@@ -23,17 +23,17 @@ term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x0000ff)
 local pullEvent = os.pullEvent
-local txt = textutils
 os.pullEvent = os.pullEventRaw
+
+local pgk_env = setmetatable({}, { __index = _ENV })
+pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
+local require = pgk_env.require
+_G.require = require
 local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/root/lib/sys/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/PrimeUI.la").readAll())()
-
-local pgk_env = setmetatable({}, { __index = _ENV })
-pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
-local require = pgk_env.require
 
 local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
