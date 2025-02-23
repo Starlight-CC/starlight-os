@@ -85,7 +85,6 @@ local function deleteFiles(directory, exceptions)
     ["sbin"] = true
   }
 
-k = 0
 local function makePagedScrollS(_term, _nFreeLines,a,b)
     local nativeScroll = _term.scroll
     local nFreeLines = _nFreeLines or 0
@@ -100,7 +99,7 @@ local function makePagedScrollS(_term, _nFreeLines,a,b)
                 k = os.pullEvent("key") 
                 if k == keys[a] then
                     break
-                elseif k = keys[b] then
+                elseif k == keys[b] then
                     error("Install terminated",0)
                 end
                 _term.clearLine()
