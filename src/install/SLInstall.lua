@@ -94,7 +94,7 @@ local function deleteFiles(directory, exceptions)
             if nFreeLines <= 0 then
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
-                _term.write("Press any key to continue, press "..a.." to skip, press "..b.."to quit)
+                _term.write("Press any key to continue, press "..a.." to skip, press "..b.."to quit")
                 k = os.pullEvent("key") 
                 _term.clearLine()
                 _term.setCursorPos(1, h)
