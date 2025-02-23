@@ -28,8 +28,8 @@ os.pullEvent = os.pullEventRaw
 local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
-local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
-local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/spm/data/primeUI/PrimeUI.la").readAll())()
+local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/root/lib/sys/json.la").readAll())()
+local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/PrimeUI.la").readAll())()
 
 local pgk_env = setmetatable({}, { __index = _ENV })
 pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
@@ -91,8 +91,9 @@ print("Connecting to "..API)
 sleep(1.5)
 term.setBackgroundColor(colors.blue)
 PrimeUI.clear()
-local scroller = PrimeUI.scrollBox(term.current(), 4, 6, 40, 10, 9000, true, true, colors.white, colors.blue)
-PrimeUI.drawText(scroller, Copyright.readAll(), true)
+local x,y = term.getSize()
+local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y, 9000, true, true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, Copyright.readAll(), true, colors.white, colors.blue)
 PrimeUI.run()
 print("")
 print("(Y/N)")
