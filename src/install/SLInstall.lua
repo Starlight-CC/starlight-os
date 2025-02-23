@@ -25,8 +25,8 @@ os.pullEvent = os.pullEventRaw
 local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
-local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/lib/sys/json.la").readAll())()
-local textutils = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/lib/apis/textutils.la").readAll())()
+local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
+local textutils = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/apis/textutils.la").readAll())()
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
     print(s)
