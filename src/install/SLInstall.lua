@@ -20,11 +20,13 @@ filed under GNU General Public License.
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
 local pullEvent = os.pullEvent
+local txt = textutils
 os.pullEvent = os.pullEventRaw
 local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
-local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/random/lib/json.la").readAll())()
+local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/lib/sys/json.la").readAll())()
+local textutils = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/lib/apis/textutils.la").readAll())()
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
     print(s)
@@ -77,7 +79,7 @@ sleep(1.5)
 term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-textutils.pagedPrint(Copyright.readAll())
+textutils.pagedPrintSkip(Copyright.readAll())
 print("")
 print("(Y/N)")
 while true do
@@ -89,6 +91,7 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
+        textutils = text
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
     else
@@ -108,6 +111,7 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
+        textutils = text
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
     else
