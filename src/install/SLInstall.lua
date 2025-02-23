@@ -26,49 +26,12 @@ local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
-
-local tAPIsLoading = {}
-os.loadAPI = function(_sPath)
-    local tEnv = {}
-    setmetatable(tEnv, { __index = _G })
-    if type(_sPath) == "string" then
-        local sName = fs.getName(_sPath)
-        if sName:sub(-4) == ".lua" then
-            sName = sName:sub(1, -5)
-        end
-        if tAPIsLoading[sName] == true then
-            printError("API " .. sName .. " is already being loaded")
-            return false
-        end
-        tAPIsLoading[sName] = true
-        local fnAPI, err = loadfile(_sPath, nil, tEnv)
-    elseif type(_sPath) == "function" then
-        local fnAPI = _sPath
-    end
-    if fnAPI then
-        local ok, err = pcall(fnAPI)
-        if not ok then
-            tAPIsLoading[sName] = nil
-            return error("Failed to load API " .. sName .. " due to " .. err, 1)
-        end
-    else
-        tAPIsLoading[sName] = nil
-        return error("Failed to load API " .. sName .. " due to " .. err, 1)
-    end
-
-    local tAPI = {}
-    for k, v in pairs(tEnv) do
-        if k ~= "_ENV" then
-            tAPI[k] =  v
-        end
-    end
-
-    _G[sName] = tAPI
-    tAPIsLoading[sName] = nil
-    return true
-end
+local file = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/apis/textutils.la")
+local fh = fs.open("tmp/textutils.la", "w")
+fh.write(file.readAll())
+fh.close()
 os.unloadAPI("textutils")
-os.loadAPI(load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/apis/textutils.la").readAll()))
+os.loadAPI("tmp/textutils.la")
 
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
