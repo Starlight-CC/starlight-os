@@ -1103,7 +1103,15 @@ local function pagedPrintS(text, free_lines)
 end
 
 function pagedPrintSkip(s,sk)
-    function pPrint() textutils.pagedPrintS(s) end
-    function skip() while true do if os.pullEvent("key") == keys[sk] then break end end
+    function pPrint() 
+        textutils.pagedPrintS(s) 
+    end
+    function skip() 
+        while true do 
+            if os.pullEvent("key") == keys[sk] then 
+                break 
+            end 
+        end
+    end
     parallel.waitForAny(pPrint,Skip)
 end
