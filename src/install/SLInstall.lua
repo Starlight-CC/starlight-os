@@ -96,8 +96,13 @@ local function makePagedScrollS(_term, _nFreeLines,a,b)
             if nFreeLines <= 0 then
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
-                _term.write("Press any key to continue, press "..a.." to skip, press "..b.."to quit")
+                _term.write("Press any key to continue, press "..a.." to skip, press "..b.." to quit")
                 k = os.pullEvent("key") 
+                if k == keys[a} then
+                    break
+                elseif k = keys[b] then
+                    error("Install terminated",0)
+                end
                 _term.clearLine()
                 _term.setCursorPos(1, h)
             else
@@ -139,30 +144,7 @@ local function pagedPrintS(text, free_lines,a,b)
 end
 
 function textutils.pagedPrintSkip(s,sk,q)
-    function pPrint() 
-        pagedPrintS(s,nil,sk,q) 
-    end
-    function skip() 
-        while true do
-            if k == keys[sk] then 
-                quit = false
-                break 
-            else
-            end 
-            sleep(0)
-        end
-    end
-    function quit() 
-        while true do
-            if k == keys[q] then 
-                quit = true
-                break 
-            else
-            end 
-            sleep(0)
-        end
-    end
-    parallel.waitForAny(pPrint,skip,quit)
+    pagedPrintS(s,nil,sk,q)
 end
 term.setTextColor(colors.white)
 print("Connecting to "..API)
