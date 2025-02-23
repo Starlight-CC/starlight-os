@@ -78,7 +78,8 @@ local function deleteFiles(directory, exceptions)
   
   local exceptions = {
     ["rom"] = true,
-    ["sbin/SLInstall.lua"] = true
+    ["sbin/SLInstall.lua"] = true,
+    ["sbin"] = true
   }
   local function makePagedScrollS(_term, _nFreeLines)
     local nativeScroll = _term.scroll
@@ -163,8 +164,6 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
-        os.unloadAPI("textutils")
-        os.loadAPI("rom/apis/textutils.lua")
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
     else
@@ -184,15 +183,13 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
-        os.unloadAPI("textutils")
-        os.loadAPI("rom/apis/textutils.lua")
         fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
     else
     end
 end
 term.setTextColor(colors.purple)
-print("cleaming drive")
+print("cleaning drive")
 deleteFiles("/",exceptions)
 term.setTextColor(colors.white)
 print("Installing")
