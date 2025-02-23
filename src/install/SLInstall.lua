@@ -26,12 +26,6 @@ local VER = "src"
 local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
-local file = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/apis/textutils.la")
-local fh = fs.open("tmp/textutils.la", "w")
-fh.write(file.readAll())
-fh.close()
-os.unloadAPI("textutils")
-os.loadAPI("tmp/textutils.la")
 
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
@@ -78,7 +72,71 @@ local function deleteFiles(directory, exceptions)
     ["rom"] = true,
     ["sbin/SLInstall.lua"] = true
   }
-  
+  local function makePagedScrollS(_term, _nFreeLines)
+    local nativeScroll = _term.scroll
+    local nFreeLines = _nFreeLines or 0
+    return function(_n)
+        for _ = 1, _n do
+            nativeScroll(1)
+
+            if nFreeLines <= 0 then
+                local _, h = _term.getSize()
+                _term.setCursorPos(1, h)
+                _term.write("Press any key to continue, press s to skip")
+                os.pullEvent("key")
+                _term.clearLine()
+                _term.setCursorPos(1, h)
+            else
+                nFreeLines = nFreeLines - 1
+            end
+        end
+    end
+end
+
+local function pagedPrintS(text, free_lines)
+    expect(2, free_lines, "number", "nil")
+    -- Setup a redirector
+    local oldTerm = term.current()
+    local newTerm = {}
+    for k, v in pairs(oldTerm) do
+        newTerm[k] = v
+    end
+    newTerm.scroll = makePagedScrollS(oldTerm, free_lines)
+    term.redirect(newTerm)
+
+    -- Print the text
+    local result
+    local ok, err = pcall(function()
+        if text ~= nil then
+            result = print(text)
+        else
+            result = print()
+        end
+    end)
+
+    -- Removed the redirector
+    term.redirect(oldTerm)
+
+    -- Propogate errors
+    if not ok then
+        error(err, 0)
+    end
+    return result
+end
+
+function textutils.pagedPrintSkip(s,sk)
+    function pPrint() 
+        textutils.pagedPrintS(s) 
+    end
+    function skip() 
+        while true do 
+            if os.pullEvent("key") == keys[sk] then 
+                break 
+            end 
+        end
+    end
+    parallel.waitForAny(pPrint,Skip)
+end
 term.setTextColor(colors.white)
 print("Connecting to "..API)
 sleep(1.5)
