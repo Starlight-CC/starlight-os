@@ -61,12 +61,12 @@ function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
     for i,v in ipairs(con) do
         if v["type"] == "file" then
-            go(string.sub(v["path"],#VER+1))
+            go(string.sub(v["path"],#VER+7))
             local file = http.get(v["download_url"])
-            local fh = fs.open(string.sub(v["path"],#VER+1), "w")
+            local fh = fs.open(string.sub(v["path"],#VER+7), "w")
             fh.write(file.readAll())
             fh.close()
-            ok(string.sub(v["path"],#VER+1))
+            ok(string.sub(v["path"],#VER+7))
         elseif v["type"] == "dir" then
             getFolder(API,v["path"])
         else
