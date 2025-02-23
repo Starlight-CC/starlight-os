@@ -23,7 +23,7 @@ term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x0000ff)
 local pullEvent = os.pullEvent
-os.pullEvent = os.pullEventRaw
+
 
 local pgk_env = setmetatable({}, { __index = _ENV })
 pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
@@ -39,8 +39,13 @@ local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
 
-function go(s)
-    term.blit("[ DO ] ","77ee777","bbbbbbb")
+function err(s)
+    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    print(s)
+end
+
+function info(s)
+    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
     print(s)
 end
 function ok(s)
@@ -49,18 +54,24 @@ function ok(s)
 end
 function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
-    for i,v in ipairs(con) do
-        if v["type"] == "file" then
-            go(string.sub(v["path"],#VER+7))
-            local file = http.get(v["download_url"])
-            local fh = fs.open(string.sub(v["path"],#VER+7), "w")
-            fh.write(file.readAll())
-            fh.close()
-            ok(string.sub(v["path"],#VER+7))
-        elseif v["type"] == "dir" then
-            getFolder(API,v["path"])
-        else
-            error("Install ERROR",0)
+    local mess = con["message"]
+    if con["message"] ~= nil then
+        err("API: "..mess)
+    else
+        for i,v in ipairs(con) do
+            if v["type"] == "file" then
+                info("LNK: "..API..string.sub(v["path"],#VER+7))
+                local file = http.get(v["download_url"])
+                local fh = fs.open(string.sub(v["path"],#VER+7), "w")
+                info("DOWNLOAD: "..string.sub(v["path"],#VER+7))
+                fh.write(file.readAll())
+                fh.close()
+                ok(string.sub(v["path"],#VER+7))
+            elseif v["type"] == "dir" then
+                getFolder(API,v["path"])
+            else
+                error("Install ERROR",0)
+            end
         end
     end
 end
@@ -90,27 +101,25 @@ term.setTextColor(colors.white)
 print("Connecting to "..API)
 sleep(1.5)
 term.setBackgroundColor(colors.blue)
+
 PrimeUI.clear()
 local x,y = term.getSize()
-local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y, 9000, true, true, colors.white, colors.blue)
+PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you accept?"..string.rep(" ",x-16), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
+local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
 PrimeUI.drawText(scroller, Copyright.readAll(), true, colors.white, colors.blue)
-PrimeUI.run()
-print("")
-print("(Y/N)")
-while true do
-    local _,k,_ = os.pullEvent("key")
-    if k == keys.y then
-        break
-    elseif k == keys.n then
-        term.setBackgroundColor(colors.blue)
-        term.clear()
-        term.setCursorPos(1,1)
-        os.pullEvent = pullEvent
-        fs.delete("sbin/SLInstall.lua")
-        error("Install terminated",0)
-    else
-    end
+PrimeUI.keyAction(keys.y, "done")
+PrimeUI.keyAction(keys.n, "Terminate")
+local _,ac = PrimeUI.run()
+if ac == "Terminate" then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    os.pullEvent = pullEvent
+    error("Install terminated",0)
 end
+
 term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(colors.white)
@@ -125,7 +134,6 @@ while true do
         term.clear()
         term.setCursorPos(1,1)
         os.pullEvent = pullEvent
-        fs.delete("sbin/SLInstall.lua")
         error("Install terminated",0)
     else
     end
