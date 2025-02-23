@@ -94,8 +94,8 @@ local function deleteFiles(directory, exceptions)
             if nFreeLines <= 0 then
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
-                _term.write("Press any key to continue, press s to skip")
-                k = os.pullEvent("key")
+                _term.write("Press any key to continue, press "..a.." to skip, press "..b.."to quit)
+                k = os.pullEvent("key") 
                 _term.clearLine()
                 _term.setCursorPos(1, h)
             else
@@ -105,7 +105,7 @@ local function deleteFiles(directory, exceptions)
     end
 end
 
-local function pagedPrintS(text, free_lines)
+local function pagedPrintS(text, free_lines,a,b)
     expect(2, free_lines, "number", "nil")
     -- Setup a redirector
     local oldTerm = term.current()
@@ -113,7 +113,7 @@ local function pagedPrintS(text, free_lines)
     for k, v in pairs(oldTerm) do
         newTerm[k] = v
     end
-    newTerm.scroll = makePagedScrollS(oldTerm, free_lines)
+    newTerm.scroll = makePagedScrollS(oldTerm, free_lines,a,b)
     term.redirect(newTerm)
 
     -- Print the text
@@ -136,19 +136,29 @@ local function pagedPrintS(text, free_lines)
     return result
 end
 
-function textutils.pagedPrintSkip(s,sk)
+function textutils.pagedPrintSkip(s,sk,q)
     function pPrint() 
         pagedPrintS(s) 
     end
     function skip() 
         while true do
             if k == keys[sk] then 
+                quit = false
                 break 
             else
             end 
         end
     end
-    parallel.waitForAny(pPrint,skip)
+    function quit() 
+        while true do
+            if k == keys[q] then 
+                quit = true
+                break 
+            else
+            end 
+        end
+    end
+    parallel.waitForAny(pPrint,skip,quit)
 end
 term.setTextColor(colors.white)
 print("Connecting to "..API)
@@ -156,7 +166,15 @@ sleep(1.5)
 term.setBackgroundColor(colors.blue)
 term.clear()
 term.setCursorPos(1,1)
-textutils.pagedPrintSkip(Copyright.readAll(),"s")
+textutils.pagedPrintSkip(Copyright.readAll(),"s","q")
+if quit then
+    term.setBackgroundColor(colors.blue)
+    term.clear()
+    term.setCursorPos(1,1)
+    os.pullEvent = pullEvent
+    fs.delete("sbin/SLInstall.lua")
+    error("Install terminated",0)
+end
 print("")
 print("(Y/N)")
 while true do
