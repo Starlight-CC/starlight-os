@@ -95,7 +95,7 @@ local function deleteFiles(directory, exceptions)
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
                 _term.write("Press any key to continue, press s to skip")
-                os.pullEvent("key")
+                k = os.pullEvent("key")
                 _term.clearLine()
                 _term.setCursorPos(1, h)
             else
@@ -142,7 +142,7 @@ function textutils.pagedPrintSkip(s,sk)
     end
     function skip() 
         while true do
-            if os.pullEvent("key") == keys[sk] then 
+            if k == keys[sk] then 
                 break 
             else
             end 
