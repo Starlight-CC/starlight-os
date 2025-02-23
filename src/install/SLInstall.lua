@@ -84,7 +84,7 @@ local function deleteFiles(directory, exceptions)
     ["sbin/SLInstall.lua"] = true,
     ["sbin"] = true
   }
-  local function makePagedScrollS(_term, _nFreeLines)
+  local function makePagedScrollS(_term, _nFreeLines,a,b)
     local nativeScroll = _term.scroll
     local nFreeLines = _nFreeLines or 0
     return function(_n)
