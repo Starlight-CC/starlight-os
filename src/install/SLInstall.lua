@@ -32,7 +32,7 @@ local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starl
 -- PrimeUI by JackMacWindows
 -- Public domain/CC0
 
-local expect = require "cc.expect".expect
+local expect = require "cc.expect".expect or require "expect".expect
 
 -- Initialization code
 local PrimeUI = {}
