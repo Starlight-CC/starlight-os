@@ -135,7 +135,7 @@ function textutils.pagedPrintSkip(s,sk)
             end 
         end
     end
-    parallel.waitForAny(pPrint,Skip)
+    parallel.waitForAny(pPrint,skip)
 end
 term.setTextColor(colors.white)
 print("Connecting to "..API)
