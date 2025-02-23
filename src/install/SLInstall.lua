@@ -141,9 +141,10 @@ function textutils.pagedPrintSkip(s,sk)
         pagedPrintS(s) 
     end
     function skip() 
-        while true do 
+        while true do
             if os.pullEvent("key") == keys[sk] then 
                 break 
+            else
             end 
         end
     end
