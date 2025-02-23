@@ -1,61 +1,55 @@
 {
-    "metadata": {
-        "name": "example",
-        "discription": "Example pakage for spm",
-        "created": "1-1-2000",
-        "updated": "1-1-2000",
-        "authors": [
+    "metadata":{
+        "name":"example",
+        "discription":"Example pakage for spm",
+        "created":"1-1-2000",
+        "updated":"1-1-2000",
+        "authors":[
             "Astronand",
             "minecartchris"
         ],
-        "dependencies": [
+        "dependencies":[
             "kittycat"
         ],
-        "license": {
-            "name": "GNU GPL3",
-            "url": "https://www.gnu.org/licenses/lgpl-3.0.txt"
+        "license":{
+            "name":"GNU GPL3",
+            "url":"https://www.gnu.org/licenses/lgpl-3.0.txt"
         },
-        "repo": "https://github.com/example/example"
+        "repo":"https://github.com/example/example"
     },
     "fs": {
-        "bin": {
+        "bin":[
             {
-                "name": "example.exe",
-                "content": "https://github.com/example/example/example.bin",
-                "type": "file"
+                "name":"example.exe",
+                "content":"https://github.com/example/example/example.bin",
+                "type":"file"
             }
-        },
-        "lib": {
+        ],
+        "lib":[
             {
-                "name": "examplefolder",
-                "content": {
+                "name":"examplefolder",
+                "type":"dir",
+                "content":[
                     {
-                        "name": "example.la",
-                        "content": "https://github.com/example/example/example.lib",
-                        "type": "file"
+                        "name":"example",
+                        "type":"file",
+                        "content":"https://github.com/example/example/example"
                     },
                     {
-                        "name": "example.bin",
-                        "content": "https://github.com/example/example/example.lib",
-                        "type": "file"
+                        "name":"example2",
+                        "type":"file",
+                        "content":"https://github.com/example/example/example"
                     }
-                },
-                "type": "dir"
+                ]
             },
             {
-                "name": "example.exe",
-                "content": "https://github.com/example/example/example.bin",
-                "type": "file"
+                "name":"example",
+                "type":"file",
+                "content":"https://github.com/example/example/example"
             }
-        },
-        "var": {
-
-        },
-        "run": {
-
-        },
-        "ect": {
-
-        }
+        ],
+        "var":[],
+        "run":[],
+        "ect":[]
     }
 } 
