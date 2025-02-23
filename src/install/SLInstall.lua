@@ -147,6 +147,7 @@ function textutils.pagedPrintSkip(s,sk,q)
                 break 
             else
             end 
+            sleep(0)
         end
     end
     function quit() 
@@ -156,6 +157,7 @@ function textutils.pagedPrintSkip(s,sk,q)
                 break 
             else
             end 
+            sleep(0)
         end
     end
     parallel.waitForAny(pPrint,skip,quit)
