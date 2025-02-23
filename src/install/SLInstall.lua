@@ -27,6 +27,14 @@ local Copyright = http.get("https://raw.githubusercontent.com/ASTRONAND/Starligh
 local API = "https://api.github.com/repos/ASTRONAND/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/src/root/lib/sys/json.la").readAll())()
 
+local pgk_env = setmetatable({}, { __index = _ENV })
+pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
+local require = pgk_env.require
+
+local expect = require("cc.expect")
+local expect, field = expect.expect, expect.field
+local wrap = require("cc.strings").wrap
+
 function go(s)
     term.blit("[ DO ] ","77ee777","bbbbbbb")
     print(s)
