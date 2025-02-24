@@ -75,27 +75,6 @@ function getFolder(a,dir)
         end
     end
 end
-local function deleteFiles(directory, exceptions)
-    for _, entry in ipairs(fs.list(directory)) do
-      local fullPath = fs.combine(directory, entry)
-      if fs.isDir(fullPath) then
-        if not exceptions[entry] then
-          deleteFiles(fullPath, exceptions)
-          fs.delete(fullPath) -- Delete the folder after deleting its contents
-          print("Deleted "..fullPath)
-        end
-      elseif not exceptions[entry] then
-        fs.delete(fullPath) -- Delete the file
-        print("Deleted "..fullPath)
-      end
-    end
-  end
-  
-  local exceptions = {
-    ["rom"] = true,
-    ["sbin/SLInstall.lua"] = true,
-    ["sbin"] = true
-  }
 
 term.setTextColor(colors.white)
 print("Connecting to "..API)
@@ -105,7 +84,7 @@ term.setBackgroundColor(colors.blue)
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
-PrimeUI.label(term.current(),2,y-2,"Do you accept?"..string.rep(" ",x-16), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you want to compile?"..string.rep(" ",x-25), colors.white, colors.blue)
 PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
 local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
 PrimeUI.drawText(scroller, Copyright.readAll(), true, colors.white, colors.blue)
@@ -117,24 +96,5 @@ if ac == "Terminate" then
     term.clear()
     term.setCursorPos(1,1)
     os.pullEvent = pullEvent
-    error("Install terminated",0)
-end
-
-term.clear()
-term.setCursorPos(1,1)
-term.setTextColor(colors.white)
-print("This will delete EVERYTHING on / are you sure you want to install")
-print("(Y/N)")
-while true do
-    local _,k,_ = os.pullEvent("key")
-    if k == keys.y then
-        break
-    elseif k == keys.n then
-        term.setBackgroundColor(colors.blue)
-        term.clear()
-        term.setCursorPos(1,1)
-        os.pullEvent = pullEvent
-        error("Install terminated",0)
-    else
-    end
+    error("Compile terminated",0)
 end
