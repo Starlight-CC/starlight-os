@@ -100,4 +100,5 @@ if ac == "Terminate" then
     error("Compile terminated",0)
 end
 
+term.clear()
 getFolder(API,VER.."/root/")
