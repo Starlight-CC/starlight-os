@@ -24,14 +24,20 @@ term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x0000ff)
 local pullEvent = os.pullEvent
 
+
 local pgk_env = setmetatable({}, { __index = _ENV })
 pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
 local require = pgk_env.require
 _G.require = require
 local VER = "src"
+local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
-local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/install/PrimeUI.la").readAll())()
+local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/PrimeUI.la").readAll())()
+
+local expect = require("cc.expect")
+local expect, field = expect.expect, expect.field
+local wrap = require("cc.strings").wrap
 
 function err(s)
     term.blit("[ ERR ] ","77eee777","bbbbbbbb")
@@ -45,4 +51,58 @@ function ok(s)
     term.blit("[ OK ] ","7755777","bbbbbbb")
     print(s)
 end
+
+function getFolder(a,dir)
+    local con = json.decode(http.get(a..dir).readAll())
+    local mess = con["message"]
+    if con["message"] ~= nil then
+        err("API: "..mess)
+    else
+        com = {}
+        for i,v in ipairs(con) do
+            if v["type"] == "file" then
+                info("LNK: "..API..string.sub(v["path"],#VER+7))
+                local file = http.get(v["download_url"])
+                info("COMP: "..string.sub(v["path"],#VER+7))
+                com[i]["name"] = string.sub(v["path"],#VER+7)
+                com[i]["code"] = file.readAll()
+                ok(string.sub(v["path"],#VER+7))
+            elseif v["type"] == "dir" then
+                getFolder(API,v["path"])
+            else
+                error("Install ERROR",0)
+            end
+        end
+        return com
+    end
+end
+
+term.setTextColor(colors.white)
+print("Connecting to "..API)
+sleep(1.5)
+term.setBackgroundColor(colors.blue)
+
+PrimeUI.clear()
+local x,y = term.getSize()
+PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you want to compile?"..string.rep(" ",x-25), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
+local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, Copyright.readAll(), true, colors.white, colors.blue)
+PrimeUI.keyAction(keys.y, "done")
+PrimeUI.keyAction(keys.n, "Terminate")
+local _,ac = PrimeUI.run()
+if ac == "Terminate" then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    os.pullEvent = pullEvent
+    error("Compile terminated",0)
+end
+
+term.clear()
+
+fh = fs.open("/Starlight.iso","w")
+fh.write(json.encode(getFolder(API,VER.."/root/")))
+fh.close()
 
