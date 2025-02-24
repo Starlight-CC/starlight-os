@@ -99,3 +99,5 @@ if ac == "Terminate" then
     os.pullEvent = pullEvent
     error("Compile terminated",0)
 end
+
+getFolder(API,VER.."/root/")
