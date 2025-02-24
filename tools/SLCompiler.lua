@@ -58,7 +58,7 @@ function getFolder(a,dir)
     if con["message"] ~= nil then
         err("API: "..mess)
     else
-        local fh = fs.open("/sda1", "a")
+        local fh = fs.open("/Starlight.iso", "ab")
         for i,v in ipairs(con) do
             if v["type"] == "file" then
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
