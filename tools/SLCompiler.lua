@@ -58,14 +58,14 @@ function getFolder(a,dir)
     if con["message"] ~= nil then
         err("API: "..mess)
     else
+        local fh = fs.open("/sda1", "a")
         for i,v in ipairs(con) do
             if v["type"] == "file" then
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
                 local file = http.get(v["download_url"])
-                local fh = fs.open(string.sub(v["path"],#VER+7), "w")
-                info("DOWNLOAD: "..string.sub(v["path"],#VER+7))
+                info("COMP: "..string.sub(v["path"],#VER+7))
                 fh.write(file.readAll())
-                fh.close()
+                fh.write("\255")
                 ok(string.sub(v["path"],#VER+7))
             elseif v["type"] == "dir" then
                 getFolder(API,v["path"])
@@ -73,6 +73,7 @@ function getFolder(a,dir)
                 error("Install ERROR",0)
             end
         end
+        fh.close()
     end
 end
 
