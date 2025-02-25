@@ -65,6 +65,7 @@ function getFolder(a,dir)
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
                 local file = http.get(v["download_url"])
                 info("COMP: "..string.sub(v["path"],#VER+7))
+                table.insert(com,{})
                 com[i]["name"] = string.sub(v["path"],#VER+7)
                 com[i]["code"] = file.readAll()
                 ok(string.sub(v["path"],#VER+7))
@@ -103,7 +104,7 @@ end
 
 term.clear()
 
-fh = fs.open("/Starlight-"..os.day..".iso","w")
+fh = fs.open("/StarlightV".."1.0.0"..os.date("!:%m-%d-%Y %H-%M")..".vi","w")
 fh.write(json.encode(getFolder(API,VER.."/root/")))
 fh.close()
 
