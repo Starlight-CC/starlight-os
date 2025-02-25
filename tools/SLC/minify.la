@@ -2144,7 +2144,7 @@ local function FormatAst(ast)
 		if token.LeadingWhite == '' or (token.LeadingWhite:sub(-#indentString, -1) ~= indentString) then
 			-- Trim existing trailing whitespace on LeadingWhite
 			-- Trim trailing tabs and spaces, and up to one newline
-			token.LeadingWhite = token.LeadingWhite:gsub("\n?[\t ]*$", "")
+			token.LeadingWhite = token.LeadingWhite:gsub("\n*[\t ]*$", "")
 			token.LeadingWhite = token.LeadingWhite..indentString
 		end
 	end
@@ -3049,7 +3049,7 @@ local function MinifyVariables_2(globalScope, rootScope)
 						--  or
 						-- Check case 3
 						-- The other var is at a shallower depth, is there a reference to it
-						-- durring this variable's lifetime?
+						-- durring this variable's lifetime
 						for _, refAt in pairs(otherVar.ReferenceLocationList) do
 							if refAt >= var.BeginLocation and refAt <= var.ScopeEndLocation then
 								-- Collide
