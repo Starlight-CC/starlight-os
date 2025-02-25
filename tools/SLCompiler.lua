@@ -53,21 +53,22 @@ function ok(s)
     print(s)
 end
 
+com = {}
 function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
     if con["message"] ~= nil then
         local mess = con["message"]
         err("API: "..mess)
     else
-        com = {}
-        for i,v in ipairs(con) do
+        for _,v in ipairs(con) do
             if v["type"] == "file" then
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
                 local file = http.get(v["download_url"])
                 info("COMP: "..string.sub(v["path"],#VER+7))
-                table.insert(com,{})
-                com[i]["name"] = string.sub(v["path"],#VER+7)
-                com[i]["code"] = file.readAll()
+                local tmp = {}
+                tmp["name"] = string.sub(v["path"],#VER+7)
+                tmp["code"] = file.readAll()
+                com[tostring(#com+1)] = tmp
                 ok(string.sub(v["path"],#VER+7))
             elseif v["type"] == "dir" then
                 getFolder(API,v["path"])
@@ -75,7 +76,6 @@ function getFolder(a,dir)
                 error("Install ERROR",0)
             end
         end
-        return com
     end
 end
 
@@ -103,8 +103,8 @@ if ac == "Terminate" then
 end
 
 term.clear()
-
-fh = fs.open("/StarlightV".."1.0.0"..os.date("!:%m-%d-%Y %H-%M")..".vi","w")
-fh.write(json.encode(getFolder(API,VER.."/root/")))
+getFolder(API,VER.."/root/")
+fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
+fh.write(json.encode(com))
 fh.close()
 
