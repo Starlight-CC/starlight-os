@@ -55,8 +55,8 @@ end
 
 function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
-    local mess = con["message"]
     if con["message"] ~= nil then
+        local mess = con["message"]
         err("API: "..mess)
     else
         com = {}
@@ -103,7 +103,7 @@ end
 
 term.clear()
 
-fh = fs.open("/Starlight.iso","w")
+fh = fs.open("/Starlight-"..os.day..".iso","w")
 fh.write(json.encode(getFolder(API,VER.."/root/")))
 fh.close()
 
