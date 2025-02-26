@@ -1,3 +1,4 @@
+
 --[[
 Made for use in StarlightOS
 filed under GNU General Public License.
@@ -19,18 +20,22 @@ filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
+local head = [[
+
+]]
+local cpFoot = "]] local FS = "
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x0000ff)
 local pullEvent = os.pullEvent
 
-
+local oldRQ = require
 local pgk_env = setmetatable({}, { __index = _ENV })
 pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
 local require = pgk_env.require
 _G.require = require
 local VER = "src"
-local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/"..VER.."/install/TOSPrint.txt")
+local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/legal/TOSPrint.txt").readAll()
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
@@ -87,10 +92,10 @@ term.setBackgroundColor(colors.blue)
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
-PrimeUI.label(term.current(),2,y-2,"Do you want to compile?"..string.rep(" ",x-25), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you want to compile with this copyright?"..string.rep(" ",x-45), colors.white, colors.blue)
 PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
 local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
-PrimeUI.drawText(scroller, Copyright.readAll(), true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, Copyright, true, colors.white, colors.blue)
 PrimeUI.keyAction(keys.y, "done")
 PrimeUI.keyAction(keys.n, "Terminate")
 local _,ac = PrimeUI.run()
@@ -105,6 +110,6 @@ end
 term.clear()
 getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
-fh.write(json.encode(com))
+fh.write(head..Copyright..json.encode(com))
 fh.close()
 
