@@ -68,7 +68,7 @@ function getFolder(a,dir)
                 local tmp = {}
                 tmp["name"] = string.sub(v["path"],#VER+7)
                 tmp["code"] = file.readAll()
-                com[tostring(#com+1)] = tmp
+                table.insert(com, tmp)
                 ok(string.sub(v["path"],#VER+7))
             elseif v["type"] == "dir" then
                 getFolder(API,v["path"])
