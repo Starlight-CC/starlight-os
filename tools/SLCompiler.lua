@@ -20,10 +20,6 @@ filed under GNU General Public License.
     contacts-
       <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
 ]]
-local head = [[
-
-]]
-local cpFoot = "]] local FS = "
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x0000ff)
@@ -71,7 +67,7 @@ function getFolder(a,dir)
                 local file = http.get(v["download_url"])
                 info("COMP: "..string.sub(v["path"],#VER+7))
                 local tmp = {}
-                tmp["name"] = string.sub(v["path"],#VER+7)
+                tmp["path"] = string.sub(v["path"],#VER+7)
                 tmp["code"] = file.readAll()
                 table.insert(com, tmp)
                 ok(string.sub(v["path"],#VER+7))
@@ -110,6 +106,88 @@ end
 term.clear()
 getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
-fh.write(head..Copyright..json.encode(com))
+local jsonE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll()
+local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
+fh.write([[local copyR = \91\91"]]..Copyright..[[\93\93
+local json = load(\91\91]]..jsonE..[[\93\93)()
+local PrimeUI = load(\91\91]]..PrimeUIE..[[\93\93)()
+local FS = \91\91]]..json.encode(com)..[[\93\93
+PrimeUI.clear()
+local x,y = term.getSize()
+PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you accept?"..string.rep(" ",x-16), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
+local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, copyR, true, colors.white, colors.blue)
+PrimeUI.keyAction(keys.y, "done")
+PrimeUI.keyAction(keys.n, "Terminate")
+local _,ac = PrimeUI.run()
+if ac == "Terminate" then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    os.pullEvent = pullEvent
+    error("Install terminated",0)
+end
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+print("This will delete EVERYTHING on / are you sure you want to install")
+print("(Y/N)")
+while true do
+    local _,k,_ = os.pullEvent("key")
+    if k == keys.y then
+        break
+    elseif k == keys.n then
+        term.setBackgroundColor(colors.blue)
+        term.clear()
+        term.setCursorPos(1,1)
+        os.pullEvent = pullEvent
+        error("Install terminated",0)
+    else
+    end
+end
+local function deleteFiles(directory, exceptions)
+    for _, entry in ipairs(fs.list(directory)) do
+        local fullPath = fs.combine(directory, entry)
+        if fs.isDir(fullPath) then
+            if not exceptions[entry] then
+                deleteFiles(fullPath, exceptions)
+                fs.delete(fullPath) -- Delete the folder after deleting its contents
+                print("Deleted "..fullPath)
+            end
+        elseif not exceptions[entry] then
+            fs.delete(fullPath) -- Delete the file
+            print("Deleted "..fullPath)
+        end
+    end
+end
+local exceptions = {
+    ["rom"] = true,
+    [shell.getRunningProgram()] = true,
+    ["sbin"] = true
+}
+local function installFs(l)
+    for i,v in ipairs(l) do
+        local file = fs.open(v["path"],"w")
+        file.write(v["code"])
+        file.close()
+    end
+end
+term.setTextColor(colors.purple)
+print("cleaning drive")
+deleteFiles("/",exceptions)
+term.setTextColor(colors.white)
+print("Installing")
+installFs(json.decode(FS))
+term.setTextColor(colors.gray)
+shell.run("tmp/shellSet.lua")
+print("Rebooting ...")
+sleep(1)
+term.setTextColor(colors.green)
+print("SL.reboot service started")
+shell.run("sys/serv/reboot.lua")
+]])
+
 fh.close()
 
