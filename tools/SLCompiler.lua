@@ -110,6 +110,7 @@ local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starli
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 local jsonE = ]].."[["..jsonE.."]]"..[[
+
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
 local FS = ]].."[["..json.encode(com).."]]"..[[
