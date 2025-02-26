@@ -108,8 +108,7 @@ fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local jsonE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll()
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
-local json = load(]].."[["..jsonE.."]]"..[[)()
-local PrimeUI = load(]].."[["..PrimeUIE.."]]"..[[)()
+
 local FS = ]].."[["..json.encode(com).."]]"..[[
 PrimeUI.clear()
 local x,y = term.getSize()
