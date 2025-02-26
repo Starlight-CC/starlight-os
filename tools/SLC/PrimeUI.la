@@ -276,7 +276,7 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
             if ev[1] == "key" then
                 if ev[2] == keys.up then dir = -1
                 elseif ev[2] == keys.down then dir = 1
-                elseif ev[2] == keys.space and selections[lines[selected][1]] ~= "R" then
+                elseif ev[2] == keys.space and selections[lines[selected][1] ] ~= "R" then
                     -- (Un)select the item.
                     lines[selected][2] = not lines[selected][2]
                     inner.setCursorPos(2, selected)
@@ -284,10 +284,10 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
                     -- Call the action if passed; otherwise, set the original table.
                     if type(action) == "string" then PrimeUI.resolve("checkSelectionBox", action, lines[selected][1], lines[selected][2])
                     elseif action then action(lines[selected][1], lines[selected][2])
-                    else selections[lines[selected][1]] = lines[selected][2] end
+                    else selections[lines[selected][1] ] = lines[selected][2] end
                     -- Redraw all lines in case of changes.
                     for i, v in ipairs(lines) do
-                        local vv = selections[v[1]] == "R" and "R" or v[2]
+                        local vv = selections[v[1] ] == "R" and "R" or v[2]
                         inner.setCursorPos(2, i)
                         inner.write((vv and (vv == "R" and "-" or "\xD7") or " "))
                     end
