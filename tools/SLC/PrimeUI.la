@@ -1070,5 +1070,3 @@ function PrimeUI.verticalLine(win, x, y, height, right, fgColor, bgColor)
         win.write("\x95")
     end
 end
-
-return PrimeUI
