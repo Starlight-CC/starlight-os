@@ -21,5 +21,7 @@ Check the "legal" folder. idk what to say to you...
 
 ---
 # Custom file extensions
+
 .vi equivalent to a .iso file
+
 .spr Starlight PRogram equivalent to windows .exe
