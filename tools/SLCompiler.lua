@@ -116,7 +116,7 @@ local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FS = ]].."\"[["..string.sub(jo,3,#jo-3).."]]\""..[[
+local FS = ]]..string.sub(jo,3,#jo-3)..[[
 
 PrimeUI.clear()
 local x,y = term.getSize()
