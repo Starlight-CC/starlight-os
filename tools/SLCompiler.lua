@@ -107,6 +107,7 @@ getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local jsonE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll()
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
+local jo = json.encode(com)
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
     
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
@@ -115,8 +116,7 @@ local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FSE = ]].."[[return [["..json.encode(com).."]] ]]"..[[
-local FS = load(FSE)()
+local FS = ]].."\"[["..string.sub(jo,3,#jo-3).."]]\""..[[
 
 PrimeUI.clear()
 local x,y = term.getSize()
@@ -185,7 +185,7 @@ print("cleaning drive")
 deleteFiles("/",exceptions)
 term.setTextColor(colors.white)
 print("Installing")
-installFs(json.decode(FS))
+installFs(json.decode(string.sub(FS,2,#FS-2))
 term.setTextColor(colors.gray)
 shell.run("tmp/shellSet.lua")
 print("Rebooting ...")
