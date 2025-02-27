@@ -60,7 +60,6 @@ function getFolder(a,dir)
         local mess = con["message"]
         err("API: "..mess)
     else
-        local i = 1
         for _,v in ipairs(con) do
             if v["type"] == "file" then
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
@@ -69,9 +68,8 @@ function getFolder(a,dir)
                 local tmp = {{}}
                 tmp[1]["path"] = string.sub(v["path"],#VER+7)
                 tmp[1]["code"] = file.readAll()
-                com[tostring(i)] = tmp
+                table.insert(com,tmp)
                 ok(string.sub(v["path"],#VER+7))
-                i = i + 1
             elseif v["type"] == "dir" then
                 getFolder(API,v["path"])
             else
@@ -110,12 +108,15 @@ fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local jsonE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll()
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
+    
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
+    
 local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FS = ]].."[["..json.encode(com).."]]"..[[
+local FSE = ]].."[[return [["..json.encode(com).."]] ]]"..[[
+local FS = load(FSE)()
 
 PrimeUI.clear()
 local x,y = term.getSize()
