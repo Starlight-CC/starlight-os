@@ -113,7 +113,7 @@ local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FS = ]].."[["..json.encode(com).."]]"..[[
+local FS = ]]..json.encode(com)..[[
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
