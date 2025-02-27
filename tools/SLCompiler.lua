@@ -60,16 +60,18 @@ function getFolder(a,dir)
         local mess = con["message"]
         err("API: "..mess)
     else
+        local i = 1
         for _,v in ipairs(con) do
             if v["type"] == "file" then
                 info("LNK: "..API..string.sub(v["path"],#VER+7))
                 local file = http.get(v["download_url"])
                 info("COMP: "..string.sub(v["path"],#VER+7))
-                local tmp = {}
-                tmp["path"] = string.sub(v["path"],#VER+7)
-                tmp["code"] = file.readAll()
-                table.insert(com, tmp)
+                local tmp = {{}}
+                tmp[1]["path"] = string.sub(v["path"],#VER+7)
+                tmp[1]["code"] = file.readAll()
+                com[tostring(i)] = tmp
                 ok(string.sub(v["path"],#VER+7))
+                i = i + 1
             elseif v["type"] == "dir" then
                 getFolder(API,v["path"])
             else
@@ -113,7 +115,8 @@ local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FS = ]]..json.encode(com)..[[
+local FS = ]].."[["..json.encode(com).."]]"..[[
+
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
