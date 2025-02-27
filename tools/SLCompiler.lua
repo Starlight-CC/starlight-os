@@ -116,8 +116,15 @@ local jsonE = ]].."[["..jsonE.."]]"..[[
 
 local json = load(jsonE)()
 local PrimeUI = load(PrimeUIE)()
-local FS = ]]..string.sub(jo,3,#jo-3)..[[
+local file = fs.open("tmp/iso.dat","w") 
+file.write("\[\[")
+file.write(]].."\""..string.gsub(string.sub(jo,3,#jo-3),"\"code\"\:","code =").."\""..[[)
 
+file.write("\]\]")
+file.close()
+local file = fs.open("tmp/iso.dat","r")
+local FS = file.readAll()
+file.close()
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
