@@ -109,14 +109,13 @@ end
 term.clear()
 getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
-local jsonE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll()
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
     
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 
 local PrimeUI = load(PrimeUIE)()
-local FS = textutils.unserialise(]]..textutils.serialize(com)..[[)
+local FS = textutils.unserialise(]].."\""..textutils.serialize(com).."\""..[[)
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
