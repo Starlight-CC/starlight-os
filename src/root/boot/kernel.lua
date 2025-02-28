@@ -297,4 +297,4 @@ if fs.exists( ".settings" ) then
     settings.load( ".settings" )
 end
 
-
+os.run({},"sbin/shell/shell.spr")
