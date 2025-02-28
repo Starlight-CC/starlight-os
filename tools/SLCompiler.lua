@@ -56,25 +56,29 @@ end
 com = {}
 function getFolder(a,dir)
     local con = json.decode(http.get(a..dir).readAll())
-    if con["message"] ~= nil then
-        local mess = con["message"]
+    if con.message ~= nil then
+        local mess = con.message
         err("API: "..mess)
-    else
-        for _,v in ipairs(con) do
-            if v["type"] == "file" then
-                info("LNK: "..API..string.sub(v["path"],#VER+7))
-                local file = http.get(v["download_url"])
-                info("COMP: "..string.sub(v["path"],#VER+7))
-                local tmp = {{}}
-                tmp[1]["path"] = string.sub(v["path"],#VER+7)
-                tmp[1]["code"] = file.readAll()
-                table.insert(com,tmp)
-                ok(string.sub(v["path"],#VER+7))
-            elseif v["type"] == "dir" then
-                getFolder(API,v["path"])
-            else
-                error("Install ERROR",0)
-            end
+        info("Waiting for api")
+        while con.message ~= nil do
+            con = json.decode(http.get(a..dir).readAll())
+            sleep(5)
+        end
+    end
+    for _,v in ipairs(con) do
+        if v["type"] == "file" then
+            info("LNK: "..API..string.sub(v["path"],#VER+7))
+            local file = http.get(v["download_url"])
+            info("COMP: "..string.sub(v["path"],#VER+7))
+            local tmp = {{}}
+            tmp[1]["path"] = string.sub(v["path"],#VER+7)
+            tmp[1]["code"] = file.readAll()
+            table.insert(com,tmp)
+            ok(string.sub(v["path"],#VER+7))
+        elseif v["type"] == "dir" then
+            getFolder(API,v["path"])
+        else
+            error("Install ERROR",0)
         end
     end
 end
