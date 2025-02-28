@@ -43,10 +43,10 @@ shell.setAlias("rs", "/"..rootdir.."redstone.lua")
 shell.setAlias("shutdown", "/sys/serv/shutdown.lua")
 shell.setAlias("reboot", "/sys/serv/reboot.lua")
 
-if fs.exists("/sys/shell/startups/") and fs.isDir("/sys/shell/startups/") then
-  local tFiles = fs.list("/sys/shell/startups/")
+if fs.exists(shell.homeDir().."startups/") and fs.isDir(shell.homeDir().."startups/") then
+  local tFiles = fs.list(shell.homeDir().."startups/")
   for _, sFile in ipairs(tFiles) do
-      local sPath = "/sys/shell/startups/" .. sFile
+      local sPath = shell.homeDir().."startups/" .. sFile
       if not fs.isDir(sPath) then
           shell.run("run "..sPath)
       end

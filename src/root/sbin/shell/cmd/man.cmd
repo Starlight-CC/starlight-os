@@ -213,7 +213,7 @@ local function draw_menu()
     term.setCursorPos(1, height)
     term.clearLine()
 
-    local tag = "Help: " .. sTopic
+    local tag = "Manual: " .. sTopic
     if current_section then
         tag = tag .. (" (%s)"):format(sections[current_section].content)
     end
