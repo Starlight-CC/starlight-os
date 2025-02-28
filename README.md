@@ -1,7 +1,7 @@
 # Starlight OS 
 An OS for CC: Tweaked based on Unix/Linux
 
-## Warning 
+### Warning 
 
 The src branch is unstable and may not work
 ---
@@ -23,7 +23,7 @@ The src branch is unstable and may not work
 Check the "legal" folder. idk what to say to you... 
 
 ---
-# Custom file extensions
+## Custom file extensions
 
 .vi equivalent to a .iso file
 
