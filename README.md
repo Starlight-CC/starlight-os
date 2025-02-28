@@ -32,4 +32,6 @@ Check the "legal" folder. idk what to say to you...
 
 .sprx Starlight PRogram Xtention
 
-.
+.pla Paired Library Asset
+
+.la 
