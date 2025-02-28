@@ -34,4 +34,4 @@ Check the "legal" folder. idk what to say to you...
 
 .pla Paired Library Asset
 
-.la 
+.la Library Asset
