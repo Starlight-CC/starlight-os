@@ -1,0 +1,10 @@
+Manual "echo":
+    flags:
+        -e "parse text"
+        -n "remove newline"
+    args:
+        1 "flag"
+        1-* "text"
+    usage:
+        echo <flag> "text"
+        echo "text"

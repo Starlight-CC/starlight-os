@@ -115,7 +115,7 @@ fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 
 local PrimeUI = load(PrimeUIE)()
-local FS = textutils.unserialise(]].."\""..textutils.serialize(com).."\""..[[)
+local FS = textutils.unserialiseJSON(]].."\""..textutils.serializeJSON(com):gsub("\"code\":","\\\"code\\\":"):gsub("\"path\":","\\\"path\\\":").."\""..[[)
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
