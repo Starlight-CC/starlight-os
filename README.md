@@ -1,10 +1,8 @@
 # Starlight OS 
-
 An OS for CC: Tweaked based on Unix/Linux
 
-## Warning
-
-the src branch is unstable and may not work
+## Warning 
+The src branch is unstable and may not work
 ---
 ### Contributors
 
