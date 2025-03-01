@@ -24,19 +24,5 @@ The src branch is unstable and may not work
 Check the "legal" folder. idk what to say to you... 
 
 ---
-## Custom file extensions
+## DOCUMENTATION 
 
-
-.vi equivalent to a .iso file
-
-
-.spr Starlight PRogram equivalent to windows .exe
-
-
-.sprx Starlight PRogram Xtention
-
-
-.pla Paired Library Asset
-
-
-.la Library Asset
