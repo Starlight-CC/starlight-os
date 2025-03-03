@@ -1,8 +1,6 @@
-theme = {}
-lib = {}
-theme.main = colors.cyan
-theme.sec = colors.purple
-
+shell = {}
+local aliases = {}
+local commands = {}
 local function tokenise(...)
     local line = table.concat({ ... }, " ")
     local words = {}
@@ -20,10 +18,22 @@ local function tokenise(...)
     return words
 end
 
+function shell.resolveCommand(cmd)
+    return pcall(return commands[cmd])
+    return false
+end
+
+function shell.exec()
+end
 function shell.run(...)
     local tArgs = tokenise(...)
-    kernel.addProcessWithArgs(tArgs[1],table.unpack(tArgs,2))
+    shell.exec(tArgs[1],table.unpack(tArgs,2))
 end
+
+function shell.exit() 
+    Exit = true
+end
+
 tArgs = nil
 tArgs = {...}
 if #tArgs > 0 then
@@ -83,4 +93,3 @@ for details type 'show c'.
         shell.run(result)
     end
 end
-sleep(2)
