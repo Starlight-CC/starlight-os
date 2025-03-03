@@ -30,17 +30,17 @@ for details type 'show c'.
         term.setCursorBlink(true)
     end
     function get(k)
-        if k == keys.space then
-            return " "
-        elseif k == keys.one then
-            return "1"
-        elseif k == keys.two then
-            return "2"
-        elseif k == keys.three then
-            return "3"
-        elseif k == keys.four then
-            return "4"
-        elseif k == keys.five
+        if k == keys.space then return " "
+        elseif k == keys.one then return "1"
+        elseif k == keys.two then return "2"
+        elseif k == keys.three then return "3"
+        elseif k == keys.four then return "4"
+        elseif k == keys.five then return "5"
+        elseif k == keys.six then return "6"
+        elseif k == keys.seven then return "7"
+        elseif k == keys.eight then return "8"
+        elseif k == keys.nine then return "9"
+        elseif k == keys.zero then return "0"
         end
     end
     printHead()
