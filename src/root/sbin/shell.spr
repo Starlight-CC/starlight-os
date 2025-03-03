@@ -41,6 +41,8 @@ for details type 'show c'.
         elseif k == keys.eight then return "8"
         elseif k == keys.nine then return "9"
         elseif k == keys.zero then return "0"
+        elseif k = keys.leftBracket then "["
+        elseif k = keys.rightBracket then "]"
         end
     end
     printHead()
