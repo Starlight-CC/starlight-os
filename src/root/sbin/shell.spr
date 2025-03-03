@@ -1,18 +1,30 @@
 theme = {}
+lib = {}
 theme.main = colors.cyan
 theme.sec = colors.purple
-function os.username()
-    return "root"
+
+local function tokenise(...)
+    local line = table.concat({ ... }, " ")
+    local words = {}
+    local quoted = false
+    for match in string.gmatch(line .. "\"", "(.-)\"") do
+        if quoted then
+            table.insert(words, match)
+        else
+            for m in string.gmatch(match, "[^ \t]+") do
+                table.insert(words, m)
+            end
+        end
+        quoted = not quoted
+    end
+    return words
 end
-function os.hostname()
-    return "CC"
+
+function shell.run(...)
+    local tArgs = tokenise(...)
+    kernel.addProcessWithArgs(tArgs[1],table.unpack(tArgs,2))
 end
-function shell.dir()
-    return "/"
-end
-function exec()
-    print(" EXEC")
-end
+tArgs = nil
 tArgs = {...}
 if #tArgs > 0 then
     
@@ -29,35 +41,46 @@ for details type 'show c'.
         term.setTextColor(colors.white)
         term.setCursorBlink(true)
     end
-    function get(k)
-        if k == keys.space then return " "
-        elseif k == keys.one then return "1"
-        elseif k == keys.two then return "2"
-        elseif k == keys.three then return "3"
-        elseif k == keys.four then return "4"
-        elseif k == keys.five then return "5"
-        elseif k == keys.six then return "6"
-        elseif k == keys.seven then return "7"
-        elseif k == keys.eight then return "8"
-        elseif k == keys.nine then return "9"
-        elseif k == keys.zero then return "0"
-        elseif k = keys.leftBracket then "["
-        elseif k = keys.rightBracket then "]"
+
+    local tCommandHistory = {}
+    while not Exit do
+        printHead()
+
+        local ok, result
+        local co = coroutine.create(read)
+        assert(coroutine.resume(co, nil, tCommandHistory, complete))
+
+        while coroutine.status(co) ~= "dead" do
+            local event = table.pack(os.pullEvent())
+            if event[1] == "file_transfer" then
+                local _, h = term.getSize()
+                local _, y = term.getCursorPos()
+                if y == h then
+                    term.scroll(1)
+                    term.setCursorPos(1, y)
+                else
+                    term.setCursorPos(1, y + 1)
+                end
+                term.setCursorBlink(false)
+
+                local ok, err = require("internal.import")(event[2].getFiles())
+                if not ok and err then printError(err) end
+
+                printHead()
+                term.setCursorBlink(true)
+                event = { "term_resize", n = 1 }
+            end
+
+            if result == nil or event[1] == result or event[1] == "terminate" then
+                ok, result = coroutine.resume(co, table.unpack(event, 1, event.n))
+                if not ok then error(result, 0) end
+            end
         end
-    end
-    printHead()
-    text = ""
-    while true do
-        local _,key,_ = os.pullEvent("key")
-        local x,y = term.getCursorPos()
-        print(keys.getName(key))
-        --[[if key == keys.enter then
-            
-        elseif key == keys.backspace then
-            
-        else
-            
-        end]]
+
+        if result:match("%S") and tCommandHistory[#tCommandHistory] ~= result then
+            table.insert(tCommandHistory, result)
+        end
+        shell.run(result)
     end
 end
 sleep(2)
