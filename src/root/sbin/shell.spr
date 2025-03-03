@@ -1,0 +1,61 @@
+theme = {}
+theme.main = colors.cyan
+theme.sec = colors.purple
+function os.username()
+    return "root"
+end
+function os.hostname()
+    return "CC"
+end
+function shell.dir()
+    return "/"
+end
+function exec()
+    print(" EXEC")
+end
+tArgs = {...}
+if #tArgs > 0 then
+    
+else
+    term.clear()
+    term.setCursorPos(1,1)
+    term.setTextColor(theme.sec)
+    print([[SShell Copyright (C) 2025  Starlight-CC
+for details type 'show c'.
+    ]])
+    function printHead()
+        term.setTextColor(theme.main)
+        term.write(os.username().."@"..os.hostname()..":"..shell.dir().."$ ")
+        term.setTextColor(colors.white)
+        term.setCursorBlink(true)
+    end
+    function get(k)
+        if k == keys.space then
+            return " "
+        elseif k == keys.one then
+            return "1"
+        elseif k == keys.two then
+            return "2"
+        elseif k == keys.three then
+            return "3"
+        elseif k == keys.four then
+            return "4"
+        elseif k == keys.five
+        end
+    end
+    printHead()
+    text = ""
+    while true do
+        local _,key,_ = os.pullEvent("key")
+        local x,y = term.getCursorPos()
+        print(keys.getName(key))
+        --[[if key == keys.enter then
+            
+        elseif key == keys.backspace then
+            
+        else
+            
+        end]]
+    end
+end
+sleep(2)
