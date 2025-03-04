@@ -19,10 +19,6 @@ The src branch is unstable and may not work
 [suboct / yabastar](https://github.com/yabastar0)
 
 ---
-### Legal
-
-Check the "legal" folder. idk what to say to you... 
-
----
+## [Legal](https://github.com/Starlight-CC/Starlight-OS/tree/f291a980727d2902f3213762ac44072984b074b6/legal)
 ## [DOCUMENTATION](https://github.com/Starlight-CC/Starlight-OS/tree/3121c96941c9e985a819f20342d409392a368dc8/docs)
 
