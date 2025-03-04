@@ -3,8 +3,16 @@ theme.main = colors.cyan
 theme.sec = colors.purple
 
 shell = {} -- api
+local multishell = multishell -- detects if it is a advanced computer
+local parentShell = shell -- prev shell if nil make new shell
+local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
-local sDir = "/" -- Working dir
+local sDir = parentShell and parentShell.dir() or os.home() -- Working dir
+local function createShellEnv(dir)
+    local env = { shell = shell, multishell = multishell }
+    env.require, env.package = make_package(env, dir)
+    return env
+end
 local make_package = dofile("sys/modules/require.la").make -- custom require
 local require -- Set up a dummy require
 do
@@ -36,11 +44,14 @@ local function tokenise(...) -- convert arg string to table
 end
 
 function shell.exec(c,...) -- run a command
-    local tArgs = tokenise(...)
+    local tArgs = ...
+    local dir = fs.getDir(path)
+    local env = setmetatable(createShellEnv(dir), { __index = _G })
+    env.arg = args
     if commands.find(c,commands.exec) then
         print(tostring(c))
         local cmd = commands.exec[tostring(c)]
-        cmd(table.unpack(tArgs))
+        cmd(table.unpack(tokenise(tArgs)))
     elseif fs.exists(c) then
         local cmd = loadfile(tostring(c))
         pcall(cmd(table.unpack(tArgs)))
