@@ -8,7 +8,7 @@ function lib.find(c,l)
     end
     return false
 end
-function lib.exec.sledit(...)
+function lib.exec.edit(...)
     local tArgs = { ... }
     if #tArgs == 0 then
         print("Usage: edit <path>")
@@ -826,5 +826,33 @@ function lib.exec.sledit(...)
 end
 function lib.exec.exit()
     shell.exit()
+end
+function lib.exec.cd()
+    local tArgs = { ... }
+    if #tArgs < 1 then
+        local programName = arg[0] or fs.getName(shell.getRunningProgram())
+        print("Usage: cd <path>")
+        print("shortcuts:")
+        print("    ~ = user's home dir")
+        print("    .. = previous dir")
+        print("    / = root dir")
+        return
+    end
+
+    local sNewDir = shell.resolve(tArgs[1])
+    if string.sub(tArgs[1],1,1) == "~" then
+        if os.username() == "root" then
+            sDir = "/root/"..string.sub(tArgs[1],2)
+        else
+            sDir = "/home/"..os.username()..string.sub(tArgs[1],2)
+        end
+    elseif fs.isDir(sNewDir) then
+        sDir = sNewDir
+    else
+        term.setTextColor(colors.red)
+        print("Not a directory")
+        term.setTextColor(colors.white)
+        return
+    end
 end
 return lib

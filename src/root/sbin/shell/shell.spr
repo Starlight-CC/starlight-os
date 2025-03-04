@@ -1,15 +1,24 @@
 theme = {}
 theme.main = colors.cyan
 theme.sec = colors.purple
+
+shell = {} -- api
+local aliases = {} -- alias table
+local sDir = "/" -- Working dir
+local make_package = dofile("sys/modules/require.la").make -- custom require
+local require -- Set up a dummy require
+do
+    local env = setmetatable(createShellEnv(shell.cmdDir()), { __index = _ENV })
+    require = env.require
+end
 expect = require "cc.expect"
-shell = {}
+local commands = require("shellCMD") -- Shell commands
+
 function os.username() return "root" end
 function os.hostname() return "cc" end
-function shell.dir() return "/" end
+function shell.dir() return sDir end
 
-local aliases = {}
-local commands = require("shellCMD")
-local function tokenise(...)
+local function tokenise(...) -- convert arg string to table
     local line = table.concat({ ... }, " ")
     local words = {}
     local quoted = false
@@ -26,17 +35,18 @@ local function tokenise(...)
     return words
 end
 
-function shell.exec(c,...)
+function shell.exec(c,...) -- run a command
     local tArgs = tokenise(...)
     if commands.find(c,commands.exec) then
-        local cmd = commands.exec[c]
-        cmd(tArgs)
+        print(tostring(c))
+        local cmd = commands.exec[tostring(c)]
+        cmd(table.unpack(tArgs))
     elseif fs.exists(c) then
-        local cmd = loadfile(c)
-        cmd(tArgs)
+        local cmd = loadfile(tostring(c))
+        pcall(cmd(table.unpack(tArgs)))
     else
         term.setTextColor(colors.red)
-        print("No command or executable found")
+        print("No command or file found")
     end
 end
 
@@ -45,15 +55,15 @@ function shell.run(...)
     shell.exec(tArgs[1],table.unpack(tArgs,2))
 end
 
-function shell.exit() 
+function shell.exit() -- guess "hint: check the name"
     Exit = true
 end
 
-function shell.resolve(path)
+function shell.resolve(path) -- path handling
     expect(1, path, "string")
     local sStartChar = string.sub(path, 1, 1)
     if sStartChar == "/" or sStartChar == "\\" then
-        return fs.combine("", path)
+        return fs.combine("/", path)
     else
         return fs.combine(sDir, path)
     end
@@ -68,7 +78,7 @@ else
     term.setCursorPos(1,1)
     term.setTextColor(theme.sec)
     print([[SShell Copyright (C) 2025  Starlight-CC
-for details type 'show c'.
+for details type 'man c'.
     ]])
     function printHead()
         term.setTextColor(theme.main)
