@@ -1,4 +1,4 @@
-[# Starlight OS](https://github.com/Starlight-CC/Starlight-OS/tree/3121c96941c9e985a819f20342d409392a368dc8/docs)
+# [Starlight OS](https://github.com/Starlight-CC/Starlight-OS/tree/3121c96941c9e985a819f20342d409392a368dc8/docs)
 An OS for CC: Tweaked based on Unix/Linux
 
 ### Warning 
