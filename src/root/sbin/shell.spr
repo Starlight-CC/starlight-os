@@ -1,6 +1,14 @@
+theme = {}
+theme.main = colors.cyan
+theme.sec = colors.purple
+expect = require "cc.expect"
 shell = {}
+function os.username() return "root" end
+function os.hostname() return "cc" end
+function shell.dir() return "/" end
+
 local aliases = {}
-local commands = {}
+local commands = require("shellCMD")
 local function tokenise(...)
     local line = table.concat({ ... }, " ")
     local words = {}
@@ -18,13 +26,17 @@ local function tokenise(...)
     return words
 end
 
-function shell.resolveCommand(cmd)
-    return pcall(return commands[cmd])
-    return false
+function shell.exec(c,...)
+    local tArgs = tokenise(...)
+    if commands.find(c,commands.exec) then
+        local cmd = commands.exec[c]
+        cmd(tArgs)
+    else
+        local cmd = loadfile(c)
+        cmd(tArgs)
+    end
 end
 
-function shell.exec()
-end
 function shell.run(...)
     local tArgs = tokenise(...)
     shell.exec(tArgs[1],table.unpack(tArgs,2))
@@ -32,6 +44,16 @@ end
 
 function shell.exit() 
     Exit = true
+end
+
+function shell.resolve(path)
+    expect(1, path, "string")
+    local sStartChar = string.sub(path, 1, 1)
+    if sStartChar == "/" or sStartChar == "\\" then
+        return fs.combine("", path)
+    else
+        return fs.combine(sDir, path)
+    end
 end
 
 tArgs = nil
