@@ -31,9 +31,12 @@ function shell.exec(c,...)
     if commands.find(c,commands.exec) then
         local cmd = commands.exec[c]
         cmd(tArgs)
-    else
+    elseif fs.exists(c) then
         local cmd = loadfile(c)
         cmd(tArgs)
+    else
+        term.setTextColor(colors.red)
+        print("No command or executable found")
     end
 end
 
