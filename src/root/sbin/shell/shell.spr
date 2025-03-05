@@ -8,12 +8,12 @@ local parentShell = shell -- prev shell if nil make new shell
 local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
 local sDir = parentShell and parentShell.dir() or os.home() -- Working dir
+local make_package = dofile("sys/modules/require.la").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
     env.require, env.package = make_package(env, dir)
     return env
 end
-local make_package = dofile("sys/modules/require.la").make -- custom require
 local require -- Set up a dummy require
 do
     local env = setmetatable(createShellEnv(shell.cmdDir()), { __index = _ENV })
@@ -43,18 +43,32 @@ local function tokenise(...) -- convert arg string to table
     return words
 end
 
+function fs.getFileExtention(f)
+    if string.find(f,".") ~= nil then
+        local s = f
+        local d
+        while true do
+            d = string.find(s,".")
+            if d == nil then
+                return S
+            end
+            s = string.sub(s,d)
+        end
+    end
+    return ""
+end
+
 function shell.exec(c,...) -- run a command
     local tArgs = ...
-    local dir = fs.getDir(path)
-    local env = setmetatable(createShellEnv(dir), { __index = _G })
-    env.arg = args
-    if commands.find(c,commands.exec) then
-        print(tostring(c))
+    local dir = fs.combine("/proc",string.sub(c,1,string.find(c,".")-1))
+    if commands.find(c) then
         local cmd = commands.exec[tostring(c)]
         cmd(table.unpack(tokenise(tArgs)))
     elseif fs.exists(c) then
-        local cmd = loadfile(tostring(c))
-        pcall(cmd(table.unpack(tArgs)))
+        fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
+        local env = setmetatable(createShellEnv(dir), { __index = _G })
+        env.arg = table.unpack(tokenise(tArgs))
+        local func, err = load(contents, "@/" .. c, nil, env)
     else
         term.setTextColor(colors.red)
         print("No command or file found")
@@ -93,7 +107,8 @@ for details type 'man c'.
     ]])
     function printHead()
         term.setTextColor(theme.main)
-        term.write(os.username().."@"..os.hostname()..":"..shell.dir().."$ ")
+        local pdir = os.util.subHome(sDir)
+        term.write(os.username().."@"..os.hostname()..":"..pdir.."$ ")
         term.setTextColor(colors.white)
         term.setCursorBlink(true)
     end

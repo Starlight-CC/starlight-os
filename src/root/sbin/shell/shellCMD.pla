@@ -1,7 +1,7 @@
 local lib = {}
 lib.exec = {}
-function lib.find(c,l)
-    for i,v in pairs(l) do
+function lib.find(c)
+    for i,v in pairs(lib.exec) do
         if i == c then
             return true
         end
@@ -830,7 +830,6 @@ end
 function lib.exec.cd()
     local tArgs = { ... }
     if #tArgs < 1 then
-        local programName = arg[0] or fs.getName(shell.getRunningProgram())
         print("Usage: cd <path>")
         print("shortcuts:")
         print("    ~ = user's home dir")
@@ -842,9 +841,9 @@ function lib.exec.cd()
     local sNewDir = shell.resolve(tArgs[1])
     if string.sub(tArgs[1],1,1) == "~" then
         if os.username() == "root" then
-            sDir = "/root/"..string.sub(tArgs[1],2)
+            sDir = "root/"..string.sub(tArgs[1],2)
         else
-            sDir = "/home/"..os.username()..string.sub(tArgs[1],2)
+            sDir = "home/"..os.username()..string.sub(tArgs[1],2)
         end
     elseif fs.isDir(sNewDir) then
         sDir = sNewDir
