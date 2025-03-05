@@ -842,17 +842,21 @@ function lib.exec.cd(...)
     local sNewDir = shell.resolve(tArgs[1])
     if string.sub(tArgs[1],1,1) == "~" then
         if os.username() == "root" then
-            sDir = "/root/"..string.sub(tArgs[1],2)
+            shell.cd("/root/"..string.sub(tArgs[1],2))
         else
-            sDir = "/home/"..os.username()..string.sub(tArgs[1],2)
+            shell.cd("/home/"..os.username()..string.sub(tArgs[1],2))
         end
     elseif fs.isDir(sNewDir) then
-        sDir = sNewDir
+        shell.cd(sNewDir)
     else
         term.setTextColor(colors.red)
         print("Not a directory")
         term.setTextColor(colors.white)
         return
     end
+    return sDir
+end
+function lib.exec.pwd(...)
+    print("/"..shell.dir())
 end
 return lib

@@ -9,7 +9,7 @@ local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
 shell = {} -- api
 sDir = parentShell and parentShell.dir() or os.home() -- Working dir
-local make_package = dofile("rom/modules/main/cc/require.lua").make -- custom require
+local make_package = dofile("sys/modules/require.la").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
     env.require, env.package = make_package(env, dir)
@@ -17,7 +17,7 @@ local function createShellEnv(dir)
 end
 local require -- Set up a dummy require
 do
-    local env = setmetatable(createShellEnv("/"), { __index = _ENV })
+    local env = setmetatable(createShellEnv("/sbin/shell"), { __index = _ENV })
     require = env.require
 end
 expect = require "cc.expect"
@@ -26,6 +26,7 @@ local commands = require("shellCMD") -- Shell commands
 function os.username() return "root" end
 function os.hostname() return "cc" end
 function shell.dir() return sDir end
+function shell.cd(e) if sMode == "cmd" then sDir = e end end
 
 local function tokenise(...) -- convert arg string to table
     local line = table.concat({ ... }, " ")
@@ -70,7 +71,10 @@ function shell.exec(c,...) -- run a command
         fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
         local env = setmetatable(createShellEnv(dir), { __index = _G })
         env.arg = table.unpack(tokenise(tArgs))
-        local func, err = load(contents, "@/" .. c, nil, env)
+        local file, err = fs.open(c, "r")
+        contents = "\n" .. (file.readAll() or "")
+        file.close()
+        local func, err = load(contents, "@" .. c, nil, env)
     else
         term.setTextColor(colors.red)
         print("No command or file found")
@@ -110,7 +114,7 @@ for details type 'man c'.
     function printHead()
         term.setTextColor(theme.main)
         local pdir = os.util.subHome(sDir)
-        term.write(os.username().."@"..os.hostname()..":/"..pdir.."$ ")
+        term.write(os.username().."@"..os.hostname()..":"..pdir.."$ ")
         term.setTextColor(colors.white)
         term.setCursorBlink(true)
     end
