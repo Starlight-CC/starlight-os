@@ -2,13 +2,14 @@ theme = {}
 theme.main = colors.cyan
 theme.sec = colors.purple
 
-shell = {} -- api
+
 local multishell = multishell -- detects if it is a advanced computer
 local parentShell = shell -- prev shell if nil make new shell
 local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
-local sDir = parentShell and parentShell.dir() or os.home() -- Working dir
-local make_package = dofile("sys/modules/require.la").make -- custom require
+shell = {} -- api
+sDir = parentShell and parentShell.dir() or os.home() -- Working dir
+local make_package = dofile("rom/modules/main/cc/require.lua").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
     env.require, env.package = make_package(env, dir)
@@ -16,7 +17,7 @@ local function createShellEnv(dir)
 end
 local require -- Set up a dummy require
 do
-    local env = setmetatable(createShellEnv(shell.cmdDir()), { __index = _ENV })
+    local env = setmetatable(createShellEnv("/"), { __index = _ENV })
     require = env.require
 end
 expect = require "cc.expect"
@@ -63,7 +64,8 @@ function shell.exec(c,...) -- run a command
     local dir = fs.combine("/proc",string.sub(c,1,string.find(c,".")-1))
     if commands.find(c) then
         local cmd = commands.exec[tostring(c)]
-        cmd(table.unpack(tokenise(tArgs)))
+        local retFunc = cmd(table.unpack(tokenise(tArgs)))
+        pcall(retFunc)
     elseif fs.exists(c) then
         fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
         local env = setmetatable(createShellEnv(dir), { __index = _G })
@@ -108,7 +110,7 @@ for details type 'man c'.
     function printHead()
         term.setTextColor(theme.main)
         local pdir = os.util.subHome(sDir)
-        term.write(os.username().."@"..os.hostname()..":"..pdir.."$ ")
+        term.write(os.username().."@"..os.hostname()..":/"..pdir.."$ ")
         term.setTextColor(colors.white)
         term.setCursorBlink(true)
     end
