@@ -824,12 +824,13 @@ function lib.exec.edit(...)
     term.setCursorBlink(false)
     term.setCursorPos(1, 1)
 end
-function lib.exec.exit()
+function lib.exec.exit(...)
     shell.exit()
 end
-function lib.exec.cd()
+function lib.exec.cd(...)
     local tArgs = { ... }
     if #tArgs < 1 then
+        local programName = arg[0] or fs.getName(shell.getRunningProgram())
         print("Usage: cd <path>")
         print("shortcuts:")
         print("    ~ = user's home dir")
@@ -841,9 +842,9 @@ function lib.exec.cd()
     local sNewDir = shell.resolve(tArgs[1])
     if string.sub(tArgs[1],1,1) == "~" then
         if os.username() == "root" then
-            sDir = "root/"..string.sub(tArgs[1],2)
+            sDir = "/root/"..string.sub(tArgs[1],2)
         else
-            sDir = "home/"..os.username()..string.sub(tArgs[1],2)
+            sDir = "/home/"..os.username()..string.sub(tArgs[1],2)
         end
     elseif fs.isDir(sNewDir) then
         sDir = sNewDir
