@@ -96,7 +96,7 @@ local function deleteFiles(directory, exceptions)
     ["sbin/SLInstall.lua"] = true,
     ["sbin"] = true
   }
-end
+
 term.setTextColor(colors.white)
 print("Connecting to "..API)
 sleep(1.5)
