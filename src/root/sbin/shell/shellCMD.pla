@@ -957,10 +957,10 @@ function lib.exec.lua(...)
         print("To run a lua program, just type its name.")
         return
     end
-    
+
     local pretty = require "pretty"
     local exception = require "internal.exception"
-    
+
     local running = true
     local tCommandHistory = {}
     local tEnv = {
@@ -973,7 +973,7 @@ function lib.exec.lua(...)
         end,
     }
     setmetatable(tEnv, { __index = _ENV })
-    
+
     -- Replace our require with new instance that loads from the current directory
     -- rather than from /rom/programs. This makes it more friendly to use and closer
     -- to what you'd expect.
@@ -982,14 +982,14 @@ function lib.exec.lua(...)
         local dir = shell.dir()
         _ENV.require, _ENV.package = make_package(_ENV, dir)
     end
-    
+
     if term.isColour() then
         term.setTextColour(colours.blue)
     end
     print("Interactive Lua prompt.")
     print("Call exit() to exit.")
     term.setTextColour(colours.white)
-    
+
     local chunk_idx, chunk_map = 1, {}
     while running do
         if term.isColour() then
@@ -997,7 +997,7 @@ function lib.exec.lua(...)
         end
         write("lua: ")
         term.setTextColour( colours.white )
-    
+
         local input = read(nil, tCommandHistory, function(sLine)
             if settings.get("lua.autocomplete") then
                 local nStartPos = string.find(sLine, "[a-zA-Z0-9_%.:]+$")
@@ -1020,9 +1020,9 @@ function lib.exec.lua(...)
            print("To access local variables in later inputs, remove the local keyword.")
            term.setTextColour(colours.white)
         end
-    
+
         local name, offset = "=lua[" .. chunk_idx .. "]", 0
-    
+
         local func, err = load(input, name, "t", tEnv)
         if load("return " .. input) then
             -- We wrap the expression with a call to _echo(...), which prevents tail
@@ -1032,11 +1032,11 @@ function lib.exec.lua(...)
             func = load("return _echo(" .. input .. "\n)", name, "t", tEnv)
             offset = 13
         end
-    
+
         if func then
             chunk_map[name] = { contents = input, offset = offset }
             chunk_idx = chunk_idx + 1
-        
+
             local results = table.pack(exception.try(func))
             if results[1] then
                 for i = 2, results.n do
@@ -1059,6 +1059,6 @@ function lib.exec.lua(...)
             local parser = require "internal.syntax.init"
             if parser.parse_repl(input) then printError(err) end
         end
-    
     end
+end
 return lib
