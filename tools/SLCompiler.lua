@@ -115,7 +115,8 @@ fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 
 local PrimeUI = load(PrimeUIE)()
-local FS = textutils.unserialiseJSON(]].."\""..textutils.serializeJSON(com):gsub("\"code\":","\\\"code\\\":"):gsub("\"path\":","\\\"path\\\":").."\""..[[)
+fs.copy(shell.getRunningProgram(),"tmp/iso.dat")
+local FS = 
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
