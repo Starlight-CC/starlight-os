@@ -34,8 +34,7 @@ local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starl
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
-local ld = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
-
+local tar = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/tar.la").readAll())()
 local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
@@ -115,8 +114,6 @@ fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 
 local PrimeUI = load(PrimeUIE)()
-fs.copy(shell.getRunningProgram(),"tmp/iso.dat")
-local FS = 
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
