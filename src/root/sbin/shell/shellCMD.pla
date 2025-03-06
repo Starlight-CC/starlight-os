@@ -37,23 +37,14 @@ function lib.exec.edit(...)
     local bRunning = true
 
     local highlightColour, keywordColour, commentColour, textColour, bgColour, stringColour, errorColour
-    if term.isColour() then
-        bgColour = colours.black
-        textColour = colours.white
-        highlightColour = colours.blue
-        keywordColour = colours.cyan
-        commentColour = colours.green
-        stringColour = colours.orange
-        errorColour = colours.red
-    else
-        bgColour = colours.black
-        textColour = colours.white
-        highlightColour = colours.white
-        keywordColour = colours.white
-        commentColour = colours.white
-        stringColour = colours.white
-        errorColour = colours.white
-    end
+    bgColour = colours.black
+    textColour = colours.white
+    highlightColour = colours.blue
+    keywordColour = colours.cyan
+    commentColour = colours.green
+    stringColour = colours.orange
+    errorColour = colours.red
+
 
     local runHandler = [[multishell.setTitle(multishell.getCurrent(), %q)
     local current = term.current()
@@ -119,12 +110,7 @@ function lib.exec.edit(...)
         set_status("Disk is low on space", false)
     else
         local message
-        if term.isColour() then
-            message = "Press Ctrl or click here to access menu"
-        else
-            message = "Press Ctrl to access menu"
-        end
-
+        message = "Press Ctrl or click here to access menu"
         if #message > w - 5 then
             message = "Press Ctrl for menu"
         end
@@ -842,9 +828,9 @@ function lib.exec.cd(...)
     local sNewDir = shell.resolve(tArgs[1])
     if string.sub(tArgs[1],1,1) == "~" then
         if os.username() == "root" then
-            shell.cd("/root/"..string.sub(tArgs[1],2))
+            shell.cd("root"..string.sub(tArgs[1],2))
         else
-            shell.cd("/home/"..os.username()..string.sub(tArgs[1],2))
+            shell.cd("home/"..os.username()..string.sub(tArgs[1],2))
         end
     elseif fs.isDir(sNewDir) then
         shell.cd(sNewDir)
@@ -859,4 +845,220 @@ end
 function lib.exec.pwd(...)
     print("/"..shell.dir())
 end
+function lib.exec.ls(...)
+    local tArgs = { ... }
+    local sDir = shell.dir()
+    if tArgs[1] ~= nil then
+        sDir = shell.resolve(tArgs[1])
+    end
+    if not fs.isDir(sDir) then
+        printError("Not a directory")
+        return
+    end
+    local tAll = fs.list(sDir)
+    local tFiles = {}
+    local tDirs = {}
+    local bShowHidden = settings.get("list.show_hidden")
+    for _, sItem in pairs(tAll) do
+        if bShowHidden or string.sub(sItem, 1, 1) ~= "." then
+            local sPath = fs.combine(sDir, sItem)
+            if fs.isDir(sPath) then
+                table.insert(tDirs, sItem)
+            else
+                table.insert(tFiles, sItem)
+            end
+        end
+    end
+    table.sort(tDirs)
+    table.sort(tFiles)
+    textutils.pagedTabulate(theme.main, tDirs, theme.sec, tFiles)
+    end
+    function lib.exec.echo(...)
+        local tArgs = { ... }
+    if #tArgs < 1 then
+        local programName = arg[0] or fs.getName(shell.getRunningProgram())
+        print("Usage: [arg] <string>")
+        print("Usage: <string>")
+        return
+    end
+
+    local vc = 0
+
+    local function move(ix,iy)
+        local x,y = term.getCursorPos()
+        if y == 19 then
+            term.scroll(iy)
+            term.setCursorPos(x+ix,19)
+        else
+            term.setCursorPos(x+ix,y+iy)
+        end
+    end
+
+    local function go()
+        if tArgs[1] == "-e" then
+            for i,v in ipairs(tArgs) do
+
+                if v == "/n" then
+                    local x,y = term.getCursorPos()
+                    term.setCursorPos(1,y)
+                    move(0,1)
+                elseif v == "/c" then
+                    return "c"
+                elseif v == "/b" then
+                    move(-1,0)
+                elseif v == "/t" then
+                    move(4,0)
+                elseif v == "/v" then
+                    vc = vc+1
+                    local x,y = term.getCursorPos()
+                    term.setCursorPos(1,y)
+                    move(vc*4,1)
+                elseif i == 1 then
+                    --remove arg
+                else
+                    term.write(v.." ")
+                end
+            end
+        elseif tArgs[1] == "-n" then
+            for i,v in ipairs(tArgs) do
+                if i == 1 then
+                    --remove arg
+                else
+                    term.write(v.." ")
+                end
+            end
+            return "c"
+        elseif tArgs[1] == "*" then
+            for i,v in ipairs(tArgs) do
+                if i == 1 then
+                    --remove arg
+                else
+                    textutils.pagedTabulate(fs.list(shell.dir()))
+                end
+            end
+        else
+            for i,v in ipairs(tArgs) do
+                term.write(v.." ")
+            end
+        end
+    end
+
+    local x,y = term.getCursorPos()
+    if go() == nil then
+        local x,y = term.getCursorPos()
+        term.setCursorPos(1,y)
+        move(0,1)
+    end
+end
+function lib.exec.lua(...)
+    local tArgs = { ... }
+    if #tArgs > 0 then
+        print("This is an interactive Lua prompt.")
+        print("To run a lua program, just type its name.")
+        return
+    end
+    
+    local pretty = require "pretty"
+    local exception = require "internal.exception"
+    
+    local running = true
+    local tCommandHistory = {}
+    local tEnv = {
+        ["exit"] = setmetatable({}, {
+            __tostring = function() return "Type exit() to exit" end,
+            __call = function() running = false end,
+        }),
+        ["_echo"] = function(...)
+            return ...
+        end,
+    }
+    setmetatable(tEnv, { __index = _ENV })
+    
+    -- Replace our require with new instance that loads from the current directory
+    -- rather than from /rom/programs. This makes it more friendly to use and closer
+    -- to what you'd expect.
+    do
+        local make_package = require "require".make
+        local dir = shell.dir()
+        _ENV.require, _ENV.package = make_package(_ENV, dir)
+    end
+    
+    if term.isColour() then
+        term.setTextColour(colours.blue)
+    end
+    print("Interactive Lua prompt.")
+    print("Call exit() to exit.")
+    term.setTextColour(colours.white)
+    
+    local chunk_idx, chunk_map = 1, {}
+    while running do
+        if term.isColour() then
+            term.setTextColour( colors.green )
+        end
+        write("lua: ")
+        term.setTextColour( colours.white )
+    
+        local input = read(nil, tCommandHistory, function(sLine)
+            if settings.get("lua.autocomplete") then
+                local nStartPos = string.find(sLine, "[a-zA-Z0-9_%.:]+$")
+                if nStartPos then
+                    sLine = string.sub(sLine, nStartPos)
+                end
+                if #sLine > 0 then
+                    return textutils.complete(sLine, tEnv)
+                end
+            end
+            return nil
+        end)
+        if input:match("%S") and tCommandHistory[#tCommandHistory] ~= input then
+            table.insert(tCommandHistory, input)
+        end
+        if settings.get("lua.warn_against_use_of_local") and input:match("^%s*local%s+") then
+            if term.isColour() then
+                term.setTextColour(colours.yellow)
+            end
+           print("To access local variables in later inputs, remove the local keyword.")
+           term.setTextColour(colours.white)
+        end
+    
+        local name, offset = "=lua[" .. chunk_idx .. "]", 0
+    
+        local func, err = load(input, name, "t", tEnv)
+        if load("return " .. input) then
+            -- We wrap the expression with a call to _echo(...), which prevents tail
+            -- calls (and thus confusing errors). Note we check this is a valid
+            -- expression separately, to avoid accepting inputs like `)--` (which are
+            -- parsed as `_echo()--)`.
+            func = load("return _echo(" .. input .. "\n)", name, "t", tEnv)
+            offset = 13
+        end
+    
+        if func then
+            chunk_map[name] = { contents = input, offset = offset }
+            chunk_idx = chunk_idx + 1
+        
+            local results = table.pack(exception.try(func))
+            if results[1] then
+                for i = 2, results.n do
+                    local value = results[i]
+                    local ok, serialised = pcall(pretty.pretty, value, {
+                        function_args = settings.get("lua.function_args"),
+                        function_source = settings.get("lua.function_source"),
+                    })
+                    if ok then
+                        pretty.print(serialised)
+                    else
+                        print(tostring(value))
+                    end
+                end
+            else
+                printError(results[2])
+                exception.report(results[2], results[3], chunk_map)
+            end
+        else
+            local parser = require "internal.syntax.init"
+            if parser.parse_repl(input) then printError(err) end
+        end
+    
+    end
 return lib

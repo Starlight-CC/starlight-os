@@ -9,6 +9,7 @@ local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
 shell = {} -- api
 sDir = parentShell and parentShell.dir() or os.home() -- Working dir
+sMode = "safe" -- shell mode {safe,cmd,auth,lock}
 local make_package = dofile("sys/modules/require.la").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
@@ -21,6 +22,7 @@ do
     require = env.require
 end
 expect = require "cc.expect"
+local exception = require "internal.exception"
 local commands = require("shellCMD") -- Shell commands
 
 function os.username() return "root" end
@@ -62,32 +64,51 @@ end
 
 function shell.exec(c,...) -- run a command
     local tArgs = ...
-    local dir = fs.combine("/proc",string.sub(c,1,string.find(c,".")-1))
-    if commands.find(c) then
-        local cmd = commands.exec[tostring(c)]
-        local retFunc = cmd(table.unpack(tokenise(tArgs)))
-        pcall(retFunc)
-    elseif fs.exists(c) then
-        fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
-        local env = setmetatable(createShellEnv(dir), { __index = _G })
-        env.arg = table.unpack(tokenise(tArgs))
-        local file, err = fs.open(c, "r")
-        contents = "\n" .. (file.readAll() or "")
-        file.close()
-        local func, err = load(contents, "@" .. c, nil, env)
-    else
-        term.setTextColor(colors.red)
-        print("No command or file found")
+    if c == nil then 
+        return
+    end
+    if sMode ~= "lock" then
+        local dir = fs.combine("/proc",string.sub(c,1,string.find(c,".")-1))
+        if commands.find(c) then
+            sMode = "cmd"
+            local cmd = commands.exec[tostring(c)]
+            local retFunc = cmd(table.unpack(tokenise(tArgs)))
+            pcall(retFunc)
+            sMode = "safe"
+        elseif fs.exists(c) then
+            local args = tokenise(tArgs)
+            fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
+            local env = setmetatable(createShellEnv(dir), { __index = _G })
+            env.arg = table.unpack(args)
+            local file, err = fs.open(c, "r")
+            contents = "\n" .. (file.readAll() or "")
+            file.close()
+            local func, err = load(contents, "@" .. c, nil, env)
+            if settings.get("bios.strict_globals", false) then
+                getmetatable(env).__newindex = function(_, name)
+                    error("Attempt to create global " .. tostring(name), 2)
+                end
+            end
+            local ok, err, co = exception.try(func, table.unpack(args, 1, args.n))
+            if ok then return true end
+        else
+            term.setTextColor(colors.red)
+            print("No command or file found")
+        end
     end
 end
 
 function shell.run(...)
-    local tArgs = tokenise(...)
-    shell.exec(tArgs[1],table.unpack(tArgs,2))
+    if sMode ~= "lock" then
+        local tArgs = tokenise(...)
+        shell.exec(tArgs[1],table.unpack(tArgs,2))
+    end
 end
 
 function shell.exit() -- guess "hint: check the name"
-    Exit = true
+    if sMode == "cmd" then
+        Exit = true
+    end
 end
 
 function shell.resolve(path) -- path handling
