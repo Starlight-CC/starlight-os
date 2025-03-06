@@ -24,8 +24,8 @@ Edits are filed under GNU General Public License.
 local function printUsage()
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
     print("Usage:")
-    print(programName .. " <url> [filename]")
-    print(programName .. " run <url>")
+    print("wget <url> [filename]")
+    print("wget run <url>")
 end
 
 local tArgs = { ... }
