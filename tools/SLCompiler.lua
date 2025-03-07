@@ -108,15 +108,15 @@ local out = getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll()
-fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
+fh.write([[local copyR = ]].."[["..libDef.CompressDeflate("",Copyright).."]]"..[[
     
-local PrimeUIE = [=[]]..PrimeUIE..[[]=]
-
-local PrimeUI = load(PrimeUIE)()
+local PrimeUIE = [=[]]..libDef.CompressDeflate("",PrimeUIE)..[[]=]
 
 local libDefE = [=[]]..LibDeflateE..[[]=]
 
 local libDef = load(libDefE)()
+
+local PrimeUI = load(libDef.DecompressDeflate("",PrimeUIE))()
 
 FS = textutils.unserialize([=[]]..textutils.serialize(out)..[[]=])
 function err(s)
@@ -137,7 +137,7 @@ PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
 PrimeUI.label(term.current(),2,y-2,"Do you accept?"..string.rep(" ",x-16), colors.white, colors.blue)
 PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
 local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
-PrimeUI.drawText(scroller, copyR, true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, libDef.DecompressDeflate("",copyR), true, colors.white, colors.blue)
 PrimeUI.keyAction(keys.y, "done")
 PrimeUI.keyAction(keys.n, "Terminate")
 local _,ac = PrimeUI.run()
