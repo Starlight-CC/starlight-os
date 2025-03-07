@@ -69,7 +69,7 @@ function getFolder(a,dir)
             info("LNK: "..API..string.sub(v["path"],#VER+7))
             local file = http.get(v["download_url"])
             info("COMP: "..string.sub(v["path"],#VER+7))
-            com[tostring(string.sub(v["path"],#VER+7))] = libDef.CompressDeflate(file.readAll(),"")
+            com[tostring(string.sub(v["path"],#VER+7))] = libDef.CompressDeflate("",tostring(file.readAll()))
             ok(string.sub(v["path"],#VER+7))
         elseif v["type"] == "dir" then
             getFolder(API,v["path"])
@@ -191,7 +191,7 @@ local function installFs(l)
     for i,v in pairs(l) do
         info("Opening"..i)
         local file = fs.open(i,"w")
-        file.write(libDef.DecompressDeflate(v,""))
+        file.write(libDef.DecompressDeflate("",v))
         file.close()
         ok(i)
     end
