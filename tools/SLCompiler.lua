@@ -189,11 +189,11 @@ local exceptions = {
 local function installFs(l)
     info("Installing OS")
     for i,v in pairs(l) do
-        info("Opening "..i)
+        info("Opn: "..i)
         local file = fs.open(i,"w")
         file.write(libDef.DecompressDeflate("",v))
         file.close()
-        ok(i)
+        ok("ist: "..i)
     end
 end
 term.setTextColor(colors.purple)
