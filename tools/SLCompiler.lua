@@ -26,7 +26,7 @@ local pullEvent = os.pullEvent
 
 local oldRQ = require
 local pgk_env = setmetatable({}, { __index = _ENV })
-pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main")
+pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/modules/main") or dofile("sys/modules/require.lua").make(pgk_env, "sys/modules")
 local require = pgk_env.require
 _G.require = require
 local VER = "src"
