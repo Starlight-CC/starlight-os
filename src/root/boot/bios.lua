@@ -12,12 +12,12 @@ local ok, err = pcall( function()
                 print("SL.shutdownService")
                 os.run({},"/sys/serv/shutdown.lua")
             end
-            print( "Internal error" )
+            print( "Kernel panic ".._G.KPE )
             print( "Press any key to continue" )
             os.pullEvent( "key" )
             term.setTextColor(colors.green)
-            print("SL.shutdownService")
-            os.run( {}, "/sys/serv/shutdown.lua" )
+            print("SL.rebootService")
+            os.run( {}, "/sys/serv/reboot.lua" )
         end,
         function()
             while true do
