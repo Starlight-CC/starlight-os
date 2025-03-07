@@ -110,13 +110,13 @@ local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starli
 local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll()
 fh.write([[local copyR = [=[]]..libDef.CompressDeflate("",Copyright)..[[]=]
     
-local PrimeUIE = [=[]]..libDef.CompressDeflate("",PrimeUIE)..[[]=]
+local PrimeUIE = [=[]]..PrimeUIE..[[]=]
 
 local libDefE = [=[]]..LibDeflateE..[[]=]
 
 local libDef = load(libDefE)()
 
-local PrimeUI = load(libDef.DecompressDeflate("",PrimeUIE))()
+local PrimeUI = load(PrimeUIE)()
 
 FS = textutils.unserialize([=[]]..textutils.serialize(out)..[[]=])
 function err(s)

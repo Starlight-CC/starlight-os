@@ -15,7 +15,8 @@
             "name":"GNU GPL3",
             "url":"https://www.gnu.org/licenses/lgpl-3.0.txt"
         },
-        "repo":"https://github.com/example/example"
+        "repo":"https://github.com/example/example",
+        "pid":"0"
     },
     "fs": {
         "bin":[
