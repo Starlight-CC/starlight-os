@@ -34,7 +34,7 @@ local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starl
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
-local tar = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/tar.la").readAll())()
+local LibDeflate = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
 local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
@@ -69,10 +69,7 @@ function getFolder(a,dir)
             info("LNK: "..API..string.sub(v["path"],#VER+7))
             local file = http.get(v["download_url"])
             info("COMP: "..string.sub(v["path"],#VER+7))
-            local tmp = {{}}
-            tmp[1]["path"] = string.sub(v["path"],#VER+7)
-            tmp[1]["code"] = file.readAll()
-            table.insert(com,tmp)
+            com[tostring(string.sub(v["path"],#VER+7))] = file.readAll()
             ok(string.sub(v["path"],#VER+7))
         elseif v["type"] == "dir" then
             getFolder(API,v["path"])
@@ -80,6 +77,7 @@ function getFolder(a,dir)
             error("Install ERROR",0)
         end
     end
+    return com
 end
 
 term.setTextColor(colors.white)
@@ -106,7 +104,7 @@ if ac == "Terminate" then
 end
 
 term.clear()
-getFolder(API,VER.."/root/")
+local out = getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
@@ -114,6 +112,20 @@ fh.write([[local copyR = ]].."[["..Copyright.."]]"..[[
 local PrimeUIE = ]].."[["..PrimeUIE.."]]"..[[
 
 local PrimeUI = load(PrimeUIE)()
+
+FS = textutils.unserialize([=[]]..textutils.serialize(out)..[[]=])
+function err(s)
+    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    print(s)
+end
+function info(s)
+    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
+    print(s)
+end
+function ok(s)
+    term.blit("[ OK ] ","7755777","bbbbbbb")
+    print(s)
+end
 PrimeUI.clear()
 local x,y = term.getSize()
 PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
@@ -170,10 +182,13 @@ local exceptions = {
     ["sbin"] = true
 }
 local function installFs(l)
-    for i,v in ipairs(l) do
-        local file = fs.open(v["path"],"w")
-        file.write(v["code"])
+    info("Installing OS")
+    for i,v in pairs(l) do
+        info("Opening"..i)
+        local file = fs.open(i,"w")
+        file.write(v)
         file.close()
+        ok(i)
     end
 end
 term.setTextColor(colors.purple)
@@ -181,6 +196,7 @@ print("cleaning drive")
 deleteFiles("/",exceptions)
 term.setTextColor(colors.white)
 print("Installing")
+info("formating XFS")
 installFs(FS)
 term.setTextColor(colors.gray)
 shell.run("tmp/shellSet.lua")
