@@ -34,7 +34,7 @@ local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starl
 local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
-local libDef = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
+local LibDeflate = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
 local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
@@ -69,7 +69,7 @@ function getFolder(a,dir)
             info("LNK: "..API..string.sub(v["path"],#VER+7))
             local file = http.get(v["download_url"])
             info("COMP: "..string.sub(v["path"],#VER+7))
-            com[tostring(string.sub(v["path"],#VER+7))] = libDef.CompressDeflate(file.readAll(),"")
+            com[tostring(string.sub(v["path"],#VER+7))] = file.readAll()
             ok(string.sub(v["path"],#VER+7))
         elseif v["type"] == "dir" then
             getFolder(API,v["path"])
@@ -191,7 +191,7 @@ local function installFs(l)
     for i,v in pairs(l) do
         info("Opening"..i)
         local file = fs.open(i,"w")
-        file.write(libDef.DecompressDeflate(v,""))
+        file.write(v)
         file.close()
         ok(i)
     end
