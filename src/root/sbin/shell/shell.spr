@@ -75,22 +75,19 @@ function shell.exec(c,...) -- run a command
             local retFunc = cmd(table.unpack(tokenise(tArgs)))
             pcall(retFunc)
             sMode = "safe"
-        elseif fs.exists(c) then
+        elseif fs.exists(fs.combine(shell.dir(),c)) then
+            cmd = fs.combine(shell.dir(),c)
             local args = tokenise(tArgs)
             fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
             local env = setmetatable(createShellEnv(dir), { __index = _G })
             env.arg = table.unpack(args)
-            local file, err = fs.open(c, "r")
-            contents = "\n" .. (file.readAll() or "")
-            file.close()
-            local func, err = load(contents, "@" .. c, nil, env)
+            local func, err = loadfile(cmd, env)
             if settings.get("bios.strict_globals", false) then
                 getmetatable(env).__newindex = function(_, name)
                     error("Attempt to create global " .. tostring(name), 2)
                 end
             end
-            local ok, err, co = exception.try(func, table.unpack(args, 1, args.n))
-            if ok then return true end
+            exception.try(func,table.unpack(args))
         else
             term.setTextColor(colors.red)
             print("No command or file found")
@@ -172,6 +169,10 @@ for details type 'man c'.
             if result == nil or event[1] == result or event[1] == "terminate" then
                 ok, result = coroutine.resume(co, table.unpack(event, 1, event.n))
                 if not ok then error(result, 0) end
+            end
+            if os and os.pullEvent then
+                os.queueEvent("nosleep")
+                os.pullEvent()
             end
         end
 

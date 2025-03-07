@@ -298,3 +298,4 @@ if fs.exists( ".settings" ) then
 end
 
 os.run({},"sbin/shell/shell.spr")
+_G.KPE = "Root Shell Failed To Recover"

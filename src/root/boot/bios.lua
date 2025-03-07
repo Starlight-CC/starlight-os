@@ -12,7 +12,7 @@ local ok, err = pcall( function()
                 print("SL.shutdownService")
                 os.run({},"/sys/serv/shutdown.lua")
             end
-            print( "Kernel panic ".._G.KPE )
+            print( "Kernel panic: ".._G.KPE )
             print( "Press any key to continue" )
             os.pullEvent( "key" )
             term.setTextColor(colors.green)
