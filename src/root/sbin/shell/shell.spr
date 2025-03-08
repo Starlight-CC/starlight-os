@@ -81,13 +81,7 @@ function shell.exec(c,...) -- run a command
             fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
             local env = setmetatable(createShellEnv(fs.getDir(cmd)), { __index = _G })
             env.arg = table.unpack(args)
-            local func, err = loadfile(cmd, env)
-            if settings.get("bios.strict_globals", false) then
-                getmetatable(env).__newindex = function(_, name)
-                    error("Attempt to create global " .. tostring(name), 2)
-                end
-            end
-            exception.try(func,table.unpack(args))
+            os.run(env,cmd,args)
         else
             term.setTextColor(colors.red)
             print("No command or file found")
