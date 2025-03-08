@@ -108,7 +108,8 @@ local out = getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll()
-fh.write([[local copyR = [=[]]..Copyright..[[]=]
+fh.write([[_G.require = require
+local copyR = [=[]]..Copyright..[[]=]
     
 local PrimeUIE = [=[]]..PrimeUIE..[[]=]
 
