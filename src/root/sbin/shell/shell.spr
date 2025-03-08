@@ -103,8 +103,13 @@ function shell.run(...)
 end
 
 function shell.exit() -- guess "hint: check the name"
-    if sMode == "cmd" then
-        Exit = true
+    if parentShell == nil then
+        term.setTextColor(colors.red)
+        print("Top level shell cannot be terminated")
+    else
+        if sMode == "cmd" then
+            Exit = true
+        end
     end
 end
 

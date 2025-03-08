@@ -1482,5 +1482,50 @@ function lib.exec.man(...)
     term.setCursorPos(1, 1)
     term.clear()
 end
-
+function lib.exec.delete(...)
+    local args = table.pack(...)
+    if args.n < 1 then
+        print("Usage: delete <paths>")
+        print("Usage: rm <paths>")
+        return
+    end
+    for i = 1, args.n do
+        local files = fs.find(shell.resolve(args[i]))
+        if #files > 0 then
+            for _, file in ipairs(files) do
+                if fs.isReadOnly(file) then
+                    printError("Cannot delete read-only file /" .. file)
+                elseif fs.isDriveRoot(file) then
+                    printError("Cannot delete mount /" .. file)
+                    if fs.isDir(file) then
+                        print("To delete its contents run rm /" .. fs.combine(file, "*"))
+                    end
+                else
+                    local ok, err = pcall(fs.delete, file)
+                    if not ok then
+                        printError((err:gsub("^pcall: ", "")))
+                    end
+                end
+            end
+        else
+            printError(args[i] .. ": No matching files")
+        end
+    end
+end
+function lib.exec.rm(...)
+    lib.exec.delete(...)
+end
+function lib.exec.touch(...)
+    args = {...}
+    for i in args do
+        f = fs.open(i,"w")
+        f.close()
+    end
+end
+function lib.exec.shell(...)
+    dofile("sbin/shell/shell.spr")
+end
+function lib.exec.sh(...)
+    lib.exec.shell(...)
+end
 return lib
