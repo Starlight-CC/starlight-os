@@ -79,7 +79,7 @@ function shell.exec(c,...) -- run a command
             cmd = fs.combine(shell.dir(),c)
             local args = tokenise(tArgs)
             fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
-            local env = setmetatable(createShellEnv(dir), { __index = _G })
+            local env = setmetatable(createShellEnv(fs.getDir(cmd)), { __index = _G })
             env.arg = table.unpack(args)
             local func, err = loadfile(cmd, env)
             if settings.get("bios.strict_globals", false) then
@@ -169,10 +169,6 @@ for details type 'man c'.
             if result == nil or event[1] == result or event[1] == "terminate" then
                 ok, result = coroutine.resume(co, table.unpack(event, 1, event.n))
                 if not ok then error(result, 0) end
-            end
-            if os and os.pullEvent then
-                os.queueEvent("nosleep")
-                os.pullEvent()
             end
         end
 
