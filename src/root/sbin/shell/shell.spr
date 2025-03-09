@@ -8,8 +8,8 @@ local parentShell = shell -- prev shell if nil make new shell
 local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
 shell = {} -- api
-sDir = parentShell and parentShell.dir() or os.home() -- Working dir
-sMode = "safe" -- shell mode {safe,cmd,auth,lock}
+local sDir = parentShell and parentShell.dir() or os.home() -- Working dir
+local sMode = "safe" -- shell mode {safe,cmd,auth,lock}
 local make_package = dofile("sys/modules/require.la").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }

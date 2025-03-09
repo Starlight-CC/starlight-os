@@ -1522,7 +1522,7 @@ function lib.exec.touch(...)
             f = fs.open(v,"w")
             f.close()
         else
-            f = fs.open(shell.dir()..v,"w")
+            f = fs.open(fs.combine(shell.dir(),v),"w")
             f.close()
         end
     end
