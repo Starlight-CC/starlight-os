@@ -816,7 +816,6 @@ end
 function lib.exec.cd(...)
     local tArgs = { ... }
     if #tArgs < 1 then
-        local programName = arg[0] or fs.getName(shell.getRunningProgram())
         print("Usage: cd <path>")
         print("shortcuts:")
         print("    ~ = user's home dir")
@@ -1102,7 +1101,6 @@ function lib.exec.cp(...)
 end
 function lib.exec.wget(...)
     local function printUsage()
-        local programName = arg[0] or fs.getName(shell.getRunningProgram())
         print("Usage:")
         print("wget <url> [filename]")
         print("wget run <url>")
@@ -1518,13 +1516,8 @@ end
 function lib.exec.touch(...)
     args = {...}
     for _,v in ipairs(args) do
-        if string.sub(v,1,1) == "/" then
-            f = fs.open(v,"w")
-            f.close()
-        else
-            f = fs.open(fs.combine(shell.dir(),v),"w")
-            f.close()
-        end
+        f = fs.open(shell.resolve(v),"w")
+        f.close()
     end
 end
 function lib.exec.shell(...)
