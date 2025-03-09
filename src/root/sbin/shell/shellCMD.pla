@@ -1517,8 +1517,8 @@ function lib.exec.rm(...)
 end
 function lib.exec.touch(...)
     args = {...}
-    for i in args do
-        f = fs.open(i,"w")
+    for _,v in ipairs(args) do
+        f = fs.open(v,"w")
         f.close()
     end
 end
