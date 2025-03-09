@@ -1521,9 +1521,98 @@ function lib.exec.touch(...)
     end
 end
 function lib.exec.shell(...)
-    dofile("sbin/shell/shell.spr")
+    loadfile("sbin/shell/shell.spr")()
 end
 function lib.exec.sh(...)
     lib.exec.shell(...)
+end
+function lib.exec.clear(...)
+    term.clear()
+    term.setCursorPos(1, 1)
+end
+function lib.exec.clr(...)
+    lib.exec.clear(...)
+end
+function lib.exec.move(...)
+    local tArgs = { ... }
+    if #tArgs < 2 then
+        print("Usage: move <source> <destination>")
+        print("Usage: mv <source> <destination>")
+        return
+    end
+    
+    local sSource = shell.resolve(tArgs[1])
+    local sDest = shell.resolve(tArgs[2])
+    local tFiles = fs.find(sSource)
+    
+    local function sanity_checks(source, dest)
+        if fs.exists(dest) then
+            printError("Destination exists")
+            return false
+        elseif fs.isReadOnly(dest) then
+            printError("Destination is read-only")
+            return false
+        elseif fs.isDriveRoot(source) then
+            printError("Cannot move mount /" .. source)
+            return false
+        elseif fs.isReadOnly(source) then
+            printError("Cannot move read-only file /" .. source)
+            return false
+        end
+        return true
+    end
+    
+    if #tFiles > 0 then
+        for _, sFile in ipairs(tFiles) do
+            if fs.isDir(sDest) then
+                local dest = fs.combine(sDest, fs.getName(sFile))
+                if sanity_checks(sFile, dest) then
+                    fs.move(sFile, dest)
+                end
+            elseif #tFiles == 1 then
+                if sanity_checks(sFile, sDest) then
+                    fs.move(sFile, sDest)
+                end
+            else
+                printError("Cannot overwrite file multiple times")
+                return
+            end
+        end
+    else
+        printError("No matching files")
+    end    
+end
+function lib.exec.mv(...)
+    lib.exec.move(...)
+end
+function lib.exec.cat(...)
+    args = {...}
+    for _,v in ipairs(args) do
+        f = fs.open(shell.resolve(v),"r")
+        print(f.readAll())
+        f.close()
+    end
+end
+function lib.exec.mkdir(...)
+    local tArgs = { ... }
+
+    if #tArgs < 1 then
+        print("Usage: mkdir <paths>")
+        return
+    end
+
+    for _, v in ipairs(tArgs) do
+        local sNewDir = shell.resolve(v)
+        if fs.exists(sNewDir) and not fs.isDir(sNewDir) then
+            printError(v .. ": Destination exists")
+        elseif fs.isReadOnly(sNewDir) then
+            printError(v .. ": Access denied")
+        else
+            fs.makeDir(sNewDir)
+        end
+    end
+end
+function lib.exec.whoami(...)
+    print(os.username())
 end
 return lib

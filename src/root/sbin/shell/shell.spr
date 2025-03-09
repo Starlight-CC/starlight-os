@@ -4,12 +4,13 @@ theme.sec = colors.purple
 
 
 local multishell = multishell -- detects if it is a advanced computer
-local parentShell = shell -- prev shell if nil make new shell
+local parentShell = _G.shell -- prev shell if nil make new shell
 local parentTerm = term.current() -- term handle
 local aliases = {} -- alias table
-shell = {} -- api
+_G.shell = {} -- api
 local sDir = parentShell and parentShell.dir() or os.home() -- Working dir
 local sMode = "safe" -- shell mode {safe,cmd,auth,lock}
+local Exit = false
 local make_package = dofile("sys/modules/require.la").make -- custom require
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
@@ -103,6 +104,7 @@ function shell.exit() -- guess "hint: check the name"
     else
         if sMode == "cmd" then
             Exit = true
+            _G.shell = parentShell
         end
     end
 end
