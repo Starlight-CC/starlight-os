@@ -1518,8 +1518,13 @@ end
 function lib.exec.touch(...)
     args = {...}
     for _,v in ipairs(args) do
-        f = fs.open(v,"w")
-        f.close()
+        if string.sub(v,1,1) == "/" then
+            f = fs.open(v,"w")
+            f.close()
+        else
+            f = fs.open(shell.dir()..v,"w")
+            f.close()
+        end
     end
 end
 function lib.exec.shell(...)
