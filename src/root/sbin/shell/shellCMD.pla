@@ -1615,4 +1615,13 @@ end
 function lib.exec.whoami(...)
     print(os.username())
 end
+--[[function lib.exec.sudo(...)
+    local suc,out = pcall(os.verifyLoginAttempt,"root")
+    if not suc then 
+        printError(out) 
+    else
+        local shellKey = os.login("root",out)
+        shell.initalize(shellKey)
+    end
+end]]
 return lib
