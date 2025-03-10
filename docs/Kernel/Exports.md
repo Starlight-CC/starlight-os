@@ -12,8 +12,6 @@ exports
         kernel{}
         os{}
         io{}
-        string{}
         fs{}
         term{}
         debug{}
-        table{}

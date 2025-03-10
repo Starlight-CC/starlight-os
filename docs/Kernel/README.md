@@ -1,3 +1,3 @@
 # Kernel
 ---
-all documentation related to the kernel is in this folder
+The kernel is the heart / brain of a operating system it is in all operating systems. 
