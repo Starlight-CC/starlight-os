@@ -1,10 +1,6 @@
-### specs
-
-Customizable block and space limt / disks
+# Custom file formats
 ---
-## Custom file formats
-
-.vi "equall to .iso"
+.vi "equal to .iso"
 
 .spr "Starlight PRogram"
 
