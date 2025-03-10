@@ -63,7 +63,7 @@ local ok, err = pcall( function()
     parallel.waitForAny( 
         function()
             if term.isColour() then
-                os.run({}, "/sbin/shell/shell.lua")
+                os.run({}, "/sbin/shell/shell.spr")
             else
                 printError("Use advanced computer...")
                 sleep(3)
