@@ -5,7 +5,7 @@ local ok, err = pcall( function()
             if term.isColour() then
                 os.run({}, "/boot/kernel.lua")
             else
-                printError("Use advanced computer...")
+                printError("Sorry this OS is only for advanced computers")
                 sleep(3)
                 term.setTextColor(colors.green)
                 print("SL.shutdownService")
