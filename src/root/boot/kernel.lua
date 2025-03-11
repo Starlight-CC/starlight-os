@@ -71,7 +71,6 @@ local ok, err = pcall( function()
                 print("SL.shutdownService")
                 os.run({},"/sys/serv/shutdown.lua")
             end
-            print( "Internal error" )
             print( "Press any key to continue" )
             os.pullEvent( "key" )
             term.setTextColor(colors.green)
@@ -84,5 +83,4 @@ local ok, err = pcall( function()
             end
         end 
     )
-    
 end )
