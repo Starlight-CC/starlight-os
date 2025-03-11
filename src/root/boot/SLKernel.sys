@@ -1,2 +1,20 @@
+local internal = _G
+_G = {}
+local knownENV = "unknown"
+if internal._CC_DEFAULT_SETTINGS then
+    knownENV = "CC: Tweaked"
+    if internal.term.setGraphicsMode then
+        knownENV = "CraftOS"
+    end
+elseif internal.screen then
+    knownENV = "Stormworks"
+end
+local _GExeptions = {}
+for i,v in pairs(internal) do
+    if type(v) == "function" then
+        _G[tostring(i)] = v
+    end
+end
 kernel = {}
 kernel.exports = {}
+kernel.syscall = {}
