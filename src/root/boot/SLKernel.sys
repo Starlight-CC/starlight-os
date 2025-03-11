@@ -66,7 +66,7 @@ function kernel.syscall.reboot()
         coroutine.yield()
     end
 end
-kernel.exports = {}
+kernel.exports = _G
 -- Install globals and add some sneaky ways to terminate/control the process
 function kernel.exports.sleep( nTime )
     if nTime ~= nil and type( nTime ) ~= "number" then
@@ -472,4 +472,6 @@ kernel.exports.dofile = function( _sFile )
         error( e, 2 )
     end
 end
+
+local expect = dofile("/sys/modules/expect.la")
 

@@ -1,4 +1,4 @@
 kernel.syscall.requestGloabal("os",{})
 kernel.syscall.requestGloabal("os.pullEvent",kernel.syscall.pullEvent)
 kernel.syscall.requestGloabal("os.pullEventRaw",kernel.syscall.pullEventRaw)
-kernel.syscall.requestGloabal
+kernel.syscall.requestGloabal()
