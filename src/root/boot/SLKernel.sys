@@ -49,6 +49,10 @@ function kernel.syscall.pullEvent( sFilter )
     return table.unpack( eventData, 1, eventData.n )
 end
 
+function kernel.syscall.queueEvent(s)
+    internal.os.queueEvent(s)
+end
+
 local nativeShutdown = internal.os.shutdown
 function kernel.syscall.shutdown()
     save()
@@ -106,7 +110,11 @@ kernel.dofile = function( _sFile )
 end
 
 function kernel.syscall.requestGloabal(rg,v)
-    _TG[rg] = v
+    if not isin(rg,_G) then
+        _TG[rg] = v
+    end
+end
+
 kernel.exports = loadfile("/boot/sys/exports.sys")(internal)
 local expect = dofile("/sys/modules/expect.la")
 
