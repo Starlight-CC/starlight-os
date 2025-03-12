@@ -109,16 +109,18 @@ kernel.dofile = function( _sFile )
     end
 end
 
-function kernel.syscall.requestGloabal(rg,v)
-    if not isin(rg,_G) then
-        _TG[rg] = v
-    end
+local _GE
+local _TG = {}
+function kernel.syscall.setStaticGloabal(g)
+    _TG[g] = _G[g]
 end
-
-kernel.exports = loadfile("/boot/sys/exports.sys")(internal)
-local expect = dofile("/sys/modules/expect.la")
-
-local _TG = _G
+kernel.exports = kernel.loadfile("/boot/sys/exports.sys")(internal)
+local expect = kernel.dofile("/sys/modules/expect.la")
+kernel.syscall.setStaticGloabal("kernel")
 
 while true do
-    _G = _TG
+    for i,v in pairs(_TG) do
+        _G[i] = v
+    end
+
+
