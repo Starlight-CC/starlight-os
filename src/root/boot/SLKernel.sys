@@ -9,7 +9,7 @@ if internal._CC_DEFAULT_SETTINGS then
 end
 
 if knownENV ~= "CraftOS" then
-    error("This OS is for CraftOS-PC, we plan to make more compatability in the future.")
+    error("This OS is for CraftOS-PC, we plan to make more compatability in the future. Detected ENV: "..knownENV)
 end
 
 local function isin(e,t)
@@ -66,378 +66,10 @@ function kernel.syscall.reboot()
         coroutine.yield()
     end
 end
-kernel.exports = _G
+
+kernel.coroutine = internal.coroutine
+
 -- Install globals and add some sneaky ways to terminate/control the process
-function kernel.exports.sleep( nTime )
-    if nTime ~= nil and type( nTime ) ~= "number" then
-        error( "bad argument #1 (expected number, got " .. type( nTime ) .. ")", 2 ) 
-    end
-    local timer = internal.os.startTimer( nTime or 0 )
-    repeat
-        local sEvent, param = internal.os.pullEvent( "timer" )
-    until param == timer
-end
-
-function kernel.exports.write( sText )
-    coroutine.yield()
-    if type( sText ) ~= "string" and type( sText ) ~= "number" then
-        error( "bad argument #1 (expected string or number, got " .. type( sText ) .. ")", 2 ) 
-    end
-
-    local w,h = internal.term.getSize()        
-    local x,y = internal.term.getCursorPos()
-
-    local nLinesPrinted = 0
-    local function newLine()
-        if y + 1 <= h then
-            internal.term.setCursorPos(1, y + 1)
-        else
-            internal.term.setCursorPos(1, h)
-            internal.term.scroll(1)
-        end
-        x, y = internal.term.getCursorPos()
-        nLinesPrinted = nLinesPrinted + 1
-    end
-    
-    -- Print the line with proper word wrapping
-    while string.len(sText) > 0 do
-        local whitespace = string.match( sText, "^[ \t]+" )
-        if whitespace then
-            -- Print whitespace
-            internal.term.write( whitespace )
-            x,y = internal.term.getCursorPos()
-            sText = string.sub( sText, string.len(whitespace) + 1 )
-        end
-        
-        local newline = string.match( sText, "^\n" )
-        if newline then
-            -- Print newlines
-            newLine()
-            sText = string.sub( sText, 2 )
-        end
-        
-        local text = string.match( sText, "^[^ \t\n]+" )
-        if text then
-            sText = string.sub( sText, string.len(text) + 1 )
-            if string.len(text) > w then
-                -- Print a multiline word                
-                while string.len( text ) > 0 do
-                    if x > w then
-                        newLine()
-                    end
-                    internal.term.write( text )
-                    text = string.sub( text, (w-x) + 2 )
-                    x,y = internal.term.getCursorPos()
-                end
-            else
-                -- Print a word normally
-                if x + string.len(text) - 1 > w then
-                    newLine()
-                end
-                internal.term.write( text )
-                x,y = internal.term.getCursorPos()
-            end
-        end
-    end
-    
-    return nLinesPrinted
-end
-
-function kernel.exports.print( ... )
-    local nLinesPrinted = 0
-    local nLimit = select("#", ... )
-    for n = 1, nLimit do
-        local s = tostring( select( n, ... ) )
-        if n < nLimit then
-            s = s .. "\t"
-        end
-        nLinesPrinted = nLinesPrinted + write( s )
-    end
-    nLinesPrinted = nLinesPrinted + write( "\n" )
-    return nLinesPrinted
-end
-
-function kernel.exports.printError( ... )
-    local oldColour
-    if internal.term.isColour() then
-        oldColour = internal.term.getTextColour()
-        internal.term.setTextColour( colors.red )
-    end
-    print( ... )
-    if internal.term.isColour() then
-        internal.term.setTextColour( oldColour )
-    end
-end
-
-function kernel.exports.read( _sReplaceChar, _tHistory, _fnComplete, _sDefault )
-    if _sReplaceChar ~= nil and type( _sReplaceChar ) ~= "string" then
-        error( "bad argument #1 (expected string, got " .. type( _sReplaceChar ) .. ")", 2 ) 
-    end
-    if _tHistory ~= nil and type( _tHistory ) ~= "table" then
-        error( "bad argument #2 (expected table, got " .. type( _tHistory ) .. ")", 2 ) 
-    end
-    if _fnComplete ~= nil and type( _fnComplete ) ~= "function" then
-        error( "bad argument #3 (expected function, got " .. type( _fnComplete ) .. ")", 2 ) 
-    end
-    if _sDefault ~= nil and type( _sDefault ) ~= "string" then
-        error( "bad argument #4 (expected string, got " .. type( _sDefault ) .. ")", 2 ) 
-    end
-    internal.term.setCursorBlink( true )
-
-    local sLine
-    if type( _sDefault ) == "string" then
-        sLine = _sDefault
-    else
-        sLine = ""
-    end
-    local nHistoryPos
-    local nPos = #sLine
-    if _sReplaceChar then
-        _sReplaceChar = string.sub( _sReplaceChar, 1, 1 )
-    end
-
-    local tCompletions
-    local nCompletion
-    local function recomplete()
-        if _fnComplete and nPos == string.len(sLine) then
-            tCompletions = _fnComplete( sLine )
-            if tCompletions and #tCompletions > 0 then
-                nCompletion = 1
-            else
-                nCompletion = nil
-            end
-        else
-            tCompletions = nil
-            nCompletion = nil
-        end
-    end
-
-    local function uncomplete()
-        tCompletions = nil
-        nCompletion = nil
-    end
-
-    local w = internal.term.getSize()
-    local sx = internal.term.getCursorPos()
-
-    local function redraw( _bClear )
-        local nScroll = 0
-        if sx + nPos >= w then
-            nScroll = (sx + nPos) - w
-        end
-
-        local cx,cy = internal.term.getCursorPos()
-        internal.term.setCursorPos( sx, cy )
-        local sReplace = (_bClear and " ") or _sReplaceChar
-        if sReplace then
-            internal.term.write( string.rep( sReplace, math.max( string.len(sLine) - nScroll, 0 ) ) )
-        else
-            internal.term.write( string.sub( sLine, nScroll + 1 ) )
-        end
-
-        if nCompletion then
-            local sCompletion = tCompletions[ nCompletion ]
-            local oldText, oldBg
-            if not _bClear then
-                oldText = internal.term.getTextColor()
-                oldBg = internal.term.getBackgroundColor()
-                internal.term.setTextColor( colors.white )
-                internal.term.setBackgroundColor( colors.gray )
-            end
-            if sReplace then
-                internal.term.write( string.rep( sReplace, string.len( sCompletion ) ) )
-            else
-                internal.term.write( sCompletion )
-            end
-            if not _bClear then
-                internal.term.setTextColor( oldText )
-                internal.term.setBackgroundColor( oldBg )
-            end
-        end
-
-        internal.term.setCursorPos( sx + nPos - nScroll, cy )
-    end
-    
-    local function clear()
-        redraw( true )
-    end
-
-    recomplete()
-    redraw()
-
-    local function acceptCompletion()
-        if nCompletion then
-            -- Clear
-            clear()
-
-            -- Find the common prefix of all the other suggestions which start with the same letter as the current one
-            local sCompletion = tCompletions[ nCompletion ]
-            sLine = sLine .. sCompletion
-            nPos = string.len( sLine )
-
-            -- Redraw
-            recomplete()
-            redraw()
-        end
-    end
-    while true do
-        local sEvent, param = internal.os.pullEvent()
-        if sEvent == "char" then
-            -- Typed key
-            clear()
-            sLine = string.sub( sLine, 1, nPos ) .. param .. string.sub( sLine, nPos + 1 )
-            nPos = nPos + 1
-            recomplete()
-            redraw()
-
-        elseif sEvent == "paste" then
-            -- Pasted text
-            clear()
-            sLine = string.sub( sLine, 1, nPos ) .. param .. string.sub( sLine, nPos + 1 )
-            nPos = nPos + string.len( param )
-            recomplete()
-            redraw()
-
-        elseif sEvent == "key" then
-            if param == keys.enter then
-                -- Enter
-                if nCompletion then
-                    clear()
-                    uncomplete()
-                    redraw()
-                end
-                break
-                
-            elseif param == keys.left then
-                -- Left
-                if nPos > 0 then
-                    clear()
-                    nPos = nPos - 1
-                    recomplete()
-                    redraw()
-                end
-                
-            elseif param == keys.right then
-                -- Right                
-                if nPos < string.len(sLine) then
-                    -- Move right
-                    clear()
-                    nPos = nPos + 1
-                    recomplete()
-                    redraw()
-                else
-                    -- Accept autocomplete
-                    acceptCompletion()
-                end
-
-            elseif param == keys.up or param == keys.down then
-                -- Up or down
-                if nCompletion then
-                    -- Cycle completions
-                    clear()
-                    if param == keys.up then
-                        nCompletion = nCompletion - 1
-                        if nCompletion < 1 then
-                            nCompletion = #tCompletions
-                        end
-                    elseif param == keys.down then
-                        nCompletion = nCompletion + 1
-                        if nCompletion > #tCompletions then
-                            nCompletion = 1
-                        end
-                    end
-                    redraw()
-
-                elseif _tHistory then
-                    -- Cycle history
-                    clear()
-                    if param == keys.up then
-                        -- Up
-                        if nHistoryPos == nil then
-                            if #_tHistory > 0 then
-                                nHistoryPos = #_tHistory
-                            end
-                        elseif nHistoryPos > 1 then
-                            nHistoryPos = nHistoryPos - 1
-                        end
-                    else
-                        -- Down
-                        if nHistoryPos == #_tHistory then
-                            nHistoryPos = nil
-                        elseif nHistoryPos ~= nil then
-                            nHistoryPos = nHistoryPos + 1
-                        end                        
-                    end
-                    if nHistoryPos then
-                        sLine = _tHistory[nHistoryPos]
-                        nPos = string.len( sLine ) 
-                    else
-                        sLine = ""
-                        nPos = 0
-                    end
-                    uncomplete()
-                    redraw()
-
-                end
-
-            elseif param == keys.backspace then
-                -- Backspace
-                if nPos > 0 then
-                    clear()
-                    sLine = string.sub( sLine, 1, nPos - 1 ) .. string.sub( sLine, nPos + 1 )
-                    nPos = nPos - 1
-                    recomplete()
-                    redraw()
-                end
-
-            elseif param == keys.home then
-                -- Home
-                if nPos > 0 then
-                    clear()
-                    nPos = 0
-                    recomplete()
-                    redraw()
-                end
-
-            elseif param == keys.delete then
-                -- Delete
-                if nPos < string.len(sLine) then
-                    clear()
-                    sLine = string.sub( sLine, 1, nPos ) .. string.sub( sLine, nPos + 2 )                
-                    recomplete()
-                    redraw()
-                end
-
-            elseif param == keys["end"] then
-                -- End
-                if nPos < string.len(sLine ) then
-                    clear()
-                    nPos = string.len(sLine)
-                    recomplete()
-                    redraw()
-                end
-
-            elseif param == keys.tab then
-                -- Tab (accept autocomplete)
-                acceptCompletion()
-
-            end
-
-        elseif sEvent == "internal.term_resize" then
-            -- internal.terminal resized
-            w = internal.term.getSize()
-            redraw()
-
-        end
-    end
-
-    local cx, cy = internal.term.getCursorPos()
-    internal.term.setCursorBlink( false )
-    internal.term.setCursorPos( w + 1, cy )
-    print()
-    
-    return sLine
-end
 
 local function panic(err)
     write(VMem)
@@ -445,7 +77,7 @@ local function panic(err)
     error("Kernel panic: "..tostring(err),0)
 end
 
-kernel.exports.loadfile = function( _sFile, _tEnv )
+kernel.loadfile = function( _sFile, _tEnv )
     if type( _sFile ) ~= "string" then
         error( "bad argument #1 (expected string, got " .. type( _sFile ) .. ")", 2 ) 
     end
@@ -461,7 +93,7 @@ kernel.exports.loadfile = function( _sFile, _tEnv )
     return nil, "File not found"
 end
 
-kernel.exports.dofile = function( _sFile )
+kernel.dofile = function( _sFile )
     if type( _sFile ) ~= "string" then
         error( "bad argument #1 (expected string, got " .. type( _sFile ) .. ")", 2 ) 
     end
@@ -473,5 +105,12 @@ kernel.exports.dofile = function( _sFile )
     end
 end
 
+function kernel.syscall.requestGloabal(rg,v)
+    _TG[rg] = v
+kernel.exports = loadfile("/boot/sys/exports.sys")(internal)
 local expect = dofile("/sys/modules/expect.la")
 
+local _TG = _G
+
+while true do
+    _G = _TG
