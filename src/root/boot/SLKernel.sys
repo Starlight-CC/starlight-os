@@ -12,9 +12,9 @@ if knownENV ~= "CraftOS" then
     error("This OS is for CraftOS-PC, we plan to make more compatability in the future. Detected ENV: "..knownENV)
 end
 
-local function isin(e,t)
-    for _,v in ipairs(t) do
-        if v == e then
+local function isin(is,vs,t)
+    for i,v in pairs(t) do
+        if v == vs or i = is then
             return true
         end
     end
@@ -30,7 +30,7 @@ local _GExeptions = {
 }
 for i,v in pairs(internal) do
     if type(v) == "function" then
-        if not isin(i,_GExeptions) then
+        if not isin(_,i,_GExeptions) then
             _G[tostring(i)] = v
         end
     end
@@ -112,7 +112,7 @@ end
 local _GE
 local _TG = {}
 function kernel.syscall.setStaticGloabal(g)
-    if not isin(g,_TG)
+    if not isin(g,_,_TG)
         _TG[g] = _G[g]
     end
 end
