@@ -1615,6 +1615,12 @@ end
 function lib.exec.whoami(...)
     print(os.username())
 end
+function lib.exec.shutdown(...)
+    kernel.syscall.shutdown()
+end
+function lib.exec.reboot(...)
+    kernel.syscall.reboot()
+end
 --[[function lib.exec.sudo(...)
     local shellKey = kernel.login("root",out)
     if shellKey = nil then
@@ -1623,10 +1629,4 @@ end
         shell.initalize(shellKey)
     end
 end]]
-function lib.sudo.shutdown(shellKey,...)
-    kernel.shutdown(shellKey)
-end
-function lib.sudo.reboot(shellKey,...)
-    kernel.reboot(shellKey)
-end
 return lib
