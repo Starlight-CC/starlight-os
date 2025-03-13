@@ -112,15 +112,20 @@ end
 local _GE
 local _TG = {}
 function kernel.syscall.setStaticGloabal(g)
-    _TG[g] = _G[g]
+    if not isin(g,_TG)
+        _TG[g] = _G[g]
+    end
 end
 kernel.exports = kernel.loadfile("/boot/sys/exports.sys")(internal)
 local expect = kernel.dofile("/sys/modules/expect.la")
 kernel.syscall.setStaticGloabal("kernel")
+kernel.dofile("/sys/modules/CCMap.la")
+kernel.syscall.setStaticGloabal("os")
 
 while true do
     for i,v in pairs(_TG) do
         _G[i] = v
     end
-
+    break
+end
 
