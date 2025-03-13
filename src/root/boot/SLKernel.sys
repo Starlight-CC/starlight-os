@@ -14,7 +14,7 @@ end
 
 local function isin(is,vs,t)
     for i,v in pairs(t) do
-        if v == vs or i = is then
+        if v == vs or i == is then
             return true
         end
     end
@@ -112,7 +112,7 @@ end
 local _GE
 local _TG = {}
 function kernel.syscall.setStaticGloabal(g)
-    if not isin(g,_,_TG)
+    if not isin(g,_,_TG) then
         _TG[g] = _G[g]
     end
 end
@@ -134,3 +134,5 @@ while true do
     break
 end
 
+os.run({},"/sbin/shell/shell.spr")
+panic("Root shell ERROR")
