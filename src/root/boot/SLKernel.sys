@@ -116,16 +116,21 @@ function kernel.syscall.setStaticGloabal(g)
         _TG[g] = _G[g]
     end
 end
+_G.dofile = kernel.dofile
+_G.loadfile = kernel.loadfile
 kernel.exports = kernel.loadfile("/boot/sys/exports.sys")(internal)
 local expect = kernel.dofile("/sys/modules/expect.la")
+for i,v in pairs(kernel.exports) do
+    _G[i] = v
+    kernel.syscall.setStaticGloabal(i)
+end
 kernel.syscall.setStaticGloabal("kernel")
-kernel.dofile("/sys/modules/CCMap.la")
-kernel.syscall.setStaticGloabal("os")
 
 while true do
     for i,v in pairs(_TG) do
         _G[i] = v
     end
+    kernel.staticGloabals = _TG
     break
 end
 

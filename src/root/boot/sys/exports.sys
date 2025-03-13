@@ -1,6 +1,6 @@
 tArgs = {...}
 local internal = tArgs[1]
-local exports = {}
+local exports = internal
 function exports.sleep( nTime )
     if nTime ~= nil and type( nTime ) ~= "number" then
         error( "bad argument #1 (expected number, got " .. type( nTime ) .. ")", 2 ) 
