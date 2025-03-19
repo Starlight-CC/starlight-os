@@ -35,8 +35,8 @@ local vec = {
     end,
     cross=function(self,o)
         return new(
-            self.y*o.z-self.z*o.y,
-            self.z*o.x-self.x*o.z
+            self.y*o.x,
+            self.z*o.x
         )
     end,
     length=function(self)
@@ -69,7 +69,7 @@ local vx = {
     __tostring = vec.tostring,
     __eq = vec.equals,
 }
-local function new(x, y, z)
+local function new(x,y)
     return setmetatable({
         x = tonumber(x) or 0,
         y = tonumber(y) or 0,
