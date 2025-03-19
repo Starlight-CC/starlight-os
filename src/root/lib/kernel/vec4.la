@@ -1,0 +1,92 @@
+local lib={}
+local vec = {
+    add=function(self,o)
+        return new(
+            self.w+o.w,
+            self.x+o.x,
+            self.y+o.y,
+            self.z+o.z
+        )
+    end,
+    sub=function(self,o)
+        return new(
+            self.w-o.w,
+            self.x-o.x,
+            self.y-o.y,
+            self.z-o.z
+        )
+    end,
+    mul=function(self,m)
+        return new(
+            self.w*m,
+            self.x*m,
+            self.y*m,
+            self.z*m
+        )
+    end,
+    div=function(self,m)
+        return new(
+            self.w/m,
+            self.x/m,
+            self.y/m,
+            self.z/m
+        )
+    end,
+    unm=function(self)
+        return new(
+            -self.w,
+            -self.x,
+            -self.y,
+            -self.z
+        )
+    end,
+    dot=function(self,o)
+        return self.x*o.x+self.y*o.y+self.z*o.z
+    end,
+    cross=function(self,o)
+        return new(
+            self.y*o.z-self.z*o.y,
+            self.z*o.x-self.x*o.z,
+            self.x*o.y-self.y*o.x
+        )
+    end,
+    length=function(self)
+        return math.sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
+    end,
+    normalize=function(self)
+        return self:mul(1/self:length())
+    end,
+    round=function(self,tolerance)
+        tolerance=tolerance or 1.0
+        return new(
+            math.floor((self.x+tolerance*0.5)/tolerance)*tolerance,
+            math.floor((self.y+tolerance*0.5)/tolerance)*tolerance,
+            math.floor((self.z+tolerance*0.5)/tolerance)*tolerance
+        )
+    end,
+    tostring=function(self)
+        return self.x..","..self.y..","..self.z
+    end,
+    equals=function(self,other)
+        return self.x==other.x and self.y==other.y and self.z==other.z
+    end,
+}
+local vx = {
+    __index = vec,
+    __add = vec.add,
+    __sub = vec.sub,
+    __mul = vec.mul,
+    __div = vec.div,
+    __unm = vec.unm,
+    __tostring = vec.tostring,
+    __eq = vec.equals,
+}
+local function new(x, y, z)
+    return setmetatable({
+        x = tonumber(x) or 0,
+        y = tonumber(y) or 0,
+        z = tonumber(z) or 0,
+    }, vx)
+end
+lib.new=new
+return lib
