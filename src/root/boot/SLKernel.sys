@@ -1,6 +1,16 @@
 local internal = {}
 internal._G = _G
+_G = {}
 internal.knownENV="Unknown"
+if internal._G._CC_DEFAULT_SETTINGS then
+    internal.knownENV="CC:Tweaked"
+    if internal._G.term.setGraphicsMode then
+        internal.knownENV="CraftOS-PC"
+    end
+end
+if internal.knownENV ~= "CraftOS-PC" then
+    internal._G.error("This OS is made for CraftOS-PC")
+end
 internal._LuaBuiltins = {
     "pairs",
     "ipairs",
@@ -27,7 +37,6 @@ internal._LuaBuiltins = {
     "assert",
     "_VERSION"
 }
-_G = {}
 for i in internal._LuaBuiltins do
     _G[i]=internal._G[i]
 end
