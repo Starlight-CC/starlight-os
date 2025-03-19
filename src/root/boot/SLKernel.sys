@@ -1,0 +1,37 @@
+local internal = {}
+internal._G = _G
+internal.knownENV="Unknown"
+internal._LuaBuiltins = {
+    "pairs",
+    "ipairs",
+    "load",
+    "xpcall",
+    "gcinfo",
+    "pcall",
+    "table",
+    "string",
+    "tostring",
+    "tonumber",
+    "type",
+    "collectgarbage",
+    "unpack",
+    "rawget",
+    "rawset",
+    "rawequal",
+    "next",
+    "newproxy",
+    "getmetatable",
+    "setmetatable",
+    "getfenv",
+    "error",
+    "assert",
+    "_VERSION"
+}
+_G = {}
+for i in internal._LuaBuiltins do
+    _G[i]=internal._G[i]
+end
+internal.static={}
+internal.static.kernel={}
+internal.static.fs={}
+internal.static.io={}
