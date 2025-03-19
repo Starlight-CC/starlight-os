@@ -9,7 +9,7 @@ if internal._G._CC_DEFAULT_SETTINGS then
     end
 end
 if internal.knownENV ~= "CraftOS-PC" then
-    internal._G.error("This OS is made for CraftOS-PC")
+    internal._G.error("This OS is made for CraftOS-PC. ENV="..internal.knownENV)
 end
 internal._LuaBuiltins = {
     "pairs",
@@ -18,8 +18,6 @@ internal._LuaBuiltins = {
     "xpcall",
     "gcinfo",
     "pcall",
-    "table",
-    "string",
     "tostring",
     "tonumber",
     "type",

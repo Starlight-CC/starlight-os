@@ -1,0 +1,4 @@
+tArgs={...}
+local lib={}
+function lib.pi()
+end
