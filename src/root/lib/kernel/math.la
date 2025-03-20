@@ -9,4 +9,4 @@ function lib.table.sum(e)
     end
     return ret
 end
-return lib
+return lib,"math"

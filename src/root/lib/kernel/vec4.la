@@ -84,4 +84,4 @@ local function new(w,x,y,z)
     }, vx)
 end
 lib.new=new
-return lib
+return lib,"vec4"

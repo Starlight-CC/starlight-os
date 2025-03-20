@@ -11,6 +11,7 @@ end
 if internal.knownENV ~= "CraftOS-PC" then
     internal._G.error("This OS is made for CraftOS-PC. ENV="..internal.knownENV)
 end
+local Ks = "start"  
 internal._LuaBuiltins = {
     "pairs",
     "ipairs",
@@ -38,12 +39,54 @@ internal._LuaBuiltins = {
 for i in internal._LuaBuiltins do
     _G[i]=internal._G[i]
 end
+local fs = internal._G.fs
 internal.static={}
 local function refreshGloabalEnv()
     for i,v in pairs(internal.static) do
         _G[i]=internal.static[i]
     end
 end
+if fs.exists("/var/log/kernel.log") then
+    if fs.exists("/var/log/kernel.log.old") then
+        fs.delete("/var/log/kernel.log.old")
+    end
+    fs.move("/var/log/kernel.log","/var/log/kernel.log.old")
+end
+local LogFile = fs.open("/var/log/kernel.log",w)
+local function log(s,l)
+    LogFile.write(internal._G.os.date()..s.."\n")
+    if l then
+        LogFile.flush()
+    end
+end
 local kernel={}
-function kernel.loadGlobalAPI()
-    internal._G.fs.list("/lib/kernel/")
+kernel.log = log
+kernel.loadfile=function(_sFile,_tEnv)
+    local file=fs.open(_sFile,"r")
+    if file then
+        local func, err = load(file.readAll(),fs.getName(_sFile),"t",_tEnv)
+        file.close()
+        return func, err
+    end
+    return nil, "File not found"
+end
+kernel.dofile=function(_sFile)
+    local fnFile,e=loadfile(_sFile,_G)
+    if fnFile then
+        return fnFile()
+    else
+        error(e,2)
+    end
+end
+function kernel.loadGlobalAPI(Filepath)
+    if Ks == "start" then
+        local l,n=dofile(Filepath)
+        _G[n]=l
+    end
+end
+local tmp=fs.list("/lib/kernel/")
+for _,v in ipairs(tmp) do
+    if not fs.isDir(v) then
+        kernel.loadGlobalAPI(v)
+    else
+        log("")
