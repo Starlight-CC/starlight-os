@@ -39,6 +39,9 @@ for i in internal._LuaBuiltins do
     _G[i]=internal._G[i]
 end
 internal.static={}
-internal.static.kernel={}
-internal.static.fs={}
-internal.static.io={}
+local function refreshGloabalEnv()
+    for i,v in pairs(internal.static) do
+        _G[i]=internal.static[i]
+    end
+end
+local kernel={}

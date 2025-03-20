@@ -33,12 +33,6 @@ local vec = {
     dot=function(self,o)
         return self.x*o.x+self.y*o.y
     end,
-    cross=function(self,o)
-        return new(
-            self.y*o.x,
-            self.z*o.x
-        )
-    end,
     length=function(self)
         return math.sqrt(self.x*self.x+self.y*self.y)
     end,
