@@ -45,3 +45,5 @@ local function refreshGloabalEnv()
     end
 end
 local kernel={}
+function kernel.loadGlobalAPI()
+    internal._G.fs.list("/lib/kernel/")
