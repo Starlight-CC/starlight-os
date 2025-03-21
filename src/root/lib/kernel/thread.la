@@ -61,7 +61,12 @@ function lib.create(f)
     
 end
 
-function lib.split(...)
+function lib.splitAll(...)
     local routines = create(...)
     return runUntilLimit(routines, 0)
 end
+function lib.splitAny(...)
+    local routines = create(...)
+    return runUntilLimit(routines, #routines-1)
+end
+return lib,"thread"
