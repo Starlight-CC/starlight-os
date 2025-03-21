@@ -108,3 +108,16 @@ for _,v in ipairs(tmp) do
         log("Directory found, Skipping.")
     end
 end
+Ks = "Running"
+local function FG()
+    local process = conf.get("Kernel_startup_process")
+    if process == nil then
+        conf.set("Kernel_startup_process","/sys/Eshell.sys")
+        local process = "/sys/Eshell.sys"
+    end
+    process = loadfile(process,_G)
+    process()
+end
+local function BG()
+
+end
