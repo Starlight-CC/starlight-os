@@ -75,5 +75,5 @@ if tArgs.http then
             if url == _url then return ok, err end
         end
     end
-    return lib
+    return lib,"http"
 end
