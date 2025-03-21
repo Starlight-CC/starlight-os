@@ -1,3 +1,4 @@
+local tArgs={...}
 lib.http={}
 local nativeHTTPRequest = http.request
 local function wrapRequest( _url, _post, _headers, _binary )
