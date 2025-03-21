@@ -34,6 +34,7 @@ internal._LuaBuiltins = {
     "getfenv",
     "error",
     "assert",
+    "coroutine",
     "_VERSION"
 }
 for i in internal._LuaBuiltins do

@@ -1,0 +1,14 @@
+local lib
+local function create(...)
+    local tFns = table.pack(...)
+    local tCos = {}
+    for i = 1, tFns.n, 1 do
+        local fn = tFns[i]
+        tCos[i] = coroutine.create(fn)
+    end
+    return tCos
+end
+function lib.create(f)
+    return thread
+    local thread=coroutine.create(f)
+end
