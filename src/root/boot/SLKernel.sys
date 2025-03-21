@@ -63,6 +63,12 @@ local function log(s,l,p)
         LogFile.flush()
     end
 end
+local function panic(s)
+    LogFile.close()
+    file = fs.open("/var/log/kernel.log")
+    print(file.readAll())
+    error(s,0)
+end
 local kernel={}
 kernel.internal={}
 function kernel.log(String,Save)
@@ -86,13 +92,44 @@ kernel.dofile=function(_sFile,args)
         error(e,2)
     end
 end
+function kernel.pullEventRaw(sFilter)
+    return coroutine.yield(sFilter)
+end
+function kernel.pullEvent(sFilter)
+    local eventData = table.pack(kernel.pullEventRaw(sFilter))
+    if eventData[1] == "terminate" then
+        error("Terminated",0)
+    end
+    return table.unpack(eventData,1,eventData.n)
+end
+local nativeShutdown = kernel.shutdown
+function kernel.shutdown()
+    nativeShutdown()
+    while true do
+        coroutine.yield()
+    end
+end
+local nativeReboot = kernel.reboot
+function kernel.reboot()
+    nativeReboot()
+    while true do
+        coroutine.yield()
+    end
+end
 function kernel.internal.loadGlobalAPI(Filepath,args)
     local l,n=dofile(Filepath,args)
     if Ks == "Load" then
         if n = nil then
             log("ERR getting lib name canceling.")
+        elseif n = "Global" then
+            for i,v in pairs(l) do
+                _G[i]=v
+                internal.static[i]=v
+                log("Loaded \""..i.."\" into global ENV.")
+            end
         else
             _G[n]=l
+            internal.static[n]=l
             log("Loaded lib \""..n.."\" into global ENV.")
         end
     else
@@ -109,7 +146,8 @@ for _,v in ipairs(tmp) do
     end
 end
 Ks = "Running"
-local function FG()
+internal.static.kernel = kernel
+local function FG()--OS (Shell or Desktop)
     local process = conf.get("Kernel_startup_process")
     if process == nil then
         conf.set("Kernel_startup_process","/sys/Eshell.sys")
@@ -118,6 +156,14 @@ local function FG()
     process = loadfile(process,_G)
     process()
 end
-local function BG()
-
+local function BG()--kernel
+    while true do
+        refreshGloabalEnv()
+        coroutine.yield()
+    end
 end
+thread.splitAny(FG,BG)
+_G.internal = internal
+local process = loadfile("/sys/Eshell.sys",_G)
+process("Fatal startup process or kernel ERR")
+panic("Fatal Kernel ERR")
