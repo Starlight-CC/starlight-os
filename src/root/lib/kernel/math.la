@@ -1,5 +1,5 @@
 tArgs={...}
-local math=tArgs[1]
+local math=tArgs.math
 local lib=math
 lib.table={}
 function lib.table.sum(e)

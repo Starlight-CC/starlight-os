@@ -11,7 +11,7 @@ end
 if internal.knownENV ~= "CraftOS-PC" then
     internal._G.error("This OS is made for CraftOS-PC. ENV="..internal.knownENV)
 end
-local Ks = "start"  
+local Ks = "Start"  
 internal._LuaBuiltins = {
     "pairs",
     "ipairs",
@@ -53,14 +53,21 @@ if fs.exists("/var/log/kernel.log") then
     fs.move("/var/log/kernel.log","/var/log/kernel.log.old")
 end
 local LogFile = fs.open("/var/log/kernel.log",w)
-local function log(s,l)
-    LogFile.write(internal._G.os.date()..s.."\n")
+local function log(s,l,p)
+    if p = nil then
+        p = "SLK"
+    end
+    LogFile.write(internal._G.os.date()..":"..p.."|"..s.."\n")
     if l then
         LogFile.flush()
     end
 end
 local kernel={}
-kernel.log = log
+kernel.internal={}
+function kernel.log(String,Save)
+    --$$$ get the prog
+    log(String,Save,"prog")
+end
 kernel.loadfile=function(_sFile,_tEnv)
     local file=fs.open(_sFile,"r")
     if file then
@@ -70,23 +77,33 @@ kernel.loadfile=function(_sFile,_tEnv)
     end
     return nil, "File not found"
 end
-kernel.dofile=function(_sFile)
+kernel.dofile=function(_sFile,args)
     local fnFile,e=loadfile(_sFile,_G)
     if fnFile then
-        return fnFile()
+        return fnFile(args)
     else
         error(e,2)
     end
 end
-function kernel.loadGlobalAPI(Filepath)
-    if Ks == "start" then
-        local l,n=dofile(Filepath)
-        _G[n]=l
+function kernel.internal.loadGlobalAPI(Filepath,args)
+    local l,n=dofile(Filepath,args)
+    if Ks == "Load" then
+        if n = nil then
+            log("ERR getting lib name canceling.")
+        else
+            _G[n]=l
+            log("Loaded lib \""..n.."\" into global ENV.")
+        end
+    else
+        log("Tried to load lib \""..n.."\" but kernel in state \""..Ks.."\".")
     end
 end
+Ks = "Load"
 local tmp=fs.list("/lib/kernel/")
 for _,v in ipairs(tmp) do
     if not fs.isDir(v) then
-        kernel.loadGlobalAPI(v)
+        kernel.internal.loadGlobalAPI(v,internal._G)
     else
-        log("")
+        log("Directory found, Skipping.")
+    end
+end
