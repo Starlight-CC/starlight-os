@@ -145,6 +145,7 @@ for _,v in ipairs(tmp) do
         log("Directory found, Skipping.")
     end
 end
+conf.start("/ect/")
 Ks = "Running"
 internal.static.kernel = kernel
 local function FG()--OS (Shell or Desktop)

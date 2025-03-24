@@ -1,0 +1,8 @@
+local internal = {...}
+local lib = {}
+function lib.start(x)
+    for i,v in ipairs(internal.fs.list(x)) do
+        if inter
+function lib.set()
+function lib.set()
+return lib,"conf"
