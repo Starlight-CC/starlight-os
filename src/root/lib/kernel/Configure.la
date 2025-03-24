@@ -2,7 +2,9 @@ local internal = {...}
 local lib = {}
 function lib.start(x)
     for i,v in ipairs(internal.fs.list(x)) do
-        if inter
+        if internal.fs.isDir(v) then
+            lib.start(x..v.."/")
+        else
 function lib.set()
 function lib.set()
 return lib,"conf"
