@@ -28,4 +28,4 @@ print("goodbye")
 term.setTextColour(colours.white)
 
 sleep(1)
-os.shutdown()
+kernel.shutdown()

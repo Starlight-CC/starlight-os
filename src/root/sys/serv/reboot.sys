@@ -28,4 +28,4 @@ print("rebooting")
 term.setTextColour(colours.white)
 
 sleep(1)
-os.reboot()
+kernel.reboot()

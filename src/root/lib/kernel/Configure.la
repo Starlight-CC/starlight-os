@@ -1,12 +1,13 @@
 local internal = {...}
 local lib = {}
 local conf = {}
-function lib.get(x)
-    local fp = string.gsub(x,".","/")
-    local tmp = fp
-    local count
-    while not string.find(tmp,"/") == nil do
-
+function lib.get(x,y)
+    local fp = "/ect/"..string.gsub(x,".","/")..".conf"
+    local file = internal.fs.open(fp,"r")
+    local data = file.readAll()
+    file.close()
+    if data == nil then data = "nil" end
+    return load("return "..data)()
 end
 function lib.set()
 return lib,"conf"
