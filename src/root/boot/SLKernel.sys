@@ -145,13 +145,12 @@ for _,v in ipairs(tmp) do
         log("Directory found, Skipping.")
     end
 end
-conf.start("/ect/")
 Ks = "Running"
 internal.static.kernel = kernel
 local function FG()--OS (Shell or Desktop)
-    local process = conf.get("Kernel_startup_process")
+    local process = conf.get("Kernel.settings.Startup_process")
     if process == nil then
-        conf.set("Kernel_startup_process","/sys/Eshell.sys")
+        conf.set("Kernel.settings.Startup_process","/sys/Eshell.sys")
         local process = "/sys/Eshell.sys"
     end
     process = loadfile(process,_G)

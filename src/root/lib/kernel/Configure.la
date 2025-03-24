@@ -1,14 +1,9 @@
 local internal = {...}
 local lib = {}
 local conf = {}
-function lib.start(x)
-    for i,v in ipairs(internal.fs.list(x)) do
-        if internal.fs.isDir(v) then
-            lib.start(x..v.."/")
-        else
-            file = internal.fs.open(v,"r")
-            file.readLine()
-
-function lib.set()
+function lib.get(x)
+    local fp = string.gsub(x,".","/")
+    
+end
 function lib.set()
 return lib,"conf"
