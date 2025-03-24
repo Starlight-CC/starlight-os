@@ -3,7 +3,10 @@ local lib = {}
 local conf = {}
 function lib.get(x)
     local fp = string.gsub(x,".","/")
-    
+    local tmp = fp
+    local count
+    while not string.find(tmp,"/") == nil do
+
 end
 function lib.set()
 return lib,"conf"
