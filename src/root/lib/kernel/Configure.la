@@ -14,4 +14,5 @@ function lib.set(x,y,v)
     local file = internal.fs.open(fp,"r")
     local data = file.readAll()
     file.close()
+end
 return lib,"conf"

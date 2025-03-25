@@ -159,13 +159,20 @@ local function FG()--OS (Shell or Desktop)
     process = loadfile(process,_G)
     process()
 end
-local Ci = conf..get("Kernel.settings","Log_sav_interval")
+local Ci = 0
+local Cis = conf..get("Kernel.settings","Log_sav_interval")
+if Cis == nil then
+    Cis = 256
+end
 local function BG()--kernel
     while true do
         refreshGloabalEnv()
-        if Ci == 256 then
-            Ci = 0
-            log("Saved Log",true)
+        if Cis ~= 0 then
+            if Ci == Cis then
+                Ci = 0
+                log("Saved Log",true)
+            end
+            Ci = Ci + 1
         end
         coroutine.yield()
     end
