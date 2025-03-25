@@ -37,14 +37,15 @@ internal._LuaBuiltins = {
     "coroutine",
     "_VERSION"
 }
-for i in internal._LuaBuiltins do
+internal.static={}
+for _,i in ipairs(internal._LuaBuiltins) do
     _G[i]=internal._G[i]
+    internal.static[i]=internal._G[i]
 end
 local fs = internal._G.fs
-internal.static={}
 local function refreshGloabalEnv()
     for i,v in pairs(internal.static) do
-        _G[i]=internal.static[i]
+        _G[i]=v
     end
 end
 if fs.exists("/var/log/kernel.log") then
@@ -53,9 +54,9 @@ if fs.exists("/var/log/kernel.log") then
     end
     fs.move("/var/log/kernel.log","/var/log/kernel.log.old")
 end
-local LogFile = fs.open("/var/log/kernel.log",w)
+local LogFile = fs.open("/var/log/kernel.log","w")
 local function log(s,l,p)
-    if p = nil then
+    if p == nil then
         p = "SLK"
     end
     LogFile.write(internal._G.os.date()..":"..p.."|"..s.."\n")
@@ -119,16 +120,14 @@ end
 function kernel.internal.loadGlobalAPI(Filepath,args)
     local l,n=dofile(Filepath,args)
     if Ks == "Load" then
-        if n = nil then
+        if n == nil then
             log("ERR getting lib name canceling.")
-        elseif n = "Global" then
+        elseif n == "Global" then
             for i,v in pairs(l) do
                 _G[i]=v
                 internal.static[i]=v
                 log("Loaded \""..i.."\" into global ENV.")
             end
-        elseif
-
         else
             _G[n]=l
             internal.static[n]=l
@@ -211,11 +210,12 @@ function kernel.run(_tEnv,_sPath,...)
     return false
 end
 internal.static.kernel = kernel
+refreshGloabalEnv()
 Ks = "Load"
 local tmp=fs.list("/lib/kernel/")
 for _,v in ipairs(tmp) do
     if not fs.isDir(v) then
-        kernel.internal.loadGlobalAPI(v,internal._G)
+        kernel.internal.loadGlobalAPI("/lib/kernel/"..v,internal._G)
     else
         log("Directory found, Skipping.")
     end
