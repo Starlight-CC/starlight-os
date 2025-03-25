@@ -159,7 +159,7 @@ local function FG()--OS (Shell or Desktop)
     process = loadfile(process,_G)
     process()
 end
-local Ci = 0
+local Ci = conf..get("Kernel.settings","Log_sav_interval")
 local function BG()--kernel
     while true do
         refreshGloabalEnv()
