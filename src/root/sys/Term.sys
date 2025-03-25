@@ -9,6 +9,7 @@ local shell = kernel.requestStaticGlobal(key,"shell",{})
 local fs = kernel.requestInternalApi(key,"fs")
 local sDir = "/"
 local aliases = parentShell.aliases() or {}
+local Exit = false
 
 local function tokenise(...) -- convert arg string to table
     local line = table.concat({ ... }, " ")
@@ -47,16 +48,27 @@ local function exec(c,...)
             env.arg = table.unpack(args)
             kernel.run(env,cmd,args)
         else
-            term.setTextColor(colors.red)
-            print("No command or file found")
+            printError("No command or file found")
         end
     end
 end
 
-function shell.run(...)
+local function run(...)
     if sMode ~= "lock" then
         local tArgs = tokenise(...)
-        shell.exec(tArgs[1],table.unpack(tArgs,2))
+        exec(tArgs[1],table.unpack(tArgs,2))
+    end
+end
+
+local function exit()
+    if parentShell == nil then
+        printError("Top level shell cannot be terminated")
+    else
+        if sMode == "cmd" then
+            Exit = true
+            _G.shell = parentShell
+        end
     end
 end
 shell.tAdd("exec",exec)
+shell.tAdd("run",run)

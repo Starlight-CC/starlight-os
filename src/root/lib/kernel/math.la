@@ -1,4 +1,4 @@
-tArgs={...}
+local tArgs={...}
 local math=tArgs.math
 local lib=math
 lib.table={}

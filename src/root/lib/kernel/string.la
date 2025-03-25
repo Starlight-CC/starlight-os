@@ -1,0 +1,3 @@
+local tArgs={...}
+local lib=tArgs.string
+return lib,"string"
