@@ -7,7 +7,11 @@ function lib.get(x,y)
     local data = file.readAll()
     file.close()
     if data == nil then data = "nil" end
-    return load("return "..data)()
+    return load("return "..data)()[y]
 end
-function lib.set()
+function lib.set(x,y,v)
+    local fp = "/ect/"..string.gsub(x,".","/")..".conf"
+    local file = internal.fs.open(fp,"r")
+    local data = file.readAll()
+    file.close()
 return lib,"conf"
