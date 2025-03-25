@@ -232,7 +232,7 @@ local function FG()--OS (Shell or Desktop)
     process()
 end
 local Ci = 0
-local Cis = conf..get("Kernel.settings","Log_sav_interval")
+local Cis = conf.get("Kernel.settings","Log_sav_interval")
 if Cis == nil then
     Cis = 256
 end
