@@ -138,6 +138,56 @@ function kernel.internal.loadGlobalAPI(Filepath,args)
         log("Tried to load lib \""..n.."\" but kernel in state \""..Ks.."\".")
     end
 end
+kernel.util={}
+function kernel.util.isin(v,t)
+    for i,_ in pairs(t) do
+        if v == i then
+            return true
+        end
+    end
+    return false
+end
+function kernel.requestStaticGlobal(k,n,v)
+    if kernel.util.isin(k,internal.keys) then
+        if internal.keys[k]["type"] == "global" or "kernel" then
+            internal.static[n]=v
+            return {
+                tSet=function(ns,nv) 
+                    if type(internal.static[n]) == "table" then
+                        internal.static[n][ns]=v
+                    end
+                end,
+                set=function(v) 
+                    if type(internal.static[n]) ~= "table" then
+                        internal.static[n] = v
+                    end
+                end,
+                type=function()
+                    return type(internal.static[n])
+                end,
+                name=function() 
+                    return n
+                end,
+                tRemove=function(ns)
+                    if type(internal.static[n]) == "table" then
+                        internal.static[n][ns]=nil
+                    end
+                end,
+                close=function() 
+                    internal.static[n]=nil
+                end
+            }
+        end
+    end
+end
+
+function kernel.requestInternalApi(k,a)
+    if kernel.util.isin(k,internal.keys) then
+        if internal.keys[k]["type"] == "api" or "kernel" then
+            return internal._G[a]
+        end
+    end
+end
 internal.static.kernel = kernel
 Ks = "Load"
 local tmp=fs.list("/lib/kernel/")

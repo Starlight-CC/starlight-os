@@ -6,6 +6,7 @@ else
     local key = parentShell.getKey()
 end
 local shell = kernel.requestStaticGlobal(key,"shell",{})
+local fs = kernel.requestInternalApi(key,"fs")
 local sDir = "/"
 local aliases = parentShell.aliases() or {}
 
@@ -26,7 +27,29 @@ local function tokenise(...) -- convert arg string to table
     return words
 end
 
-local function exec()
-
+local function exec(c,...)
+    local tArgs = ...
+    if c == nil then 
+        return
+    end
+    if sMode ~= "lock" then
+        local dir = fs.combine("/proc",string.sub(c,1,string.find(c,".")-1))
+        if commands.find(c) then
+            sMode = "cmd"
+            local cmd = commands.exec[tostring(c)]
+            pcall(cmd,table.unpack(tokenise(tArgs)))
+            sMode = "safe"
+        elseif fs.exists(fs.combine(sDir,c)) then
+            cmd = fs.combine(sDir,c)
+            local args = tokenise(tArgs)
+            fs.makeDir(fs.combine("/proc",string.sub(c,1,string.find(c,".")-1)))
+            local env = setmetatable(createShellEnv(fs.getDir(cmd)), { __index = _G })
+            env.arg = table.unpack(args)
+            kernel.run(env,cmd,args)
+        else
+            term.setTextColor(colors.red)
+            print("No command or file found")
+        end
+    end
 end
-shell.add("exec",exec)
+shell.tAdd("exec",exec)
