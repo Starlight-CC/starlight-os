@@ -1,0 +1,3 @@
+tArgs={...}
+local lib=tArgs.table
+return lib,"table"

@@ -52,4 +52,11 @@ local function exec(c,...)
         end
     end
 end
+
+function shell.run(...)
+    if sMode ~= "lock" then
+        local tArgs = tokenise(...)
+        shell.exec(tArgs[1],table.unpack(tArgs,2))
+    end
+end
 shell.tAdd("exec",exec)
