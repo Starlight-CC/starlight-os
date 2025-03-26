@@ -1,12 +1,10 @@
-local tArgs={...}
-print(type(tArgs.math))
-local math=tArgs.math
-math.table={}
-function math.table.sum(e)
+local lib = math
+lib.table={}
+function lib.table.sum(e)
     local ret = 0
     for _,v in ipairs(e) do
         ret=ret+v
     end
     return ret
 end
-return math,"math"
+return lib,"math"

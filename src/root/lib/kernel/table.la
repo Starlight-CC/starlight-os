@@ -1,3 +1,2 @@
-local tArgs={...}
-local lib=tArgs.table
+local lib=table
 return lib,"table"
