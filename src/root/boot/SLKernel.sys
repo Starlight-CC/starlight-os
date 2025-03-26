@@ -67,9 +67,9 @@ local function log(s,l,p)
 end
 local function panic(s)
     LogFile.close()
-    file = fs.open("/var/log/kernel.log")
+    file = fs.open("/var/log/kernel.log","r")
     print(file.readAll())
-    error(s,0)
+    error("Kernel panic: "..s,0)
 end
 local kernel={}
 kernel.internal={}
@@ -234,6 +234,9 @@ local function FG()--OS (Shell or Desktop)
     process()
 end
 local Ci = 0
+if conf == nil then
+    panic("critical lib not loaded")
+end
 local Cis = conf.get("Kernel.settings","Log_sav_interval")
 if Cis == nil then
     Cis = 256
