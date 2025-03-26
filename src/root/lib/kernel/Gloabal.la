@@ -352,7 +352,4 @@ function lib.read( _sReplaceChar, _tHistory, _fnComplete, _sDefault )
     return sLine
 end
 
-lib.loadfile = kernel.loadfile
-lib.dofile = kernel.dofile
-
 return lib,"global"

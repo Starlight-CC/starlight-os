@@ -70,7 +70,7 @@ local function panic(s)
     print(file.readAll())
     error(s,0)
 end
-kernel={}
+local kernel={}
 kernel.internal={}
 function kernel.log(String,Save)
     --$$$ get the prog
@@ -103,14 +103,14 @@ function kernel.pullEvent(sFilter)
     end
     return table.unpack(eventData,1,eventData.n)
 end
-local nativeShutdown = kernel.shutdown
+local nativeShutdown = internal._G.os.shutdown
 function kernel.shutdown()
     nativeShutdown()
     while true do
         coroutine.yield()
     end
 end
-local nativeReboot = kernel.reboot
+local nativeReboot = internal._G.os.reboot
 function kernel.reboot()
     nativeReboot()
     while true do
@@ -118,7 +118,7 @@ function kernel.reboot()
     end
 end
 function kernel.internal.loadGlobalAPI(Filepath,args)
-    local l,n=dofile(Filepath,args)
+    local l,n=pcall(dofile,Filepath,args)
     if Ks == "Load" then
         if n == nil then
             log("ERR getting lib name canceling.")
@@ -126,15 +126,24 @@ function kernel.internal.loadGlobalAPI(Filepath,args)
             for i,v in pairs(l) do
                 _G[i]=v
                 internal.static[i]=v
-                log("Loaded \""..i.."\" into global ENV.")
+                local _,err = pcall(function() log("Loaded \""..i.."\" into global ENV.") end)
+                if err then
+                    log(err,true)
+                end
             end
         else
             _G[n]=l
             internal.static[n]=l
-            log("Loaded lib \""..n.."\" into global ENV.")
+            local _,err = pcall(function() log("Loaded lib \""..n.."\" into global ENV.") end)
+            if err then
+                log(err,true)
+            end
         end
     else
-        log("Tried to load lib \""..n.."\" but kernel in state \""..Ks.."\".")
+        local _,err = pcall(function() log("Tried to load lib \""..n.."\" but kernel in state \""..Ks.."\".") end)
+        if err then
+            log(err,true)
+        end   
     end
 end
 kernel.util={}
@@ -210,6 +219,7 @@ function kernel.run(_tEnv,_sPath,...)
     return false
 end
 internal.static.kernel = kernel
+_G.kernel = kernel
 refreshGloabalEnv()
 Ks = "Load"
 local tmp=fs.list("/lib/kernel/")

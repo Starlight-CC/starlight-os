@@ -1,8 +1,7 @@
 local tArgs={...}
 if tArgs.http then
     local lib={}
-    local lib.request = tArgs.http.request
-    local nativeHTTPRequest = lib.request
+    local nativeHTTPRequest = tArgs.http.request
     local function wrapRequest( _url, _post, _headers, _binary )
         local ok, err = nativeHTTPRequest( _url, _post, _headers, _binary )
         if ok then
@@ -65,7 +64,7 @@ if tArgs.http then
     end
 
     local nativeCheckURL = tArgs.http.checkURL
-    lib.checkURLAsync = nativeCheckURL
+    lib.checkURLAsync = tArgs.http.checkURLAsync
     lib.checkURL = function( _url )
         local ok, err = nativeCheckURL( _url )
         if not ok then return ok, err end
