@@ -118,12 +118,22 @@ function kernel.reboot()
     end
 end
 function kernel.internal.loadGlobalAPI(Filepath,args)
-    local f,e = loadfile(Filepath)
-    if e then
-        log(e,true)
-    else
-        if Ks == "Load" then
-            
+    if Ks == "Load" then
+        local s,l,n = pcall(kernel.dofile,Filepath,args)
+        if s == false then
+            log(l,true)
+        else
+            if n == "global" then
+                for i,v in pairs(l) do
+                    _G[i]=v
+                    internal._G[i]=v
+                    log("Loaded \""..i.."\" into global ENV")
+                end
+            else
+                _G[n]=l
+                internal._G[n]=l
+                log("Loaded lib \""..n.."\" into global ENV")
+            end
         end
     end
 end
