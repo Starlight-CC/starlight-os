@@ -1,3 +1,5 @@
+local tArgs={...}
+local term = tArgs.term
 local lib={}
 
 function lib.sleep( nTime )
