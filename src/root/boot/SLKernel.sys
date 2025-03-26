@@ -37,6 +37,7 @@ internal._LuaBuiltins = {
     "coroutine",
     "_VERSION"
 }
+ipairs = internal._G.ipairs
 internal.static={}
 for _,i in ipairs(internal._LuaBuiltins) do
     _G[i]=internal._G[i]
@@ -85,8 +86,8 @@ kernel.loadfile=function(_sFile,_tEnv)
     end
     return nil, "File not found"
 end
-kernel.dofile=function(_sFile,args)
-    local fnFile,e=loadfile(_sFile,_G)
+kernel.dofile=function(_sFile,_tEnv,args)
+    local fnFile,e=loadfile(_sFile,_tEnv)
     if fnFile then
         return fnFile(args)
     else
@@ -117,22 +118,22 @@ function kernel.reboot()
         coroutine.yield()
     end
 end
-function kernel.internal.loadGlobalAPI(Filepath,args)
+function kernel.internal.loadGlobalAPI(Filepath,_tEnv,args)
     if Ks == "Load" then
-        local s,l,n = pcall(kernel.dofile,Filepath,args)
+        local s,l,n = kernel.dofile(Filepath,_tEnv,args)
         if s == false then
             log(l,true)
         else
             if n == "global" then
                 for i,v in pairs(l) do
-                    _G[i]=v
-                    internal._G[i]=v
-                    log("Loaded \""..i.."\" into global ENV")
+                    _G[tostring(i)]=v
+                    internal._G[tostring(i)]=v
+                    log("Loaded \""..tostring(i).."\" into global ENV")
                 end
             else
-                _G[n]=l
-                internal._G[n]=l
-                log("Loaded lib \""..n.."\" into global ENV")
+                _G[tostring(n)]=l
+                internal._G[tostring(n)]=l
+                log("Loaded lib \""..tostring(n).."\" into global ENV")
             end
         end
     end
@@ -216,7 +217,7 @@ Ks = "Load"
 local tmp=fs.list("/lib/kernel/")
 for _,v in ipairs(tmp) do
     if not fs.isDir(v) then
-        kernel.internal.loadGlobalAPI("/lib/kernel/"..v,internal._G)
+        kernel.internal.loadGlobalAPI("/lib/kernel/"..v,internal._G,_G)
     else
         log("Directory found, Skipping.")
     end
