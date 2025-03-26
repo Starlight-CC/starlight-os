@@ -118,32 +118,13 @@ function kernel.reboot()
     end
 end
 function kernel.internal.loadGlobalAPI(Filepath,args)
-    local l,n=pcall(dofile,Filepath,args)
-    if Ks == "Load" then
-        if n == nil then
-            log("ERR getting lib name canceling.")
-        elseif n == "Global" then
-            for i,v in pairs(l) do
-                _G[i]=v
-                internal.static[i]=v
-                local _,err = pcall(function() log("Loaded \""..i.."\" into global ENV.") end)
-                if err then
-                    log(err,true)
-                end
-            end
-        else
-            _G[n]=l
-            internal.static[n]=l
-            local _,err = pcall(function() log("Loaded lib \""..n.."\" into global ENV.") end)
-            if err then
-                log(err,true)
-            end
-        end
+    local f,e = loadfile(Filepath)
+    if e then
+        log(e,true)
     else
-        local _,err = pcall(function() log("Tried to load lib \""..n.."\" but kernel in state \""..Ks.."\".") end)
-        if err then
-            log(err,true)
-        end   
+        if Ks == "Load" then
+            
+        end
     end
 end
 kernel.util={}
