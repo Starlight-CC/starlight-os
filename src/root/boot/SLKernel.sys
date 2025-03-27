@@ -1,3 +1,4 @@
+os.pullEvent = os.pullEventRaw
 local internal={}
 internal._LuaBuiltins = {
     "pairs",
@@ -15,10 +16,12 @@ internal._LuaBuiltins = {
     "rawset",
     "rawequal",
     "next",
+    "select",
     "newproxy",
     "getmetatable",
     "setmetatable",
     "getfenv",
+    "setfenv",
     "error",
     "assert",
     "coroutine",
@@ -26,5 +29,39 @@ internal._LuaBuiltins = {
     "table",
     "string",
     "debug",
-    "_VERSION"
+    "utf8",
+    "bit",
+    "bit32",
+    "_VERSION",
+    "_G",
+    --exeptions
+    "kernel"
 }
+internal.restricted={}
+internal.static={}
+kernel={}
+local function isin(q,t,m)
+    if m == nil then
+        local m = 1
+    end
+    for i,v in pairs(t) do
+        if m == 1 then
+            if i == q then
+                return true
+            end
+        elseif m == 2 then
+            if v == q then
+                return true
+            end
+        else
+            error("invalid mode")
+        end
+    end
+    return false
+end
+for i,v in pairs(_G) do
+    if not isin(i,internal._LuaBuiltins) then
+        internal.restricted[tostring(i)] = v
+        _G[i] = nil
+    end
+end
