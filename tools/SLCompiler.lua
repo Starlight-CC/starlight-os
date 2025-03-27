@@ -212,7 +212,7 @@ print("Rebooting ...")
 sleep(1)
 term.setTextColor(colors.green)
 print("SL.reboot service started")
-shell.run("sys/serv/reboot.lua")
+shell.run("sys/serv/reboot.sys")
 ]])
 
 fh.close()

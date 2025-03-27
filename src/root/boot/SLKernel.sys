@@ -1,6 +1,7 @@
 local internal = {}
 internal._G = _G
-_G = {}
+_G._G={}
+_G._G=_G
 internal.knownENV="Unknown"
 if internal._G._CC_DEFAULT_SETTINGS then
     internal.knownENV="CC:Tweaked"
@@ -35,7 +36,9 @@ internal._LuaBuiltins = {
     "error",
     "assert",
     "coroutine",
-    "_VERSION"
+    "_VERSION",
+    --CC func
+    "term"
 }
 ipairs = internal._G.ipairs
 internal.static={}
@@ -120,7 +123,7 @@ function kernel.reboot()
 end
 function kernel.internal.loadGlobalAPI(Filepath,_tEnv,args)
     if Ks == "Load" then
-        local s,l,n = kernel.dofile(Filepath,_tEnv,args)
+        local s,l,n = pcall(kernel.dofile,Filepath,_tEnv,args)
         if s == false then
             log(l,true)
         else
