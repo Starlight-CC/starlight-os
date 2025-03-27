@@ -6,7 +6,7 @@
     ".sff":"/bin/Fontview",
     ".sys":[
         "/bin/SLVim",
-        "lua"
+        "/bin/lua"
     ],
     ".lua":[
         "/bin/SLVim",
