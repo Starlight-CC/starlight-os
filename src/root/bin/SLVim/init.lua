@@ -23,7 +23,7 @@ if not fs.exists(sPath) and not string.find(sPath, "%.") then
 end
 local oldC = term.setCursorPos
 function term.setCursorPos(x,y)
-    oldC(x+1,y)
+    oldC(x+2,y)
 end
 local x, y = 1, 1
 local w, h = term.getSize()
@@ -281,7 +281,7 @@ local function redrawMenu()
     term.clearLine()
 
     -- Draw line numbers
-    term.setCursorPos(w - #("Ln " .. y) + 1, h)
+    term.setCursorPos(w - #("Ln " .. y) + 2, h)
     term.setTextColour(highlightColour)
     term.write("Ln ")
     term.setTextColour(textColour)
@@ -457,7 +457,18 @@ local function doMenuItem(_n)
     end
     redrawMenu()
 end
-
+local function redrawCursor()
+    local function drawIterations(ix,iy,n,m)
+        local i=0
+        while i ~= n do
+            i=i+m
+            term.setCursorPos(ix,iy+i)
+            term.write(math.abs(i))
+        end
+    end
+    drawIterations(0,y,19,1)
+    drawIterations(0,y,-19,-1)
+end
 local function setCursor(newX, newY)
     local _, oldY = x, y
     x, y = newX, newY
@@ -495,7 +506,7 @@ local function setCursor(newX, newY)
         redrawLine(y)
     end
     term.setCursorPos(screenX, screenY)
-
+    redrawCursor()
     redrawMenu()
 end
 
@@ -837,7 +848,6 @@ while bRunning do
         setCursor(x, y)
         redrawMenu()
         redrawText()
-
     end
 end
 
