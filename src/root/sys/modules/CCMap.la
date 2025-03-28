@@ -1,4 +1,0 @@
-os = {}
-os.pullEvent = kernel.syscall.pullEvent
-os.pullEventRaw = kernel.syscall.pullEventRaw
-os.queueEvent = kernel.syscall.queueEvent
