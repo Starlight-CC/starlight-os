@@ -281,13 +281,13 @@ local function redrawMenu()
     term.clearLine()
 
     -- Draw line numbers
-    term.setCursorPos(w - #("Ln " .. y) + 2, h)
+    term.setCursorPos(w - #("Ln " .. y) + 3, h)
     term.setTextColour(highlightColour)
     term.write("Ln ")
     term.setTextColour(textColour)
     term.write(y)
 
-    term.setCursorPos(0, h)
+    term.setCursorPos(-1, h)
     if bMenu then
         -- Draw menu
         term.setTextColour(textColour)
@@ -462,8 +462,11 @@ local function redrawCursor()
         local i=0
         while i ~= n do
             i=i+m
-            term.setCursorPos(ix,iy+i)
+            term.setCursorPos(ix-1,iy+i)
             term.write(math.abs(i))
+            if math.abs(i) > 10 then
+                term.write(" ")
+            end
         end
     end
     drawIterations(0,y,19,1)
