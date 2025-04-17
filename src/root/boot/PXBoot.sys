@@ -106,7 +106,7 @@ local function unbios(path, ...)
     _G.error = function() end
     _G.term.redirect = function() end
     function _G.term.native()
-        _G.term.native = nil
+        _G.term.native = _G.term
         _G.term.redirect = nil
         _G.error = olderror
         term.setBackgroundColor(32768)
