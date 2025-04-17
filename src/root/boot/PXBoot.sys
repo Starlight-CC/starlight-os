@@ -1,6 +1,6 @@
 if not (fs or term or os.pullEvent) then error("This program must be run from CraftOS.") end
 
-local expect = require "cc.expect"
+local expect = dofile("/rom/modules/main/cc/expect.lua")
 if not getmetatable(expect) then setmetatable(expect, {__call = function(self, ...) return self.expect(...) end})
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
 
