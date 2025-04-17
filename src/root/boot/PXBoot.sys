@@ -30,9 +30,7 @@ function loadAPI(_sPath)
 
     local tAPI = {}
     for k, v in pairs(tEnv) do
-        if k ~= "_ENV" then
-            tAPI[k] =  v
-        end
+        tAPI[k] =  v
     end
 
     
