@@ -109,6 +109,10 @@ fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll()
 fh.write([[_G.require = require
+term.setPaletteColor(colors.red,0xff0000)
+term.setPaletteColor(colors.green,0x00ff00)
+term.setPaletteColor(colors.blue,0x0000ff)
+local pullEvent = os.pullEvent
 local copyR = [=[]]..Copyright..[[]=]
     
 local PrimeUIE = [=[]]..PrimeUIE..[[]=]
@@ -216,3 +220,8 @@ shell.run("sys/serv/reboot.sys")
 ]])
 
 fh.close()
+term.setBackgroundColor(colors.black)
+term.setTextColor(colors.white)
+term.clear()
+term.setCursorPos(1,1)
+print("Starlight compile complete")
