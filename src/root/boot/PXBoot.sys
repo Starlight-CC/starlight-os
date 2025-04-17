@@ -485,7 +485,11 @@ while not Exit do
             if selection < scroll then scroll = scroll - 1 end
             drawEntries()
         elseif ev[2] == keys.enter then
-            if boot(entries[selection]) then return end
+            if boot(entries[selection]) then break end
+            Exit = false
+            drawScreen()
+            drawEntries()
+            break
         elseif ev[2] == keys.c then
             runShell()
             drawScreen()
@@ -493,4 +497,3 @@ while not Exit do
     elseif ev[1] == "terminate" then break
     end
 end
-Exit = false
