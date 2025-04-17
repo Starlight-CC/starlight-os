@@ -4,6 +4,7 @@ local expect = require "cc.expect"
 if not getmetatable(expect) then setmetatable(expect, {__call = function(self, ...) return self.expect(...) end})
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
 
+local configFile = ...
 local entries = {}
 local entry_names = {}
 local bootcfg = {}
@@ -349,7 +350,7 @@ term.clear()
 term.setCursorPos(1, 1)
 
 repeat
-    local fn, err = loadfile("ect/PXBoot/bootConfig.conf", "t", config)
+    local fn, err = loadfile(configFile, "t", config)
     if not fn then
         printError("Could not load config file: " .. err)
         print("Press any key to continue...")
