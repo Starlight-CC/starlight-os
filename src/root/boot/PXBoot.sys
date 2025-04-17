@@ -1,9 +1,47 @@
 if not (fs or term or os.pullEvent) then error("This program must be run from CraftOS.") end
 
 local expect = dofile("/rom/modules/main/cc/expect.lua")
-local colors = dofile("/rom/apis/colors.lua")
-local colours = dofile("/rom/apis/colours.lua")
-local window = dofile("/rom/apis/window.lua")
+local tAPIsLoading = {}
+function loadAPI(_sPath)
+    expect(1, _sPath, "string")
+    local sName = fs.getName(_sPath)
+    if sName:sub(-4) == ".lua" then
+        sName = sName:sub(1, -5)
+    end
+    if tAPIsLoading[sName] == true then
+        printError("API " .. sName .. " is already being loaded")
+        return false
+    end
+    tAPIsLoading[sName] = true
+
+    local tEnv = {}
+    setmetatable(tEnv, { __index = _G })
+    local fnAPI, err = loadfile(_sPath, nil, tEnv)
+    if fnAPI then
+        local ok, err = pcall(fnAPI)
+        if not ok then
+            tAPIsLoading[sName] = nil
+            return error("Failed to load API " .. sName .. " due to " .. err, 1)
+        end
+    else
+        tAPIsLoading[sName] = nil
+        return error("Failed to load API " .. sName .. " due to " .. err, 1)
+    end
+
+    local tAPI = {}
+    for k, v in pairs(tEnv) do
+        if k ~= "_ENV" then
+            tAPI[k] =  v
+        end
+    end
+
+    
+    tAPIsLoading[sName] = nil
+    return tAPI
+end
+local colors = loadAPI("/rom/apis/colors.lua")
+local colours = loadAPI("/rom/apis/colours.lua")
+local window = loadAPI("/rom/apis/window.lua")
 
 if not getmetatable(expect) then setmetatable(expect, {__call = function(self, ...) return self.expect(...) end})
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
