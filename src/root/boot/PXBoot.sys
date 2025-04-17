@@ -2,7 +2,7 @@ if not (fs or term or os.pullEvent) then error("This program must be run from Cr
 
 local expect = dofile("/rom/modules/main/cc/expect.lua")
 local tAPIsLoading = {}
-function loadAPI(_sPath)
+function loadAPI(_sPath,arg)
     expect(1, _sPath, "string")
     local sName = fs.getName(_sPath)
     if sName:sub(-4) == ".lua" then
@@ -33,13 +33,13 @@ function loadAPI(_sPath)
         tAPI[k] =  v
     end
 
-    
+    _G[sName]=tAPI
     tAPIsLoading[sName] = nil
-    return tAPI
+    return true
 end
-local colors = loadAPI("/rom/apis/colors.lua")
-local colours = loadAPI("/rom/apis/colours.lua")
-local window = loadAPI("/rom/apis/window.lua")
+loadAPI("/rom/apis/colors.lua")
+loadAPI("/rom/apis/colours.lua")
+loadAPI("/rom/apis/window.lua")
 
 if not getmetatable(expect) then setmetatable(expect, {__call = function(self, ...) return self.expect(...) end})
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
