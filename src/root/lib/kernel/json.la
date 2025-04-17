@@ -385,4 +385,4 @@ function json.decode(str)
 end
 
 
-return json
+return json, "json"
