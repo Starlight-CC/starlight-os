@@ -158,6 +158,7 @@ end
 
 function cmds.Back(t)
     bootcfg.fn = function() Exit = true end
+    bootcfg.args = {}
 end
 
 function cmds.craftos(t)
