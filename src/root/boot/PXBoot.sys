@@ -156,8 +156,8 @@ function cmds.chainloader(t)
     bootcfg.args = {t.path}
 end
 
-function cmds.back(t)
-    Exit = true
+function cmds.Back(t)
+    bootcfg.fn = function() Exit = true end
 end
 
 function cmds.craftos(t)
@@ -297,7 +297,7 @@ local config = setmetatable({
         expect(1, path, "string")
         return {cmd = "chainloader", path = path, line = debug.getinfo(2, "l").currentline}
     end,
-    back = {cmd = "back"},
+    Back = {cmd = "Back"},
     args = function(args)
         expect(1, args, "string", "table")
         if type(args) == "table" then
