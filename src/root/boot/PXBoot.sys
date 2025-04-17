@@ -493,3 +493,4 @@ while not Exit do
     elseif ev[1] == "terminate" then break
     end
 end
+Exit = false
