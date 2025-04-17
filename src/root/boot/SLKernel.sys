@@ -33,9 +33,7 @@ internal._LuaBuiltins = {
     "bit",
     "bit32",
     "_VERSION",
-    "_G",
-    --exeptions
-    "kernel"
+    "_G"
 }
 internal.restricted={}
 internal.static={}
