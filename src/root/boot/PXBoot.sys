@@ -74,7 +74,7 @@ local function unbios(path, ...)
     for k in pairs(_G) do if not keptAPIs[k] and not userGlobals[k] then table.insert(t, k) end end
     for _,k in ipairs(t) do _G[k] = nil end
     local native = monitor or _G.term.native()
-    for _, method in ipairs { "nativePaletteColor", "nativePaletteColour", "screenshot" } do
+    for _, method in ipairs { "nativePaletteColor", "nativePaletteColour", "screenshot" ,"current"} do
         native[method] = _G.term[method]
     end
     _G.term = native
