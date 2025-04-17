@@ -53,8 +53,8 @@ local userGlobals = {}
 local monitor
 
 local function unbios(path, ...)
-    local currentterm = term.current
-    local nativeterm = term.native
+    local currentterm = _G.term.current
+    local nativeterm = _G.term.native
     -- UnBIOS by JackMacWindows
     -- This will undo most of the changes/additions made in the BIOS, but some things may remain wrapped if `debug` is unavailable
     -- To use, just place a `bios.lua` in the root of the drive, and run this program
