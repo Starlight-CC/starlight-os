@@ -1,50 +1,10 @@
 if not (fs or term or os.pullEvent) then error("This program must be run from CraftOS.") end
 
-local expect = dofile("/rom/modules/main/cc/expect.lua")
-local tAPIsLoading = {}
-function loadAPI(_sPath,arg)
-    expect(1, _sPath, "string")
-    local sName = fs.getName(_sPath)
-    if sName:sub(-4) == ".lua" then
-        sName = sName:sub(1, -5)
-    end
-    if tAPIsLoading[sName] == true then
-        printError("API " .. sName .. " is already being loaded")
-        return false
-    end
-    tAPIsLoading[sName] = true
-
-    local tEnv = {}
-    setmetatable(tEnv, { __index = _G })
-    local fnAPI, err = loadfile(_sPath, nil, tEnv)
-    if fnAPI then
-        local ok, err = pcall(fnAPI)
-        if not ok then
-            tAPIsLoading[sName] = nil
-            return error("Failed to load API " .. sName .. " due to " .. err, 1)
-        end
-    else
-        tAPIsLoading[sName] = nil
-        return error("Failed to load API " .. sName .. " due to " .. err, 1)
-    end
-
-    local tAPI = {}
-    for k, v in pairs(tEnv) do
-        tAPI[k] =  v
-    end
-
-    _G[sName]=tAPI
-    tAPIsLoading[sName] = nil
-    return true
-end
-loadAPI("/rom/apis/colors.lua")
-loadAPI("/rom/apis/colours.lua")
-loadAPI("/rom/apis/window.lua")
-
+local expect = require "cc.expect"
 if not getmetatable(expect) then setmetatable(expect, {__call = function(self, ...) return self.expect(...) end})
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
 
-local configFile = ...
+local bootArg = ...
 local entries = {}
 local entry_names = {}
 local bootcfg = {}
@@ -53,7 +13,6 @@ local userGlobals = {}
 local monitor
 
 local function unbios(path, ...)
-    local currentterm = _G.term.current
     -- UnBIOS by JackMacWindows
     -- This will undo most of the changes/additions made in the BIOS, but some things may remain wrapped if `debug` is unavailable
     -- To use, just place a `bios.lua` in the root of the drive, and run this program
@@ -70,16 +29,15 @@ local function unbios(path, ...)
     -- Licensed under the MIT license
     local old_dofile = _G.dofile
     local kernelArgs = table.pack(...)
-    local keptAPIs = {bit32 = true, bit = true, ccemux = true, config = true, coroutine = true, debug = true, ffi = true, fs = true, http = true, io = true, jit = true, mounter = true, os = true, periphemu = true, peripheral = true, redstone = true, rs = true, term = true, utf8 = true, _HOST = true, _CC_DEFAULT_SETTINGS = true, _CC_DISABLE_LUA51_FEATURES = true, _VERSION = true, assert = true, collectgarbage = true, error = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, turtle = true, pocket = true, commands = true, _G = true, sound = true, loadfile = true, dofile = true, term = true, keys = true}
+    local keptAPIs = {bit32 = true, bit = true, ccemux = true, config = true, coroutine = true, debug = true, ffi = true, fs = true, http = true, io = true, jit = true, mounter = true, os = true, periphemu = true, peripheral = true, redstone = true, rs = true, term = true, utf8 = true, _HOST = true, _CC_DEFAULT_SETTINGS = true, _CC_DISABLE_LUA51_FEATURES = true, _VERSION = true, assert = true, collectgarbage = true, error = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, turtle = true, pocket = true, commands = true, _G = true, sound = true}
     local t = {}
     for k in pairs(_G) do if not keptAPIs[k] and not userGlobals[k] then table.insert(t, k) end end
     for _,k in ipairs(t) do _G[k] = nil end
     local native = monitor or _G.term.native()
-    for _, method in ipairs { "nativePaletteColor", "nativePaletteColour", "screenshot"} do
+    for _, method in ipairs { "nativePaletteColor", "nativePaletteColour", "screenshot" } do
         native[method] = _G.term[method]
     end
     _G.term = native
-    _G.term.current = currentterm
     _G.http.checkURL = _G.http.checkURLAsync
     _G.http.websocket = _G.http.websocketAsync
     if _G.commands then _G.commands = _G.commands.native end
@@ -106,7 +64,7 @@ local function unbios(path, ...)
     _G.error = function() end
     _G.term.redirect = function() end
     function _G.term.native()
-        _G.term.native = native
+        _G.term.native = nil
         _G.term.redirect = nil
         _G.error = olderror
         term.setBackgroundColor(32768)
@@ -266,8 +224,8 @@ end
 
 local runningDir
 local config = setmetatable({
-    title = "PXBoot menu",
-    titlecolor = colors.cyan,
+    title = "PXBoot",
+    titlecolor = colors.white,
     backgroundcolor = colors.black,
     textcolor = colors.white,
     boxcolor = colors.white,
@@ -392,7 +350,7 @@ term.clear()
 term.setCursorPos(1, 1)
 
 repeat
-    local fn, err = loadfile(configFile, "t", config)
+    local fn, err = loadfile(bootArg, "t", config)
     if not fn then
         printError("Could not load config file: " .. err)
         print("Press any key to continue...")
