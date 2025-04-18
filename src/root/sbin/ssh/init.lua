@@ -189,7 +189,7 @@ else
             send(connected,"key","key",side,channel)
         elseif event == "key_up" then
             send(connected,"key","key_up",side)
-        elseif event == "modem_message"
+        elseif event == "modem_message" then
             if message._SSHPACKET then
                 if message.address == tFlags.ip then
                     if message.type == "SSH" then
