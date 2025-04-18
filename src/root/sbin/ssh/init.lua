@@ -1,11 +1,11 @@
 local tArgs = {...}
-local shell = "/rom/programs/shell.lua"
+local shellC = "/rom/programs/shell.lua"
 local tFlags = {
     port = 22,
     user = "id", --User
     setHost = false, --Host?
     close = false,
-    ip=tostring(math.random(1,1000000000)),
+    ip=tostring(math.random(0,225)).."."..tostring(math.random(0,225)).."."..tostring(math.random(0,225)),
     connected=""
 }
 print(tFlags.ip)
@@ -39,7 +39,7 @@ if tFlags.setHost then
     _SSH.term=term
     term = {
         clearLine=function(...)
-            send(tFlags.user,"term","clearLine",...)
+            send(tFlags.connected,"term","clearLine",...)
             _SSH.term.clearLine(...)
         end,
         getCursorBlink=function(...)
@@ -55,22 +55,22 @@ if tFlags.setHost then
             return _SSH.term.getBackgroundColour(...)
         end,
         write=function(...)
-            send(tFlags.user,"term","write",...)
+            send(tFlags.connected,"term","write",...)
             _SSH.term.write(...)
         end,
         setCursorBlink=function(...)
-            send(tFlags.user,"term","setCursorBlink",...)
+            send(tFlags.connected,"term","setCursorBlink",...)
             _SSH.term.setCursorBlink(...)
         end,
         setBackgroundColour=function(...)
-            send(tFlags.user,"term","setBackgroundColour",...)
+            send(tFlags.connected,"term","setBackgroundColour",...)
             _SSH.term.setBackgroundColour(...)
         end,
         getBackgroundColor=function(...)
             return _SSH.term.getBackgroundColor(...)
         end,
         setPaletteColour=function(...)
-            send(tFlags.user,"term","setPaletteColour",...)
+            send(tFlags.connected,"term","setPaletteColour",...)
             _SSH.term.setPaletteColour(...)
         end,
         current=function(...)
@@ -80,15 +80,15 @@ if tFlags.setHost then
             return _SSH.term.isColor(...)
         end,
         clear=function(...)
-            send(tFlags.user,"term","clear",...)
+            send(tFlags.connected,"term","clear",...)
             _SSH.term.clear(...)
         end,
         blit=function(...)
-            send(tFlags.user,"term","blit",...)
+            send(tFlags.connected,"term","blit",...)
             _SSH.term.blit(...)
         end,
         setPaletteColor=function(...)
-            send(tFlags.user,"term","setPaletteColor",...)
+            send(tFlags.connected,"term","setPaletteColor",...)
             _SSH.term.setPaletteColor(...)
         end,
         getPaletteColour=function(...)
@@ -98,21 +98,21 @@ if tFlags.setHost then
             return _SSH.term.native(...)
         end,
         setBackgroundColor=function(...)
-            send(tFlags.user,"term","setBackgroundColor",...)
+            send(tFlags.connected,"term","setBackgroundColor",...)
             _SSH.term.setBackgroundColor(...)
         end,
         isColour=function(...)
             return _SSH.term.isColour(...)
         end,
         setCursorPos=function(...)
-            send(tFlags.user,"term","setCursorPos",...)
+            send(tFlags.connected,"term","setCursorPos",...)
             _SSH.term.setCursorPos(...)
         end,
         nativePaletteColour=function(...)
             return _SSH.term.nativePaletteColor(...)
         end,
         setTextColor=function(...)
-            send(tFlags.user,"term","setTextColor",...)
+            send(tFlags.connected,"term","setTextColor",...)
             _SSH.term.setTextColor(...)
         end,
         getTextColour=function(...)
@@ -122,14 +122,14 @@ if tFlags.setHost then
             return _SSH.term.getSize(...)
         end,
         setTextColour=function(...)
-            send(tFlags.user,"term","setTextColour",...)
+            send(tFlags.connected,"term","setTextColour",...)
             _SSH.term.setTextColour(...)
         end,
         getPaletteColor=function(...)
             return _SSH.term.getPaletteColor(...)
         end,
         scroll=function(...)
-            send(tFlags.user,"term","scroll",...)
+            send(tFlags.connected,"term","scroll",...)
             _SSH.term.scroll(...)
         end,
         getCursorPos=function(...)
@@ -142,7 +142,7 @@ if tFlags.setHost then
     print("your id is "..tFlags.ip)
     parallel.waitForAny(
         function()
-            os.run({},shell)
+            shell.run(shellC)
         end,
         function()
             while true do
@@ -154,6 +154,7 @@ if tFlags.setHost then
                                 if message.query == "connect" then
                                     if tFlags.user == "id" then
                                         tFlags.user=message.data[1]
+                                        tFlags.connected=message.returnAddress
                                     else
                                         send(message.returnAddress,"SSH","reject","Already connected")
                                     end
@@ -177,6 +178,7 @@ if tFlags.setHost then
         function()
             while not tFlags.close do
                 sleep(0)
+                os.pullEvent()
             end
         end
     )

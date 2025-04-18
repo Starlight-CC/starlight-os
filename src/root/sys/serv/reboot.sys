@@ -1,2 +1,3 @@
 --Copyright (C) 2025  Starlight-CC
-syscall("kernel.reboot")
+pcall(syscall,"kernel.reboot")
+pcall(os.reboot)
