@@ -1,5 +1,5 @@
 local code = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/net/latest.vi").readAll()
-local file = fs.open("/tmp/netInstall.vi","W")
+local file = fs.open("/tmp/netInstall.vi","wb")
 file.write(code)
 file.close()
 dofile("/tmp/netInstall.vi")
