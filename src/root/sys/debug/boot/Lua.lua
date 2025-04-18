@@ -35,7 +35,7 @@ if shell then
 end
 
 if term.isColour() then
-    term.setTextColour(colours.yellow)
+    term.setTextColour(colours.blue)
 end
 print("Lua Debug Prompt.")
 print("Call exit() to exit to bootloader.")
@@ -43,11 +43,11 @@ term.setTextColour(colours.white)
 
 local chunk_idx, chunk_map = 1, {}
 while running do
-    --if term.isColour() then
-    --    term.setTextColour( colours.yellow )
-    --end
+    if term.isColour() then
+        term.setTextColour( colours.green )
+    end
     write("lua:$")
-    --term.setTextColour( colours.white )
+    term.setTextColour( colours.white )
 
     local input = read(nil, tCommandHistory, function(sLine)
         if settings.get("lua.autocomplete") then
