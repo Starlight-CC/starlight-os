@@ -1,0 +1,4158 @@
+_G.require = require
+term.setPaletteColor(colors.red,0xff0000)
+term.setPaletteColor(colors.green,0x00ff00)
+term.setPaletteColor(colors.blue,0x0000ff)
+local pullEvent = os.pullEvent
+local copyR = [=[Starlight OS
+    Copyright (C) 2025  StarlightOS
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>
+
+    contacts-
+      <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
+>>>
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The GNU General Public License is a free, copyleft license for
+software and other kinds of works.
+
+  The licenses for most software and other practical works are designed
+to take away your freedom to share and change the works.  By contrast,
+the GNU General Public License is intended to guarantee your freedom to
+share and change all versions of a program--to make sure it remains free
+software for all its users.  We, the Free Software Foundation, use the
+GNU General Public License for most of our software; it applies also to
+any other work released this way by its authors.  You can apply it to
+your programs, too.
+
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+them if you wish), that you receive source code or can get it if you
+want it, that you can change the software or use pieces of it in new
+free programs, and that you know you can do these things.
+
+  To protect your rights, we need to prevent others from denying you
+these rights or asking you to surrender the rights.  Therefore, you have
+certain responsibilities if you distribute copies of the software, or if
+you modify it: responsibilities to respect the freedom of others.
+
+  For example, if you distribute copies of such a program, whether
+gratis or for a fee, you must pass on to the recipients the same
+freedoms that you received.  You must make sure that they, too, receive
+or can get the source code.  And you must show them these terms so they
+know their rights.
+
+  Developers that use the GNU GPL protect your rights with two steps:
+(1) assert copyright on the software, and (2) offer you this License
+giving you legal permission to copy, distribute and/or modify it.
+
+  For the developers' and authors' protection, the GPL clearly explains
+that there is no warranty for this free software.  For both users' and
+authors' sake, the GPL requires that modified versions be marked as
+changed, so that their problems will not be attributed erroneously to
+authors of previous versions.
+
+  Some devices are designed to deny users access to install or run
+modified versions of the software inside them, although the manufacturer
+can do so.  This is fundamentally incompatible with the aim of
+protecting users' freedom to change the software.  The systematic
+pattern of such abuse occurs in the area of products for individuals to
+use, which is precisely where it is most unacceptable.  Therefore, we
+have designed this version of the GPL to prohibit the practice for those
+products.  If such problems arise substantially in other domains, we
+stand ready to extend this provision to those domains in future versions
+of the GPL, as needed to protect the freedom of users.
+
+  Finally, every program is threatened constantly by software patents.
+States should not allow patents to restrict development and use of
+software on general-purpose computers, but in those that do, we wish to
+avoid the special danger that patents applied to a free program could
+make it effectively proprietary.  To prevent this, the GPL assures that
+patents cannot be used to render the program non-free.
+
+  The precise terms and conditions for copying, distribution and
+modification follow.
+
+                       TERMS AND CONDITIONS
+
+  0. Definitions.
+
+  "This License" refers to version 3 of the GNU General Public License.
+
+  "Copyright" also means copyright-like laws that apply to other kinds of
+works, such as semiconductor masks.
+
+  "The Program" refers to any copyrightable work licensed under this
+License.  Each licensee is addressed as "you".  "Licensees" and
+"recipients" may be individuals or organizations.
+
+  To "modify" a work means to copy from or adapt all or part of the work
+in a fashion requiring copyright permission, other than the making of an
+exact copy.  The resulting work is called a "modified version" of the
+earlier work or a work "based on" the earlier work.
+
+  A "covered work" means either the unmodified Program or a work based
+on the Program.
+
+  To "propagate" a work means to do anything with it that, without
+permission, would make you directly or secondarily liable for
+infringement under applicable copyright law, except executing it on a
+computer or modifying a private copy.  Propagation includes copying,
+distribution (with or without modification), making available to the
+public, and in some countries other activities as well.
+
+  To "convey" a work means any kind of propagation that enables other
+parties to make or receive copies.  Mere interaction with a user through
+a computer network, with no transfer of a copy, is not conveying.
+
+  An interactive user interface displays "Appropriate Legal Notices"
+to the extent that it includes a convenient and prominently visible
+feature that (1) displays an appropriate copyright notice, and (2)
+tells the user that there is no warranty for the work (except to the
+extent that warranties are provided), that licensees may convey the
+work under this License, and how to view a copy of this License.  If
+the interface presents a list of user commands or options, such as a
+menu, a prominent item in the list meets this criterion.
+
+  1. Source Code.
+
+  The "source code" for a work means the preferred form of the work
+for making modifications to it.  "Object code" means any non-source
+form of a work.
+
+  A "Standard Interface" means an interface that either is an official
+standard defined by a recognized standards body, or, in the case of
+interfaces specified for a particular programming language, one that
+is widely used among developers working in that language.
+
+  The "System Libraries" of an executable work include anything, other
+than the work as a whole, that (a) is included in the normal form of
+packaging a Major Component, but which is not part of that Major
+Component, and (b) serves only to enable use of the work with that
+Major Component, or to implement a Standard Interface for which an
+implementation is available to the public in source code form.  A
+"Major Component", in this context, means a major essential component
+(kernel, window system, and so on) of the specific operating system
+(if any) on which the executable work runs, or a compiler used to
+produce the work, or an object code interpreter used to run it.
+
+  The "Corresponding Source" for a work in object code form means all
+the source code needed to generate, install, and (for an executable
+work) run the object code and to modify the work, including scripts to
+control those activities.  However, it does not include the work's
+System Libraries, or general-purpose tools or generally available free
+programs which are used unmodified in performing those activities but
+which are not part of the work.  For example, Corresponding Source
+includes interface definition files associated with source files for
+the work, and the source code for shared libraries and dynamically
+linked subprograms that the work is specifically designed to require,
+such as by intimate data communication or control flow between those
+subprograms and other parts of the work.
+
+  The Corresponding Source need not include anything that users
+can regenerate automatically from other parts of the Corresponding
+Source.
+
+  The Corresponding Source for a work in source code form is that
+same work.
+
+  2. Basic Permissions.
+
+  All rights granted under this License are granted for the term of
+copyright on the Program, and are irrevocable provided the stated
+conditions are met.  This License explicitly affirms your unlimited
+permission to run the unmodified Program.  The output from running a
+covered work is covered by this License only if the output, given its
+content, constitutes a covered work.  This License acknowledges your
+rights of fair use or other equivalent, as provided by copyright law.
+
+  You may make, run and propagate covered works that you do not
+convey, without conditions so long as your license otherwise remains
+in force.  You may convey covered works to others for the sole purpose
+of having them make modifications exclusively for you, or provide you
+with facilities for running those works, provided that you comply with
+the terms of this License in conveying all material for which you do
+not control copyright.  Those thus making or running the covered works
+for you must do so exclusively on your behalf, under your direction
+and control, on terms that prohibit them from making any copies of
+your copyrighted material outside their relationship with you.
+
+  Conveying under any other circumstances is permitted solely under
+the conditions stated below.  Sublicensing is not allowed; section 10
+makes it unnecessary.
+
+  3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+
+  No covered work shall be deemed part of an effective technological
+measure under any applicable law fulfilling obligations under article
+11 of the WIPO copyright treaty adopted on 20 December 1996, or
+similar laws prohibiting or restricting circumvention of such
+measures.
+
+  When you convey a covered work, you waive any legal power to forbid
+circumvention of technological measures to the extent such circumvention
+is effected by exercising rights under this License with respect to
+the covered work, and you disclaim any intention to limit operation or
+modification of the work as a means of enforcing, against the work's
+users, your or third parties' legal rights to forbid circumvention of
+technological measures.
+
+  4. Conveying Verbatim Copies.
+
+  You may convey verbatim copies of the Program's source code as you
+receive it, in any medium, provided that you conspicuously and
+appropriately publish on each copy an appropriate copyright notice;
+keep intact all notices stating that this License and any
+non-permissive terms added in accord with section 7 apply to the code;
+keep intact all notices of the absence of any warranty; and give all
+recipients a copy of this License along with the Program.
+
+  You may charge any price or no price for each copy that you convey,
+and you may offer support or warranty protection for a fee.
+
+  5. Conveying Modified Source Versions.
+
+  You may convey a work based on the Program, or the modifications to
+produce it from the Program, in the form of source code under the
+terms of section 4, provided that you also meet all of these conditions:
+
+    a) The work must carry prominent notices stating that you modified
+    it, and giving a relevant date.
+
+    b) The work must carry prominent notices stating that it is
+    released under this License and any conditions added under section
+    7.  This requirement modifies the requirement in section 4 to
+    "keep intact all notices".
+
+    c) You must license the entire work, as a whole, under this
+    License to anyone who comes into possession of a copy.  This
+    License will therefore apply, along with any applicable section 7
+    additional terms, to the whole of the work, and all its parts,
+    regardless of how they are packaged.  This License gives no
+    permission to license the work in any other way, but it does not
+    invalidate such permission if you have separately received it.
+
+    d) If the work has interactive user interfaces, each must display
+    Appropriate Legal Notices; however, if the Program has interactive
+    interfaces that do not display Appropriate Legal Notices, your
+    work need not make them do so.
+
+  A compilation of a covered work with other separate and independent
+works, which are not by their nature extensions of the covered work,
+and which are not combined with it such as to form a larger program,
+in or on a volume of a storage or distribution medium, is called an
+"aggregate" if the compilation and its resulting copyright are not
+used to limit the access or legal rights of the compilation's users
+beyond what the individual works permit.  Inclusion of a covered work
+in an aggregate does not cause this License to apply to the other
+parts of the aggregate.
+
+  6. Conveying Non-Source Forms.
+
+  You may convey a covered work in object code form under the terms
+of sections 4 and 5, provided that you also convey the
+machine-readable Corresponding Source under the terms of this License,
+in one of these ways:
+
+    a) Convey the object code in, or embodied in, a physical product
+    (including a physical distribution medium), accompanied by the
+    Corresponding Source fixed on a durable physical medium
+    customarily used for software interchange.
+
+    b) Convey the object code in, or embodied in, a physical product
+    (including a physical distribution medium), accompanied by a
+    written offer, valid for at least three years and valid for as
+    long as you offer spare parts or customer support for that product
+    model, to give anyone who possesses the object code either (1) a
+    copy of the Corresponding Source for all the software in the
+    product that is covered by this License, on a durable physical
+    medium customarily used for software interchange, for a price no
+    more than your reasonable cost of physically performing this
+    conveying of source, or (2) access to copy the
+    Corresponding Source from a network server at no charge.
+
+    c) Convey individual copies of the object code with a copy of the
+    written offer to provide the Corresponding Source.  This
+    alternative is allowed only occasionally and noncommercially, and
+    only if you received the object code with such an offer, in accord
+    with subsection 6b.
+
+    d) Convey the object code by offering access from a designated
+    place (gratis or for a charge), and offer equivalent access to the
+    Corresponding Source in the same way through the same place at no
+    further charge.  You need not require recipients to copy the
+    Corresponding Source along with the object code.  If the place to
+    copy the object code is a network server, the Corresponding Source
+    may be on a different server (operated by you or a third party)
+    that supports equivalent copying facilities, provided you maintain
+    clear directions next to the object code saying where to find the
+    Corresponding Source.  Regardless of what server hosts the
+    Corresponding Source, you remain obligated to ensure that it is
+    available for as long as needed to satisfy these requirements.
+
+    e) Convey the object code using peer-to-peer transmission, provided
+    you inform other peers where the object code and Corresponding
+    Source of the work are being offered to the general public at no
+    charge under subsection 6d.
+
+  A separable portion of the object code, whose source code is excluded
+from the Corresponding Source as a System Library, need not be
+included in conveying the object code work.
+
+  A "User Product" is either (1) a "consumer product", which means any
+tangible personal property which is normally used for personal, family,
+or household purposes, or (2) anything designed or sold for incorporation
+into a dwelling.  In determining whether a product is a consumer product,
+doubtful cases shall be resolved in favor of coverage.  For a particular
+product received by a particular user, "normally used" refers to a
+typical or common use of that class of product, regardless of the status
+of the particular user or of the way in which the particular user
+actually uses, or expects or is expected to use, the product.  A product
+is a consumer product regardless of whether the product has substantial
+commercial, industrial or non-consumer uses, unless such uses represent
+the only significant mode of use of the product.
+
+  "Installation Information" for a User Product means any methods,
+procedures, authorization keys, or other information required to install
+and execute modified versions of a covered work in that User Product from
+a modified version of its Corresponding Source.  The information must
+suffice to ensure that the continued functioning of the modified object
+code is in no case prevented or interfered with solely because
+modification has been made.
+
+  If you convey an object code work under this section in, or with, or
+specifically for use in, a User Product, and the conveying occurs as
+part of a transaction in which the right of possession and use of the
+User Product is transferred to the recipient in perpetuity or for a
+fixed term (regardless of how the transaction is characterized), the
+Corresponding Source conveyed under this section must be accompanied
+by the Installation Information.  But this requirement does not apply
+if neither you nor any third party retains the ability to install
+modified object code on the User Product (for example, the work has
+been installed in ROM).
+
+  The requirement to provide Installation Information does not include a
+requirement to continue to provide support service, warranty, or updates
+for a work that has been modified or installed by the recipient, or for
+the User Product in which it has been modified or installed.  Access to a
+network may be denied when the modification itself materially and
+adversely affects the operation of the network or violates the rules and
+protocols for communication across the network.
+
+  Corresponding Source conveyed, and Installation Information provided,
+in accord with this section must be in a format that is publicly
+documented (and with an implementation available to the public in
+source code form), and must require no special password or key for
+unpacking, reading or copying.
+
+  7. Additional Terms.
+
+  "Additional permissions" are terms that supplement the terms of this
+License by making exceptions from one or more of its conditions.
+Additional permissions that are applicable to the entire Program shall
+be treated as though they were included in this License, to the extent
+that they are valid under applicable law.  If additional permissions
+apply only to part of the Program, that part may be used separately
+under those permissions, but the entire Program remains governed by
+this License without regard to the additional permissions.
+
+  When you convey a copy of a covered work, you may at your option
+remove any additional permissions from that copy, or from any part of
+it.  (Additional permissions may be written to require their own
+removal in certain cases when you modify the work.)  You may place
+additional permissions on material, added by you to a covered work,
+for which you have or can give appropriate copyright permission.
+
+  Notwithstanding any other provision of this License, for material you
+add to a covered work, you may (if authorized by the copyright holders of
+that material) supplement the terms of this License with terms:
+
+    a) Disclaiming warranty or limiting liability differently from the
+    terms of sections 15 and 16 of this License; or
+
+    b) Requiring preservation of specified reasonable legal notices or
+    author attributions in that material or in the Appropriate Legal
+    Notices displayed by works containing it; or
+
+    c) Prohibiting misrepresentation of the origin of that material, or
+    requiring that modified versions of such material be marked in
+    reasonable ways as different from the original version; or
+
+    d) Limiting the use for publicity purposes of names of licensors or
+    authors of the material; or
+
+    e) Declining to grant rights under trademark law for use of some
+    trade names, trademarks, or service marks; or
+
+    f) Requiring indemnification of licensors and authors of that
+    material by anyone who conveys the material (or modified versions of
+    it) with contractual assumptions of liability to the recipient, for
+    any liability that these contractual assumptions directly impose on
+    those licensors and authors.
+
+  All other non-permissive additional terms are considered "further
+restrictions" within the meaning of section 10.  If the Program as you
+received it, or any part of it, contains a notice stating that it is
+governed by this License along with a term that is a further
+restriction, you may remove that term.  If a license document contains
+a further restriction but permits relicensing or conveying under this
+License, you may add to a covered work material governed by the terms
+of that license document, provided that the further restriction does
+not survive such relicensing or conveying.
+
+  If you add terms to a covered work in accord with this section, you
+must place, in the relevant source files, a statement of the
+additional terms that apply to those files, or a notice indicating
+where to find the applicable terms.
+
+  Additional terms, permissive or non-permissive, may be stated in the
+form of a separately written license, or stated as exceptions;
+the above requirements apply either way.
+
+  8. Termination.
+
+  You may not propagate or modify a covered work except as expressly
+provided under this License.  Any attempt otherwise to propagate or
+modify it is void, and will automatically terminate your rights under
+this License (including any patent licenses granted under the third
+paragraph of section 11).
+
+  However, if you cease all violation of this License, then your
+license from a particular copyright holder is reinstated (a)
+provisionally, unless and until the copyright holder explicitly and
+finally terminates your license, and (b) permanently, if the copyright
+holder fails to notify you of the violation by some reasonable means
+prior to 60 days after the cessation.
+
+  Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+
+  Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, you do not qualify to receive new licenses for the same
+material under section 10.
+
+  9. Acceptance Not Required for Having Copies.
+
+  You are not required to accept this License in order to receive or
+run a copy of the Program.  Ancillary propagation of a covered work
+occurring solely as a consequence of using peer-to-peer transmission
+to receive a copy likewise does not require acceptance.  However,
+nothing other than this License grants you permission to propagate or
+modify any covered work.  These actions infringe copyright if you do
+not accept this License.  Therefore, by modifying or propagating a
+covered work, you indicate your acceptance of this License to do so.
+
+  10. Automatic Licensing of Downstream Recipients.
+
+  Each time you convey a covered work, the recipient automatically
+receives a license from the original licensors, to run, modify and
+propagate that work, subject to this License.  You are not responsible
+for enforcing compliance by third parties with this License.
+
+  An "entity transaction" is a transaction transferring control of an
+organization, or substantially all assets of one, or subdividing an
+organization, or merging organizations.  If propagation of a covered
+work results from an entity transaction, each party to that
+transaction who receives a copy of the work also receives whatever
+licenses to the work the party's predecessor in interest had or could
+give under the previous paragraph, plus a right to possession of the
+Corresponding Source of the work from the predecessor in interest, if
+the predecessor has it or can get it with reasonable efforts.
+
+  You may not impose any further restrictions on the exercise of the
+rights granted or affirmed under this License.  For example, you may
+not impose a license fee, royalty, or other charge for exercise of
+rights granted under this License, and you may not initiate litigation
+(including a cross-claim or counterclaim in a lawsuit) alleging that
+any patent claim is infringed by making, using, selling, offering for
+sale, or importing the Program or any portion of it.
+
+  11. Patents.
+
+  A "contributor" is a copyright holder who authorizes use under this
+License of the Program or a work on which the Program is based.  The
+work thus licensed is called the contributor's "contributor version".
+
+  A contributor's "essential patent claims" are all patent claims
+owned or controlled by the contributor, whether already acquired or
+hereafter acquired, that would be infringed by some manner, permitted
+by this License, of making, using, or selling its contributor version,
+but do not include claims that would be infringed only as a
+consequence of further modification of the contributor version.  For
+purposes of this definition, "control" includes the right to grant
+patent sublicenses in a manner consistent with the requirements of
+this License.
+
+  Each contributor grants you a non-exclusive, worldwide, royalty-free
+patent license under the contributor's essential patent claims, to
+make, use, sell, offer for sale, import and otherwise run, modify and
+propagate the contents of its contributor version.
+
+  In the following three paragraphs, a "patent license" is any express
+agreement or commitment, however denominated, not to enforce a patent
+(such as an express permission to practice a patent or covenant not to
+sue for patent infringement).  To "grant" such a patent license to a
+party means to make such an agreement or commitment not to enforce a
+patent against the party.
+
+  If you convey a covered work, knowingly relying on a patent license,
+and the Corresponding Source of the work is not available for anyone
+to copy, free of charge and under the terms of this License, through a
+publicly available network server or other readily accessible means,
+then you must either (1) cause the Corresponding Source to be so
+available, or (2) arrange to deprive yourself of the benefit of the
+patent license for this particular work, or (3) arrange, in a manner
+consistent with the requirements of this License, to extend the patent
+license to downstream recipients.  "Knowingly relying" means you have
+actual knowledge that, but for the patent license, your conveying the
+covered work in a country, or your recipient's use of the covered work
+in a country, would infringe one or more identifiable patents in that
+country that you have reason to believe are valid.
+
+  If, pursuant to or in connection with a single transaction or
+arrangement, you convey, or propagate by procuring conveyance of, a
+covered work, and grant a patent license to some of the parties
+receiving the covered work authorizing them to use, propagate, modify
+or convey a specific copy of the covered work, then the patent license
+you grant is automatically extended to all recipients of the covered
+work and works based on it.
+
+  A patent license is "discriminatory" if it does not include within
+the scope of its coverage, prohibits the exercise of, or is
+conditioned on the non-exercise of one or more of the rights that are
+specifically granted under this License.  You may not convey a covered
+work if you are a party to an arrangement with a third party that is
+in the business of distributing software, under which you make payment
+to the third party based on the extent of your activity of conveying
+the work, and under which the third party grants, to any of the
+parties who would receive the covered work from you, a discriminatory
+patent license (a) in connection with copies of the covered work
+conveyed by you (or copies made from those copies), or (b) primarily
+for and in connection with specific products or compilations that
+contain the covered work, unless you entered into that arrangement,
+or that patent license was granted, prior to 28 March 2007.
+
+  Nothing in this License shall be construed as excluding or limiting
+any implied license or other defenses to infringement that may
+otherwise be available to you under applicable patent law.
+
+  12. No Surrender of Others' Freedom.
+
+  If conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot convey a
+covered work so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you may
+not convey it at all.  For example, if you agree to terms that obligate you
+to collect a royalty for further conveying from those to whom you convey
+the Program, the only way you could satisfy both those terms and this
+License would be to refrain entirely from conveying the Program.
+
+  13. Use with the GNU Affero General Public License.
+
+  Notwithstanding any other provision of this License, you have
+permission to link or combine any covered work with a work licensed
+under version 3 of the GNU Affero General Public License into a single
+combined work, and to convey the resulting work.  The terms of this
+License will continue to apply to the part which is the covered work,
+but the special requirements of the GNU Affero General Public License,
+section 13, concerning interaction through a network will apply to the
+combination as such.
+
+  14. Revised Versions of this License.
+
+  The Free Software Foundation may publish revised and/or new versions of
+the GNU General Public License from time to time.  Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns.
+
+  Each version is given a distinguishing version number.  If the
+Program specifies that a certain numbered version of the GNU General
+Public License "or any later version" applies to it, you have the
+option of following the terms and conditions either of that numbered
+version or of any later version published by the Free Software
+Foundation.  If the Program does not specify a version number of the
+GNU General Public License, you may choose any version ever published
+by the Free Software Foundation.
+
+  If the Program specifies that a proxy can decide which future
+versions of the GNU General Public License can be used, that proxy's
+public statement of acceptance of a version permanently authorizes you
+to choose that version for the Program.
+
+  Later license versions may give you additional or different
+permissions.  However, no additional obligations are imposed on any
+author or copyright holder as a result of your choosing to follow a
+later version.
+
+  15. Disclaimer of Warranty.
+
+  THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
+APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
+OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
+IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
+ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+  16. Limitation of Liability.
+
+  IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS
+THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE
+USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF
+DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD
+PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
+EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
+
+  17. Interpretation of Sections 15 and 16.
+
+  If the disclaimer of warranty and limitation of liability provided
+above cannot be given local legal effect according to their terms,
+reviewing courts shall apply local law that most closely approximates
+an absolute waiver of all civil liability in connection with the
+Program, unless a warranty or assumption of liability accompanies a
+copy of the Program in return for a fee.
+
+                     END OF TERMS AND CONDITIONS
+
+            How to Apply These Terms to Your New Programs
+
+  If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these terms.
+
+  To do so, attach the following notices to the program.  It is safest
+to attach them to the start of each source file to most effectively
+state the exclusion of warranty; and each file should have at least
+the "copyright" line and a pointer to where the full notice is found.
+
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) <year>  <name of author>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Also add information on how to contact you by electronic and paper mail.
+
+  If the program does terminal interaction, make it output a short
+notice like this when it starts in an interactive mode:
+
+    <program>  Copyright (C) <year>  <name of author>
+    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; type `show c' for details.
+
+The hypothetical commands `show w' and `show c' should show the appropriate
+parts of the General Public License.  Of course, your program's commands
+might be different; for a GUI interface, you would use an "about box".
+
+  You should also get your employer (if you work as a programmer) or school,
+if any, to sign a "copyright disclaimer" for the program, if necessary.
+For more information on this, and how to apply and follow the GNU GPL, see
+<https://www.gnu.org/licenses/>.
+
+  The GNU General Public License does not permit incorporating your program
+into proprietary programs.  If your program is a subroutine library, you
+may consider it more useful to permit linking proprietary applications with
+the library.  If this is what you want to do, use the GNU Lesser General
+Public License instead of this License.  But first, please read
+<https://www.gnu.org/licenses/why-not-lgpl.html>.
+>>>
+Do you agree to the GNU General Public Licence]=]
+    
+local PrimeUIE = [=[local expect = require "cc.expect".expect
+local PrimeUI = {}
+do
+    local coros = {}
+    local restoreCursor
+    function PrimeUI.addTask(func)
+        expect(1, func, "function")
+        local t = {coro = coroutine.create(func)}
+        coros[#coros+1] = t
+        _, t.filter = coroutine.resume(t.coro)
+    end
+    function PrimeUI.resolve(...)
+        coroutine.yield(coros, ...)
+    end
+    function PrimeUI.clear()
+        term.setCursorPos(1, 1)
+        term.setCursorBlink(false)
+        term.setBackgroundColor(colors.black)
+        term.setTextColor(colors.white)
+        term.clear()
+        coros = {}
+        restoreCursor = nil
+    end
+    function PrimeUI.setCursorWindow(win)
+        expect(1, win, "table", "nil")
+        restoreCursor = win and win.restoreCursor
+    end
+    function PrimeUI.getWindowPos(win, x, y)
+        if win == term then return x, y end
+        while win ~= term.native() and win ~= term.current() do
+            if not win.getPosition then return x, y end
+            local wx, wy = win.getPosition()
+            x, y = x + wx - 1, y + wy - 1
+            _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
+        end
+        return x, y
+    end
+    function PrimeUI.run()
+        while true do
+            if restoreCursor then restoreCursor() end
+            local ev = table.pack(os.pullEvent())
+            for _, v in ipairs(coros) do
+                if v.filter == nil or v.filter == ev[1] then
+                    local res = table.pack(coroutine.resume(v.coro, table.unpack(ev, 1, ev.n)))
+                    if not res[1] then error(res[2], 2) end
+                    if res[2] == coros then return table.unpack(res, 3, res.n) end
+                    v.filter = res[2]
+                end
+            end
+        end
+    end
+end
+function PrimeUI.borderBox(win, x, y, width, height, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    fgColor = expect(6, fgColor, "number", "nil") or colors.white
+    bgColor = expect(7, bgColor, "number", "nil") or colors.black
+    win.setBackgroundColor(bgColor)
+    win.setTextColor(fgColor)
+    win.setCursorPos(x - 1, y - 1)
+    win.write("\x9C" .. ("\x8C"):rep(width))
+    win.setBackgroundColor(fgColor)
+    win.setTextColor(bgColor)
+    win.write("\x93")
+    for i = 1, height do
+        win.setCursorPos(win.getCursorPos() - 1, y + i - 1)
+        win.write("\x95")
+    end
+    win.setBackgroundColor(bgColor)
+    win.setTextColor(fgColor)
+    for i = 1, height do
+        win.setCursorPos(x - 1, y + i - 1)
+        win.write("\x95")
+    end
+    win.setCursorPos(x - 1, y + height)
+    win.write("\x8D" .. ("\x8C"):rep(width) .. "\x8E")
+end
+function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor, periphName)
+    expect(1, win, "table")
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, text, "string")
+    expect(5, action, "function", "string")
+    fgColor = expect(6, fgColor, "number", "nil") or colors.white
+    bgColor = expect(7, bgColor, "number", "nil") or colors.gray
+    clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray
+    periphName = expect(9, periphName, "string", "nil")
+    win.setCursorPos(x, y)
+    win.setBackgroundColor(bgColor)
+    win.setTextColor(fgColor)
+    win.write(" " .. text .. " ")
+    PrimeUI.addTask(function()
+        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
+        local buttonDown = false
+        while true do
+            local event, button, clickX, clickY = os.pullEvent()
+            if event == "mouse_click" and periphName == nil and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+                buttonDown = true
+                win.setCursorPos(x, y)
+                win.setBackgroundColor(clickedColor)
+                win.setTextColor(fgColor)
+                win.write(" " .. text .. " ")
+            elseif (event == "monitor_touch" and periphName == button and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY)
+                or (event == "mouse_up" and button == 1 and buttonDown) then
+                if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+                    if type(action) == "string" then
+                        PrimeUI.resolve("button", action)
+                    else
+                        action()
+                    end
+                end
+                win.setCursorPos(x, y)
+                win.setBackgroundColor(bgColor)
+                win.setTextColor(fgColor)
+                win.write(" " .. text .. " ")
+            end
+        end
+    end)
+end
+function PrimeUI.centerLabel(win, x, y, width, text, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, text, "string")
+    fgColor = expect(6, fgColor, "number", "nil") or colors.white
+    bgColor = expect(7, bgColor, "number", "nil") or colors.black
+    assert(#text <= width, "string is too long")
+    win.setCursorPos(x + math.floor((width - #text) / 2), y)
+    win.setTextColor(fgColor)
+    win.setBackgroundColor(bgColor)
+    win.write(text)
+end
+function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    expect(6, selections, "table")
+    expect(7, action, "function", "string", "nil")
+    fgColor = expect(8, fgColor, "number", "nil") or colors.white
+    bgColor = expect(9, bgColor, "number", "nil") or colors.black
+    local nsel = 0
+    for _ in pairs(selections) do nsel = nsel + 1 end
+    local outer = window.create(win, x, y, width, height)
+    outer.setBackgroundColor(bgColor)
+    outer.clear()
+    local inner = window.create(outer, 1, 1, width - 1, nsel)
+    inner.setBackgroundColor(bgColor)
+    inner.setTextColor(fgColor)
+    inner.clear()
+    local lines = {}
+    local nl, selected = 1, 1
+    for k, v in pairs(selections) do
+        inner.setCursorPos(1, nl)
+        inner.write((v and (v == "R" and "[-] " or "[\xD7] ") or "[ ] ") .. k)
+        lines[nl] = {k, not not v}
+        nl = nl + 1
+    end
+    if nsel > height then
+        outer.setCursorPos(width, height)
+        outer.setBackgroundColor(bgColor)
+        outer.setTextColor(fgColor)
+        outer.write("\31")
+    end
+    inner.setCursorPos(2, selected)
+    inner.setCursorBlink(true)
+    PrimeUI.setCursorWindow(inner)
+    local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
+    PrimeUI.addTask(function()
+        local scrollPos = 1
+        while true do
+            local ev = table.pack(os.pullEvent())
+            local dir
+            if ev[1] == "key" then
+                if ev[2] == keys.up then dir = -1
+                elseif ev[2] == keys.down then dir = 1
+                elseif ev[2] == keys.space and selections[lines[selected][1] ] ~= "R" then
+                    lines[selected][2] = not lines[selected][2]
+                    inner.setCursorPos(2, selected)
+                    inner.write(lines[selected][2] and "\xD7" or " ")
+                    if type(action) == "string" then PrimeUI.resolve("checkSelectionBox", action, lines[selected][1], lines[selected][2])
+                    elseif action then action(lines[selected][1], lines[selected][2])
+                    else selections[lines[selected][1] ] = lines[selected][2] end
+                    for i, v in ipairs(lines) do
+                        local vv = selections[v[1] ] == "R" and "R" or v[2]
+                        inner.setCursorPos(2, i)
+                        inner.write((vv and (vv == "R" and "-" or "\xD7") or " "))
+                    end
+                    inner.setCursorPos(2, selected)
+                end
+            elseif ev[1] == "mouse_scroll" and ev[3] >= screenX and ev[3] < screenX + width and ev[4] >= screenY and ev[4] < screenY + height then
+                dir = ev[2]
+            end
+            if dir and (selected + dir >= 1 and selected + dir <= nsel) then
+                selected = selected + dir
+                if selected - scrollPos < 0 or selected - scrollPos >= height then
+                    scrollPos = scrollPos + dir
+                    inner.reposition(1, 2 - scrollPos)
+                end
+                inner.setCursorPos(2, selected)
+            end
+            outer.setCursorPos(width, 1)
+            outer.write(scrollPos > 1 and "\30" or " ")
+            outer.setCursorPos(width, height)
+            outer.write(scrollPos < nsel - height + 1 and "\31" or " ")
+            inner.restoreCursor()
+        end
+    end)
+end
+function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    expect(6, action, "function", "string")
+    expect(7, periphName, "string", "nil")
+    PrimeUI.addTask(function()
+        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
+        local buttonDown = false
+        while true do
+            local event, button, clickX, clickY = os.pullEvent()
+            if (event == "monitor_touch" and periphName == button)
+                or (event == "mouse_click" and button == 1 and periphName == nil) then
+                if clickX >= screenX and clickX < screenX + width
+                    and clickY >= screenY and clickY < screenY + height then
+                    if type(action) == "string" then
+                        PrimeUI.resolve("clickRegion", action)
+                    else
+                        action()
+                    end
+                end
+            end
+        end
+    end)
+end
+function PrimeUI.drawImage(win, x, y, data, index, setPalette)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, data, "string", "table")
+    index = expect(5, index, "number", "nil") or 1
+    expect(6, setPalette, "boolean", "nil")
+    if setPalette == nil then setPalette = true end
+    if type(data) == "string" then
+        local file = assert(fs.open(data, "rb"))
+        local filedata = file.readAll()
+        file.close()
+        data = assert(textutils.unserialize(filedata), "File is not a valid BIMG file")
+    end
+    for line = 1, #data[index] do
+        win.setCursorPos(x, y + line - 1)
+        win.blit(table.unpack(data[index][line]))
+    end
+    local palette = data[index].palette or data.palette
+    if setPalette and palette then
+        for i = 0, #palette do
+            win.setPaletteColor(2^i, table.unpack(palette[i]))
+        end
+    end
+end
+function PrimeUI.drawNFT(win, x, y, data)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, data, "string", "table")
+    if type(data) == "string" then
+        data = assert(nft.load("data/example.nft"), "File is not a valid NFT file")
+    end
+    nft.draw(data, x, y , win)
+end
+function PrimeUI.drawText(win, text, resizeToFit, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, text, "string")
+    expect(3, resizeToFit, "boolean", "nil")
+    fgColor = expect(4, fgColor, "number", "nil") or colors.white
+    bgColor = expect(5, bgColor, "number", "nil") or colors.blue
+    win.setBackgroundColor(bgColor)
+    win.setTextColor(fgColor)
+    local old = term.redirect(win)
+    local lines = print(text)
+    term.redirect(old)
+    if resizeToFit then
+        local x, y = win.getPosition()
+        local w = win.getSize()
+        win.reposition(x, y, w, lines)
+    end
+    return lines
+end
+function PrimeUI.horizontalLine(win, x, y, width, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    fgColor = expect(5, fgColor, "number", "nil") or colors.white
+    bgColor = expect(6, bgColor, "number", "nil") or colors.black
+    win.setCursorPos(x, y)
+    win.setTextColor(fgColor)
+    win.setBackgroundColor(bgColor)
+    win.write(("\x8C"):rep(width))
+end
+function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacement, history, completion, default)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, action, "function", "string")
+    fgColor = expect(6, fgColor, "number", "nil") or colors.white
+    bgColor = expect(7, bgColor, "number", "nil") or colors.black
+    expect(8, replacement, "string", "nil")
+    expect(9, history, "table", "nil")
+    expect(10, completion, "function", "nil")
+    expect(11, default, "string", "nil")
+    local box = window.create(win, x, y, width, 1)
+    box.setTextColor(fgColor)
+    box.setBackgroundColor(bgColor)
+    box.clear()
+    PrimeUI.addTask(function()
+        local coro = coroutine.create(read)
+        local old = term.redirect(box)
+        local ok, res = coroutine.resume(coro, replacement, history, completion, default)
+        term.redirect(old)
+        while coroutine.status(coro) ~= "dead" do
+            local ev = table.pack(os.pullEvent())
+            old = term.redirect(box)
+            ok, res = coroutine.resume(coro, table.unpack(ev, 1, ev.n))
+            term.redirect(old)
+            if not ok then error(res) end
+        end
+        if type(action) == "string" then PrimeUI.resolve("inputBox", action, res)
+        else action(res) end
+        while true do os.pullEvent() end
+    end)
+end
+function PrimeUI.interval(time, action)
+    expect(1, time, "number")
+    expect(2, action, "function", "string")
+    local timer = os.startTimer(time)
+    PrimeUI.addTask(function()
+        while true do
+            local _, tm = os.pullEvent("timer")
+            if tm == timer then
+                local res
+                if type(action) == "string" then PrimeUI.resolve("timeout", action)
+                else res = action() end
+                if type(res) == "number" then time = res end
+                if res ~= false then timer = os.startTimer(time) end
+            end
+        end
+    end)
+    return function() os.cancelTimer(timer) end
+end
+function PrimeUI.keyAction(key, action)
+    expect(1, key, "number")
+    expect(2, action, "function", "string")
+    PrimeUI.addTask(function()
+        while true do
+            local _, param1 = os.pullEvent("key")
+            if param1 == key then
+                if type(action) == "string" then PrimeUI.resolve("keyAction", action)
+                else action() end
+            end
+        end
+    end)
+end
+function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)
+    expect(1, key, "number")
+    expect(2, withCtrl, "boolean")
+    expect(3, withAlt, "boolean")
+    expect(4, withShift, "boolean")
+    expect(5, action, "function", "string")
+    PrimeUI.addTask(function()
+        local heldCtrl, heldAlt, heldShift = false, false, false
+        while true do
+            local event, param1, param2 = os.pullEvent() -- wait for key
+            if event == "key" then
+                if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then
+                    if type(action) == "string" then PrimeUI.resolve("keyCombo", action)
+                    else action() end
+                elseif param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = true
+                elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = true
+                elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = true end
+            elseif event == "key_up" then
+                if param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = false
+                elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = false
+                elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = false end
+            end
+        end
+    end)
+end
+function PrimeUI.label(win, x, y, text, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, text, "string")
+    fgColor = expect(5, fgColor, "number", "nil") or colors.white
+    bgColor = expect(6, bgColor, "number", "nil") or colors.black
+    win.setCursorPos(x, y)
+    win.setTextColor(fgColor)
+    win.setBackgroundColor(bgColor)
+    win.write(text)
+end
+function PrimeUI.progressBar(win, x, y, width, fgColor, bgColor, useShade)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    fgColor = expect(5, fgColor, "number", "nil") or colors.white
+    bgColor = expect(6, bgColor, "number", "nil") or colors.black
+    expect(7, useShade, "boolean", "nil")
+    local function redraw(progress)
+        expect(1, progress, "number")
+        if progress < 0 or progress > 1 then error("bad argument #1 (value out of range)", 2) end
+        win.setCursorPos(x, y)
+        win.setBackgroundColor(bgColor)
+        win.setBackgroundColor(fgColor)
+        win.write((" "):rep(math.floor(progress * width)))
+        win.setBackgroundColor(bgColor)
+        win.setTextColor(fgColor)
+        win.write((useShade and "\x7F" or " "):rep(width - math.floor(progress * width)))
+    end
+    redraw(0)
+    return redraw
+end
+function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    expect(6, innerHeight, "number")
+    expect(7, allowArrowKeys, "boolean", "nil")
+    expect(8, showScrollIndicators, "boolean", "nil")
+    fgColor = expect(9, fgColor, "number", "nil") or colors.white
+    bgColor = expect(10, bgColor, "number", "nil") or colors.blue
+    if allowArrowKeys == nil then allowArrowKeys = true end
+    local outer = window.create(win == term and term.current() or win, x, y, width, height)
+    outer.setBackgroundColor(bgColor)
+    outer.clear()
+    local inner = window.create(outer, 1, 1, width - (showScrollIndicators and 1 or 0), innerHeight)
+    inner.setBackgroundColor(bgColor)
+    inner.clear()
+    if showScrollIndicators then
+        outer.setBackgroundColor(bgColor)
+        outer.setTextColor(fgColor)
+        outer.setCursorPos(width, height)
+        outer.write(innerHeight > height and "\31" or " ")
+    end
+    x, y = PrimeUI.getWindowPos(win, x, y)
+    local scrollPos = 1
+    PrimeUI.addTask(function()
+        while true do
+            local ev = table.pack(os.pullEvent())
+            innerHeight = select(2, inner.getSize())
+            local dir
+            if ev[1] == "key" and allowArrowKeys then
+                if ev[2] == keys.up then dir = -1
+                elseif ev[2] == keys.down then dir = 1 end
+            elseif ev[1] == "mouse_scroll" and ev[3] >= x and ev[3] < x + width and ev[4] >= y and ev[4] < y + height then
+                dir = ev[2]
+            end
+            if dir and (scrollPos + dir >= 1 and scrollPos + dir <= innerHeight - height) then
+                scrollPos = scrollPos + dir
+                inner.reposition(1, 2 - scrollPos)
+            end
+            if showScrollIndicators then
+                outer.setBackgroundColor(bgColor)
+                outer.setTextColor(fgColor)
+                outer.setCursorPos(width, 1)
+                outer.write(scrollPos > 1 and "\30" or " ")
+                outer.setCursorPos(width, height)
+                outer.write(scrollPos < innerHeight - height and "\31" or " ")
+            end
+        end
+    end)
+    local function scroll(pos)
+        expect(1, pos, "number")
+        pos = math.floor(pos)
+        expect.range(pos, 1, innerHeight - height)
+        scrollPos = pos
+        inner.reposition(1, 2 - scrollPos)
+        if showScrollIndicators then
+            outer.setBackgroundColor(bgColor)
+            outer.setTextColor(fgColor)
+            outer.setCursorPos(width, 1)
+            outer.write(scrollPos > 1 and "\30" or " ")
+            outer.setCursorPos(width, height)
+            outer.write(scrollPos < innerHeight - height and "\31" or " ")
+        end
+    end
+    return inner, scroll
+end
+function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    expect(6, entries, "table")
+    expect(7, action, "function", "string")
+    expect(8, selectChangeAction, "function", "string", "nil")
+    fgColor = expect(9, fgColor, "number", "nil") or colors.white
+    bgColor = expect(10, bgColor, "number", "nil") or colors.black
+    if #entries == 0 then error("bad argument #6 (table must not be empty)", 2) end
+    for i, v in ipairs(entries) do
+        if type(v) ~= "string" then error("bad item " .. i .. " in entries table (expected string, got " .. type(v), 2) end
+    end
+    local entrywin = window.create(win, x, y, width, height)
+    local selection, scroll = 1, 1
+    local function drawEntries()
+        entrywin.setVisible(false)
+        entrywin.setBackgroundColor(bgColor)
+        entrywin.clear()
+        for i = scroll, scroll + height - 1 do
+            local e = entries[i]
+            if not e then break end
+            entrywin.setCursorPos(2, i - scroll + 1)
+            if i == selection then
+                entrywin.setBackgroundColor(fgColor)
+                entrywin.setTextColor(bgColor)
+            else
+                entrywin.setBackgroundColor(bgColor)
+                entrywin.setTextColor(fgColor)
+            end
+            entrywin.clearLine()
+            entrywin.write(#e > width - 1 and e:sub(1, width - 4) .. "..." or e)
+        end
+        entrywin.setBackgroundColor(bgColor)
+        entrywin.setTextColor(fgColor)
+        entrywin.setCursorPos(width, 1)
+        entrywin.write("\30")
+        entrywin.setCursorPos(width, height)
+        entrywin.write("\31")
+        entrywin.setVisible(true)
+    end
+    drawEntries()
+    PrimeUI.addTask(function()
+        while true do
+            local event, key, cx, cy = os.pullEvent()
+            if event == "key" then
+                if key == keys.down and selection < #entries then
+                    selection = selection + 1
+                    if selection > scroll + height - 1 then scroll = scroll + 1 end
+                    if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                    elseif selectChangeAction then selectChangeAction(selection) end
+                    drawEntries()
+                elseif key == keys.up and selection > 1 then
+                    selection = selection - 1
+                    if selection < scroll then scroll = scroll - 1 end
+                    if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                    elseif selectChangeAction then selectChangeAction(selection) end
+                    drawEntries()
+                elseif key == keys.enter then
+                    if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
+                    else action(entries[selection]) end
+                end
+            elseif event == "mouse_click" and key == 1 then
+                local wx, wy = PrimeUI.getWindowPos(entrywin, 1, 1)
+                if cx == wx + width - 1 then
+                    if cy == wy and selection > 1 then
+                        selection = selection - 1
+                        if selection < scroll then scroll = scroll - 1 end
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        drawEntries()
+                    elseif cy == wy + height - 1 and selection < #entries then
+                        selection = selection + 1
+                        if selection > scroll + height - 1 then scroll = scroll + 1 end
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        drawEntries()
+                    end
+                elseif cx >= wx and cx < wx + width - 1 and cy >= wy and cy < wy + height then
+                    local sel = scroll + (cy - wy)
+                    if sel == selection then
+                        if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
+                        else action(entries[selection]) end
+                    else
+                        selection = sel
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        drawEntries()
+                    end
+                end
+            elseif event == "mouse_scroll" then
+                local wx, wy = PrimeUI.getWindowPos(entrywin, 1, 1)
+                if cx >= wx and cx < wx + width and cy >= wy and cy < wy + height then
+                    if key < 0 and selection > 1 then
+                        selection = selection - 1
+                        if selection < scroll then scroll = scroll - 1 end
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        drawEntries()
+                    elseif key > 0 and selection < #entries then
+                        selection = selection + 1
+                        if selection > scroll + height - 1 then scroll = scroll + 1 end
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        drawEntries()
+                    end
+                end
+            end
+        end
+    end)
+end
+function PrimeUI.textBox(win, x, y, width, height, text, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, width, "number")
+    expect(5, height, "number")
+    expect(6, text, "string")
+    fgColor = expect(7, fgColor, "number", "nil") or colors.white
+    bgColor = expect(8, bgColor, "number", "nil") or colors.black
+    local box = window.create(win, x, y, width, height)
+    function box.getSize()
+        return width, math.huge
+    end
+    local function redraw(_text)
+        expect(1, _text, "string")
+        box.setBackgroundColor(bgColor)
+        box.setTextColor(fgColor)
+        box.clear()
+        box.setCursorPos(1, 1)
+        local old = term.redirect(box)
+        print(_text)
+        term.redirect(old)
+    end
+    redraw(text)
+    return redraw
+end
+function PrimeUI.timeout(time, action)
+    expect(1, time, "number")
+    expect(2, action, "function", "string")
+    local timer = os.startTimer(time)
+    PrimeUI.addTask(function()
+        while true do
+            local _, tm = os.pullEvent("timer")
+            if tm == timer then
+                if type(action) == "string" then PrimeUI.resolve("timeout", action)
+                else action() end
+            end
+        end
+    end)
+    return function() os.cancelTimer(timer) end
+end
+function PrimeUI.toggleButton(win, x, y, textOn, textOff, action, fgColor, bgColor, clickedColor, periphName)
+    expect(1, win, "table")
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, textOn, "string")
+    expect(5, textOff, "string")
+    if #textOn ~= #textOff then error("On and off text must be the same length", 2) end
+    expect(6, action, "function", "string")
+    fgColor = expect(7, fgColor, "number", "nil") or colors.white
+    bgColor = expect(8, bgColor, "number", "nil") or colors.gray
+    clickedColor = expect(9, clickedColor, "number", "nil") or colors.lightGray
+    periphName = expect(10, periphName, "string", "nil")
+    win.setCursorPos(x, y)
+    win.setBackgroundColor(bgColor)
+    win.setTextColor(fgColor)
+    win.write(" " .. textOff .. " ")
+    local state = false
+    PrimeUI.addTask(function()
+        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
+        local buttonDown = false
+        while true do
+            local event, button, clickX, clickY = os.pullEvent()
+            if event == "mouse_click" and periphName == nil and button == 1 and clickX >= screenX and clickX < screenX + #textOn + 2 and clickY == screenY then
+                buttonDown = true
+                win.setCursorPos(x, y)
+                win.setBackgroundColor(clickedColor)
+                win.setTextColor(fgColor)
+                win.write(" " .. (state and textOn or textOff) .. " ")
+            elseif (event == "monitor_touch" and periphName == button and clickX >= screenX and clickX < screenX + #textOn + 2 and clickY == screenY)
+                or (event == "mouse_up" and button == 1 and buttonDown) then
+                state = not state
+                if clickX >= screenX and clickX < screenX + #textOn + 2 and clickY == screenY then
+                    if type(action) == "string" then
+                        PrimeUI.resolve("toggleButton", action, state)
+                    else
+                        action(state)
+                    end
+                end
+                win.setCursorPos(x, y)
+                win.setBackgroundColor(bgColor)
+                win.setTextColor(fgColor)
+                win.write(" " .. (state and textOn or textOff) .. " ")
+            end
+        end
+    end)
+end
+function PrimeUI.verticalLine(win, x, y, height, right, fgColor, bgColor)
+    expect(1, win, "table")
+    expect(2, x, "number")
+    expect(3, y, "number")
+    expect(4, height, "number")
+    right = expect(5, right, "boolean", "nil") or false
+    fgColor = expect(6, fgColor, "number", "nil") or colors.white
+    bgColor = expect(7, bgColor, "number", "nil") or colors.black
+    win.setTextColor(right and bgColor or fgColor)
+    win.setBackgroundColor(right and fgColor or bgColor)
+    for j = 1, height do
+        win.setCursorPos(x, y + j - 1)
+        win.write("\x95")
+    end
+end
+return PrimeUI]=]
+
+local libDefE = [=[local LibDeflate
+do
+	local _VERSION = "1.0.0-release"
+	local _COPYRIGHT =
+	"LibDeflate ".._VERSION
+	.." Copyright (C) 2018 Haoqian He."
+	.." License GPLv3+: GNU GPL version 3 or later"
+	if LibStub then
+		local MAJOR,MINOR = "LibDeflate",-1
+		local lib,minor = LibStub:GetLibrary(MAJOR,true)
+		if lib and minor and minor >= MINOR then 
+			return lib
+		else 
+			LibDeflate = LibStub:NewLibrary(MAJOR,_VERSION)
+		end
+	else 
+		LibDeflate = {}
+	end
+	LibDeflate._VERSION = _VERSION
+	LibDeflate._COPYRIGHT = _COPYRIGHT
+end
+local assert = assert
+local error = error
+local pairs = pairs
+local string_byte = string.byte
+local string_char = string.char
+local string_find = string.find
+local string_gsub = string.gsub
+local string_sub = string.sub
+local table_concat = table.concat
+local table_sort = table.sort
+local tostring = tostring
+local type = type
+local _pow2 = {}
+local _byte_to_char = {}
+local _reverse_bits_tbl = {}
+local _length_to_deflate_code = {}
+local _length_to_deflate_extra_bits = {}
+local _length_to_deflate_extra_bitlen = {}
+local _dist256_to_deflate_code = {}
+local _dist256_to_deflate_extra_bits = {}
+local _dist256_to_deflate_extra_bitlen = {}
+local _literal_deflate_code_to_base_len = {3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258,}
+local _literal_deflate_code_to_extra_bitlen = {0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0,}
+local _dist_deflate_code_to_base_dist = {[0] = 1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,}
+local _dist_deflate_code_to_extra_bitlen = {[0] = 0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,}
+local _rle_codes_huffman_bitlen_order = {16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15,}
+local _fix_block_literal_huffman_code
+local _fix_block_literal_huffman_to_deflate_code
+local _fix_block_literal_huffman_bitlen
+local _fix_block_literal_huffman_bitlen_count
+local _fix_block_dist_huffman_code
+local _fix_block_dist_huffman_to_deflate_code
+local _fix_block_dist_huffman_bitlen
+local _fix_block_dist_huffman_bitlen_count
+for i = 0,255 do
+	_byte_to_char[i] = string_char(i)
+end
+do
+	local pow = 1
+	for i = 0,32 do
+		_pow2[i] = pow
+		pow = pow * 2
+	end
+end
+for i = 1,9 do
+	_reverse_bits_tbl[i] = {}
+	for j=0,_pow2[i+1]-1 do
+		local reverse = 0
+		local value = j
+		for _ = 1,i do
+			reverse = reverse - reverse%2
+				+ (((reverse%2==1) or (value % 2) == 1) and 1 or 0)
+			value = (value-value%2)/2
+			reverse = reverse * 2
+		end
+		_reverse_bits_tbl[i][j] = (reverse-reverse%2)/2
+	end
+end
+do
+	local a = 18
+	local b = 16
+	local c = 265
+	local bitlen = 1
+	for len = 3,258 do
+		if len <= 10 then
+			_length_to_deflate_code[len] = len + 254
+			_length_to_deflate_extra_bitlen[len] = 0
+		elseif len == 258 then
+			_length_to_deflate_code[len] = 285
+			_length_to_deflate_extra_bitlen[len] = 0
+		else
+			if len > a then
+				a = a + b
+				b = b * 2
+				c = c + 4
+				bitlen = bitlen + 1
+			end
+			local t = len-a-1+b/2
+			_length_to_deflate_code[len] = (t-(t%(b/8)))/(b/8) + c
+			_length_to_deflate_extra_bitlen[len] = bitlen
+			_length_to_deflate_extra_bits[len] = t % (b/8)
+		end
+	end
+end
+do
+	_dist256_to_deflate_code[1] = 0
+	_dist256_to_deflate_code[2] = 1
+	_dist256_to_deflate_extra_bitlen[1] = 0
+	_dist256_to_deflate_extra_bitlen[2] = 0
+
+	local a = 3
+	local b = 4
+	local code = 2
+	local bitlen = 0
+	for dist = 3,256 do
+		if dist > b then
+			a = a * 2
+			b = b * 2
+			code = code + 2
+			bitlen = bitlen + 1
+		end
+		_dist256_to_deflate_code[dist] = (dist <= a) and code or (code+1)
+		_dist256_to_deflate_extra_bitlen[dist] = (bitlen < 0) and 0 or bitlen
+		if b >= 8 then
+			_dist256_to_deflate_extra_bits[dist] = (dist-b/2-1) % (b/4)
+		end
+	end
+end
+local band,bnot,xor,lshift,rshift
+if bit ~= nil then
+    band = bit.band
+    bnot = bit.bnot
+    xor = bit.bxor
+    lshift = bit.blshift
+    rshift = bit.blogic_rshift
+elseif bit32 ~= nil then
+    band = bit32.band
+    bnot = bit32.bnot
+    xor = bit32.bxor
+    lshift = bit32.lshift
+    rshift = bit32.rshift
+else
+    xor = function(a,b)
+        local calc = 0    
+        for i = 32,0,-1 do
+        local val = 2 ^ i
+        local aa = false
+        local bb = false
+        if a == 0 then
+            calc = calc + b
+            break
+        end
+        if b == 0 then
+            calc = calc + a
+            break
+        end
+        if a >= val then
+            aa = true
+            a = a - val
+        end
+        if b >= val then
+            bb = true
+            b = b - val
+        end
+        if not (aa and bb) and (aa or bb) then
+            calc = calc + val
+        end
+        end
+        return calc
+    end
+    lshift = function(num,left)
+        local res = num * (2 ^ left)
+        return res % (2 ^ 32)
+    end
+    rshift = function(num,right)
+        local res = num / (2 ^ right)
+        return math.floor(res)
+    end
+    band = function(a,b)
+        local p,c=1,0
+        while a>0 and b>0 do
+            local ra,rb=a%2,b%2
+            if ra+rb>1 then c=c+p end
+            a,b,p=(a-ra)/2,(b-rb)/2,p*2
+        end
+        return c
+    end
+    bnot = function(x)
+        return bxor(x,(2^(bits or floor(log(x,2))))-1)
+    end
+end
+local POLY = 0xEDB88320
+local function memoize(f)
+  local mt = {}
+  local t = setmetatable({},mt)
+  function mt:__index(k)
+    local v = f(k); t[k] = v
+    return v
+  end
+  return t
+end
+local crc_table = memoize(function(i)
+  local crc = i
+  for _=1,8 do
+    local b = band(crc,1)
+    crc = rshift(crc,1)
+    if b == 1 then crc = xor(crc,POLY) end
+  end
+  return crc
+end)
+local function crc32_byte(byte,crc)
+  crc = bnot(crc or 0)
+  local v1 = rshift(crc,8)
+  local v2 = crc_table[xor(crc % 256,byte)]
+  return bnot(xor(v1,v2))
+end
+local function crc32_string(s,crc)
+  crc = crc or 0
+  for i=1,#s do
+    crc = crc32_byte(s:byte(i),crc)
+  end
+  return crc
+end
+function LibDeflate:CRC32(s,crc)
+  if type(s) == 'string' then
+    return crc32_string(s,crc)
+  else
+    return crc32_byte(s,crc)
+  end
+end
+function LibDeflate:Adler32(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:Adler32(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	local strlen = #str
+	local i = 1
+	local a = 1
+	local b = 0
+	while i <= strlen - 15 do
+		local x1,x2,x3,x4,x5,x6,x7,x8,
+			x9,x10,x11,x12,x13,x14,x15,x16 = string_byte(str,i,i+15)
+		b = (b+16*a+16*x1+15*x2+14*x3+13*x4+12*x5+11*x6+10*x7+9*x8+8*x9
+			+7*x10+6*x11+5*x12+4*x13+3*x14+2*x15+x16)%65521
+		a = (a+x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12+x13+x14+x15+x16)%65521
+		i =  i + 16
+	end
+	while (i <= strlen) do
+		local x = string_byte(str,i,i)
+		a = (a + x) % 65521
+		b = (b + a) % 65521
+		i = i + 1
+	end
+	return (b*65536+a) % 4294967296
+end
+local function IsEqualAdler32(actual,expected)
+	return (actual % 4294967296) == (expected % 4294967296)
+end
+local _compression_level_configs = {
+	[0] = {false,nil,0,0,0},
+	[1] = {false,nil,4,8,4},
+	[2] = {false,nil,5,18,8},
+	[3] = {false,nil,6,32,32},	
+	[4] = {true,4,	4,16,16},	
+	[5] = {true,8,	16,	32,	32},
+	[6] = {true,8,	16,	128,128},
+	[7] = {true,8,	32,	128,256},
+	[8] = {true,32,128,258,1024} ,
+	[9] = {true,32,258,258,4096},
+}
+local function IsValidArguments(str,
+	check_dictionary,dictionary,
+	check_configs,configs)
+	if type(str) ~= "string" then
+		return false,
+			("'str' - string expected got '%s'."):format(type(str))
+	end
+	if check_dictionary then
+		local dict_valid,dict_err = IsValidDictionary(dictionary)
+		if not dict_valid then
+			return false,dict_err
+		end
+	end
+	if check_configs then
+		local type_configs = type(configs)
+		if type_configs ~= "nil" and type_configs ~= "table" then
+			return false,
+			("'configs' - nil or table expected got '%s'.")
+				:format(type(configs))
+		end
+		if type_configs == "table" then
+			for k,v in pairs(configs) do
+				if k ~= "level" and k ~= "strategy" then
+					return false,
+					("'configs' - unsupported table key in the configs: '%s'.")
+					:format(k)
+				elseif k == "level" and not _compression_level_configs[v] then
+					return false,
+					("'configs' - unsupported 'level': %s."):format(tostring(v))
+				elseif k == "strategy" and v ~= "fixed" and v ~= "huffman_only"
+						and v ~= "dynamic" then
+					return false,("'configs' - unsupported 'strategy': '%s'.")
+						:format(tostring(v))
+				end
+			end
+		end
+	end
+	return true,""
+end
+local _FLUSH_MODE_MEMORY_CLEANUP = 0
+local _FLUSH_MODE_OUTPUT = 1
+local _FLUSH_MODE_BYTE_BOUNDARY = 2
+local _FLUSH_MODE_NO_FLUSH = 3
+local function CreateWriter()
+	local buffer_size = 0
+	local cache = 0
+	local cache_bitlen = 0
+	local total_bitlen = 0
+	local buffer = {}
+	local result_buffer = {}
+	local function WriteBits(value,bitlen)
+		cache = cache + value * _pow2[cache_bitlen]
+		cache_bitlen = cache_bitlen + bitlen
+		total_bitlen = total_bitlen + bitlen
+		if cache_bitlen >= 32 then
+			buffer_size = buffer_size + 1
+			buffer[buffer_size] =
+				_byte_to_char[cache % 256]
+				.._byte_to_char[((cache-cache%256)/256 % 256)]
+				.._byte_to_char[((cache-cache%65536)/65536 % 256)]
+				.._byte_to_char[((cache-cache%16777216)/16777216 % 256)]
+			local rshift_mask = _pow2[32 - cache_bitlen + bitlen]
+			cache = (value - value%rshift_mask)/rshift_mask
+			cache_bitlen = cache_bitlen - 32
+		end
+	end
+	local function WriteString(str)
+		for _ = 1,cache_bitlen,8 do
+			buffer_size = buffer_size + 1
+			buffer[buffer_size] = string_char(cache % 256)
+			cache = (cache-cache%256)/256
+		end
+		cache_bitlen = 0
+		buffer_size = buffer_size + 1
+		buffer[buffer_size] = str
+		total_bitlen = total_bitlen + #str*8
+	end
+	local function FlushWriter(mode)
+		if mode == _FLUSH_MODE_NO_FLUSH then
+			return total_bitlen
+		end
+		if mode == _FLUSH_MODE_OUTPUT
+			or mode == _FLUSH_MODE_BYTE_BOUNDARY then
+			local padding_bitlen = (8 - cache_bitlen % 8) % 8
+			if cache_bitlen > 0 then
+				cache = cache - _pow2[cache_bitlen]
+					+ _pow2[cache_bitlen+padding_bitlen]
+				for _ = 1,cache_bitlen,8 do
+					buffer_size = buffer_size + 1
+					buffer[buffer_size] = _byte_to_char[cache % 256]
+					cache = (cache-cache%256)/256
+				end
+				cache = 0
+				cache_bitlen = 0
+			end
+			if mode == _FLUSH_MODE_BYTE_BOUNDARY then
+				total_bitlen = total_bitlen + padding_bitlen
+				return total_bitlen
+			end
+		end
+		local flushed = table_concat(buffer)
+		buffer = {}
+		buffer_size = 0
+		result_buffer[#result_buffer+1] = flushed
+		if mode == _FLUSH_MODE_MEMORY_CLEANUP then
+			return total_bitlen
+		else
+			return total_bitlen,table_concat(result_buffer)
+		end
+	end
+	return WriteBits,WriteString,FlushWriter
+end
+local function MinHeapPush(heap,e,heap_size)
+	heap_size = heap_size + 1
+	heap[heap_size] = e
+	local value = e[1]
+	local pos = heap_size
+	local parent_pos = (pos-pos%2)/2
+
+	while (parent_pos >= 1 and heap[parent_pos][1] > value) do
+		local t = heap[parent_pos]
+		heap[parent_pos] = e
+		heap[pos] = t
+		pos = parent_pos
+		parent_pos = (parent_pos-parent_pos%2)/2
+	end
+end
+local function MinHeapPop(heap,heap_size)
+	local top = heap[1]
+	local e = heap[heap_size]
+	local value = e[1]
+	heap[1] = e
+	heap[heap_size] = top
+	heap_size = heap_size - 1
+	local pos = 1
+	local left_child_pos = pos * 2
+	local right_child_pos = left_child_pos + 1
+	while (left_child_pos <= heap_size) do
+		local left_child = heap[left_child_pos]
+		if (right_child_pos <= heap_size
+			and heap[right_child_pos][1] < left_child[1]) then
+			local right_child = heap[right_child_pos]
+			if right_child[1] < value then
+				heap[right_child_pos] = e
+				heap[pos] = right_child
+				pos = right_child_pos
+				left_child_pos = pos * 2
+				right_child_pos = left_child_pos + 1
+			else
+				break
+			end
+		else
+			if left_child[1] < value then
+				heap[left_child_pos] = e
+				heap[pos] = left_child
+				pos = left_child_pos
+				left_child_pos = pos * 2
+				right_child_pos = left_child_pos + 1
+			else
+				break
+			end
+		end
+	end
+	return top
+end
+local function GetHuffmanCodeFromBitlen(bitlen_counts,symbol_bitlens
+		,max_symbol,max_bitlen)
+	local huffman_code = 0
+	local next_codes = {}
+	local symbol_huffman_codes = {}
+	for bitlen = 1,max_bitlen do
+		huffman_code = (huffman_code+(bitlen_counts[bitlen-1] or 0))*2
+		next_codes[bitlen] = huffman_code
+	end
+	for symbol = 0,max_symbol do
+		local bitlen = symbol_bitlens[symbol]
+		if bitlen then
+			huffman_code = next_codes[bitlen]
+			next_codes[bitlen] = huffman_code + 1
+			if bitlen <= 9 then
+				symbol_huffman_codes[symbol] =
+					_reverse_bits_tbl[bitlen][huffman_code]
+			else
+				local reverse = 0
+				for _ = 1,bitlen do
+					reverse = reverse - reverse%2
+						+ (((reverse%2==1)
+							or (huffman_code % 2) == 1) and 1 or 0)
+					huffman_code = (huffman_code-huffman_code%2)/2
+					reverse = reverse*2
+				end
+				symbol_huffman_codes[symbol] = (reverse-reverse%2)/2
+			end
+		end
+	end
+	return symbol_huffman_codes
+end
+local function SortByFirstThenSecond(a,b)
+	return a[1] < b[1] or
+		(a[1] == b[1] and a[2] < b[2])
+end
+local function GetHuffmanBitlenAndCode(symbol_counts,max_bitlen,max_symbol)
+	local heap_size
+	local max_non_zero_bitlen_symbol = -1
+	local leafs = {}
+	local heap = {}
+	local symbol_bitlens = {}
+	local symbol_codes = {}
+	local bitlen_counts = {}
+	local number_unique_symbols = 0
+	for symbol,count in pairs(symbol_counts) do
+		number_unique_symbols = number_unique_symbols + 1
+		leafs[number_unique_symbols] = {count,symbol}
+	end
+	if (number_unique_symbols == 0) then
+		return {},{},-1
+	elseif (number_unique_symbols == 1) then
+		local symbol = leafs[1][2]
+		symbol_bitlens[symbol] = 1
+		symbol_codes[symbol] = 0
+		return symbol_bitlens,symbol_codes,symbol
+	else
+		table_sort(leafs,SortByFirstThenSecond)
+		heap_size = number_unique_symbols
+		for i = 1,heap_size do
+			heap[i] = leafs[i]
+		end
+		while (heap_size > 1) do
+			local leftChild = MinHeapPop(heap,heap_size)
+			heap_size = heap_size - 1
+			local rightChild = MinHeapPop(heap,heap_size)
+			heap_size = heap_size - 1
+			local newNode =
+				{leftChild[1]+rightChild[1],-1,leftChild,rightChild}
+			MinHeapPush(heap,newNode,heap_size)
+			heap_size = heap_size + 1
+		end
+		local number_bitlen_overflow = 0
+		local fifo = {heap[1],0,0,0}
+		local fifo_size = 1
+		local index = 1
+		heap[1][1] = 0
+		while (index <= fifo_size) do
+			local e = fifo[index]
+			local bitlen = e[1]
+			local symbol = e[2]
+			local left_child = e[3]
+			local right_child = e[4]
+			if left_child then
+				fifo_size = fifo_size + 1
+				fifo[fifo_size] = left_child
+				left_child[1] = bitlen + 1
+			end
+			if right_child then
+				fifo_size = fifo_size + 1
+				fifo[fifo_size] = right_child
+				right_child[1] = bitlen + 1
+			end
+			index = index + 1
+			if (bitlen > max_bitlen) then
+				number_bitlen_overflow = number_bitlen_overflow + 1
+				bitlen = max_bitlen
+			end
+			if symbol >= 0 then
+				symbol_bitlens[symbol] = bitlen
+				max_non_zero_bitlen_symbol =
+					(symbol > max_non_zero_bitlen_symbol)
+					and symbol or max_non_zero_bitlen_symbol
+				bitlen_counts[bitlen] = (bitlen_counts[bitlen] or 0) + 1
+			end
+		end
+		if (number_bitlen_overflow > 0) then
+			repeat
+				local bitlen = max_bitlen - 1
+				while ((bitlen_counts[bitlen] or 0) == 0) do
+					bitlen = bitlen - 1
+				end
+				bitlen_counts[bitlen] = bitlen_counts[bitlen] - 1
+				bitlen_counts[bitlen+1] = (bitlen_counts[bitlen+1] or 0) + 2
+				bitlen_counts[max_bitlen] = bitlen_counts[max_bitlen] - 1
+				number_bitlen_overflow = number_bitlen_overflow - 2
+			until (number_bitlen_overflow <= 0)
+			index = 1
+			for bitlen = max_bitlen,1,-1 do
+				local n = bitlen_counts[bitlen] or 0
+				while (n > 0) do
+					local symbol = leafs[index][2]
+					symbol_bitlens[symbol] = bitlen
+					n = n - 1
+					index = index + 1
+				end
+			end
+		end
+		symbol_codes = GetHuffmanCodeFromBitlen(bitlen_counts,symbol_bitlens,
+				max_symbol,max_bitlen)
+		return symbol_bitlens,symbol_codes,max_non_zero_bitlen_symbol
+	end
+end
+local function RunLengthEncodeHuffmanBitlen(
+		lcode_bitlens,
+		max_non_zero_bitlen_lcode,
+		dcode_bitlens,
+		max_non_zero_bitlen_dcode)
+	local rle_code_tblsize = 0
+	local rle_codes = {}
+	local rle_code_counts = {}
+	local rle_extra_bits_tblsize = 0
+	local rle_extra_bits = {}
+	local prev = nil
+	local count = 0
+	max_non_zero_bitlen_dcode = (max_non_zero_bitlen_dcode < 0)
+			and 0 or max_non_zero_bitlen_dcode
+	local max_code = max_non_zero_bitlen_lcode+max_non_zero_bitlen_dcode+1
+	for code = 0,max_code+1 do
+		local len = (code <= max_non_zero_bitlen_lcode)
+			and (lcode_bitlens[code] or 0)
+			or ((code <= max_code)
+			and (dcode_bitlens[code-max_non_zero_bitlen_lcode-1] or 0) or nil)
+		if len == prev then
+			count = count + 1
+			if len ~= 0 and count == 6 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = 16
+				rle_extra_bits_tblsize = rle_extra_bits_tblsize + 1
+				rle_extra_bits[rle_extra_bits_tblsize] = 3
+				rle_code_counts[16] = (rle_code_counts[16] or 0) + 1
+				count = 0
+			elseif len == 0 and count == 138 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = 18
+				rle_extra_bits_tblsize = rle_extra_bits_tblsize + 1
+				rle_extra_bits[rle_extra_bits_tblsize] = 127
+				rle_code_counts[18] = (rle_code_counts[18] or 0) + 1
+				count = 0
+			end
+		else
+			if count == 1 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = prev
+				rle_code_counts[prev] = (rle_code_counts[prev] or 0) + 1
+			elseif count == 2 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = prev
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = prev
+				rle_code_counts[prev] = (rle_code_counts[prev] or 0) + 2
+			elseif count >= 3 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				local rleCode = (prev ~= 0) and 16 or (count <= 10 and 17 or 18)
+				rle_codes[rle_code_tblsize] = rleCode
+				rle_code_counts[rleCode] = (rle_code_counts[rleCode] or 0) + 1
+				rle_extra_bits_tblsize = rle_extra_bits_tblsize + 1
+				rle_extra_bits[rle_extra_bits_tblsize] =
+					(count <= 10) and (count - 3) or (count - 11)
+			end
+
+			prev = len
+			if len and len ~= 0 then
+				rle_code_tblsize = rle_code_tblsize + 1
+				rle_codes[rle_code_tblsize] = len
+				rle_code_counts[len] = (rle_code_counts[len] or 0) + 1
+				count = 0
+			else
+				count = 1
+			end
+		end
+	end
+	return rle_codes,rle_extra_bits,rle_code_counts
+end
+local function LoadStringToTable(str,t,start,stop,offset)
+	local i = start - offset
+	while i <= stop - 15 - offset do
+		t[i],t[i+1],t[i+2],t[i+3],t[i+4],t[i+5],t[i+6],t[i+7],t[i+8],
+		t[i+9],t[i+10],t[i+11],t[i+12],t[i+13],t[i+14],t[i+15] =
+			string_byte(str,i + offset,i + 15 + offset)
+		i = i + 16
+	end
+	while (i <= stop - offset) do
+		t[i] = string_byte(str,i + offset,i + offset)
+		i = i + 1
+	end
+	return t
+end
+local function GetBlockLZ77Result(level,string_table,hash_tables,block_start,
+		block_end,offset,dictionary)
+	local config = _compression_level_configs[level]
+	local config_use_lazy
+		,config_good_prev_length
+		,config_max_lazy_match
+		,config_nice_length
+		,config_max_hash_chain =
+			config[1],config[2],config[3],config[4],config[5]
+
+	local config_max_insert_length = (not config_use_lazy)
+		and config_max_lazy_match or 2147483646
+	local config_good_hash_chain =
+		(config_max_hash_chain-config_max_hash_chain%4/4)
+
+	local hash
+	local dict_hash_tables
+	local dict_string_table
+	local dict_string_len = 0
+	if dictionary then
+		dict_hash_tables = dictionary.hash_tables
+		dict_string_table = dictionary.string_table
+		dict_string_len = dictionary.strlen
+		assert(block_start == 1)
+		if block_end >= block_start and dict_string_len >= 2 then
+			hash = dict_string_table[dict_string_len-1]*65536
+				+ dict_string_table[dict_string_len]*256 + string_table[1]
+			local t = hash_tables[hash]
+			if not t then t = {}; hash_tables[hash] = t end
+			t[#t+1] = -1
+		end
+		if block_end >= block_start+1 and dict_string_len >= 1 then
+			hash = dict_string_table[dict_string_len]*65536
+				+ string_table[1]*256 + string_table[2]
+			local t = hash_tables[hash]
+			if not t then t = {}; hash_tables[hash] = t end
+			t[#t+1] = 0
+		end
+	end
+	hash = (string_table[block_start-offset] or 0)*256
+		+ (string_table[block_start+1-offset] or 0)
+
+	local lcodes = {}
+	local lcode_tblsize = 0
+	local lcodes_counts = {}
+	local dcodes = {}
+	local dcodes_tblsize = 0
+	local dcodes_counts = {}
+	local lextra_bits = {}
+	local lextra_bits_tblsize = 0
+	local dextra_bits = {}
+	local dextra_bits_tblsize = 0
+	local match_available = false
+	local prev_len
+	local prev_dist
+	local cur_len = 0
+	local cur_dist = 0
+	local index = block_start
+	local index_end = block_end + (config_use_lazy and 1 or 0)
+	while (index <= index_end) do
+		local string_table_index = index - offset
+		prev_len = cur_len
+		prev_dist = cur_dist
+		cur_len = 0
+		hash = (hash*256+(string_table[string_table_index+2] or 0))%16777216
+		local chain_index
+		local cur_chain
+		local hash_chain = hash_tables[hash]
+		local chain_old_size
+		if not hash_chain then
+			chain_old_size = 0
+			hash_chain = {}
+			hash_tables[hash] = hash_chain
+			if dict_hash_tables then
+				cur_chain = dict_hash_tables[hash]
+				chain_index = cur_chain and #cur_chain or 0
+			else
+				chain_index = 0
+			end
+		else
+			chain_old_size = #hash_chain
+			cur_chain = hash_chain
+			chain_index = chain_old_size
+		end
+		if index <= block_end then
+			hash_chain[chain_old_size+1] = index
+		end
+		if (chain_index > 0 and index + 2 <= block_end
+			and (not config_use_lazy or prev_len < config_max_lazy_match)) then
+			local depth =
+				(config_use_lazy and prev_len >= config_good_prev_length)
+				and config_good_hash_chain or config_max_hash_chain
+			while chain_index >= 1 and depth > 0 do
+				local prev = cur_chain[chain_index]
+				if index - prev > 32768 then
+					break
+				end
+				if prev < index then
+					local j = 3
+					if prev >= -257 then
+						local prev_table_index = prev-offset
+						while (j < 258 and index + j <= block_end) do
+							if (string_table[prev_table_index+j]
+								== string_table[string_table_index+j]) then
+								j = j + 1
+							else
+								break
+							end
+						end
+					else
+						local prev_table_index = dict_string_len+prev
+						while (j < 258 and index + j <= block_end) do
+							if (dict_string_table[prev_table_index+j]
+								== string_table[string_table_index+j]) then
+								j = j + 1
+							else
+								break
+							end
+						end
+					end
+					if j > cur_len then
+						cur_len = j
+						cur_dist = index - prev
+					end
+					if cur_len >= config_nice_length then
+						break
+					end
+				end
+				chain_index = chain_index - 1
+				depth = depth - 1
+				if chain_index == 0 and prev > 0 and dict_hash_tables then
+					cur_chain = dict_hash_tables[hash]
+					chain_index = cur_chain and #cur_chain or 0
+				end
+			end
+		end
+		if not config_use_lazy then
+			prev_len,prev_dist = cur_len,cur_dist
+		end
+		if ((not config_use_lazy or match_available)
+			and (prev_len > 3 or (prev_len == 3 and prev_dist < 4096))
+			and cur_len <= prev_len )then
+			local code = _length_to_deflate_code[prev_len]
+			local length_extra_bits_bitlen =
+				_length_to_deflate_extra_bitlen[prev_len]
+			local dist_code,dist_extra_bits_bitlen,dist_extra_bits
+			if prev_dist <= 256 then -- have cached code for small distance.
+				dist_code = _dist256_to_deflate_code[prev_dist]
+				dist_extra_bits = _dist256_to_deflate_extra_bits[prev_dist]
+				dist_extra_bits_bitlen =
+					_dist256_to_deflate_extra_bitlen[prev_dist]
+			else
+				dist_code = 16
+				dist_extra_bits_bitlen = 7
+				local a = 384
+				local b = 512
+				while true do
+					if prev_dist <= a then
+						dist_extra_bits = (prev_dist-(b/2)-1) % (b/4)
+						break
+					elseif prev_dist <= b then
+						dist_extra_bits = (prev_dist-(b/2)-1) % (b/4)
+						dist_code = dist_code + 1
+						break
+					else
+						dist_code = dist_code + 2
+						dist_extra_bits_bitlen = dist_extra_bits_bitlen + 1
+						a = a*2
+						b = b*2
+					end
+				end
+			end
+			lcode_tblsize = lcode_tblsize + 1
+			lcodes[lcode_tblsize] = code
+			lcodes_counts[code] = (lcodes_counts[code] or 0) + 1
+			dcodes_tblsize = dcodes_tblsize + 1
+			dcodes[dcodes_tblsize] = dist_code
+			dcodes_counts[dist_code] = (dcodes_counts[dist_code] or 0) + 1
+			if length_extra_bits_bitlen > 0 then
+				local lenExtraBits = _length_to_deflate_extra_bits[prev_len]
+				lextra_bits_tblsize = lextra_bits_tblsize + 1
+				lextra_bits[lextra_bits_tblsize] = lenExtraBits
+			end
+			if dist_extra_bits_bitlen > 0 then
+				dextra_bits_tblsize = dextra_bits_tblsize + 1
+				dextra_bits[dextra_bits_tblsize] = dist_extra_bits
+			end
+			for i=index+1,index+prev_len-(config_use_lazy and 2 or 1) do
+				hash = (hash*256+(string_table[i-offset+2] or 0))%16777216
+				if prev_len <= config_max_insert_length then
+					hash_chain = hash_tables[hash]
+					if not hash_chain then
+						hash_chain = {}
+						hash_tables[hash] = hash_chain
+					end
+					hash_chain[#hash_chain+1] = i
+				end
+			end
+			index = index + prev_len - (config_use_lazy and 1 or 0)
+			match_available = false
+		elseif (not config_use_lazy) or match_available then
+			local code = string_table[config_use_lazy
+				and (string_table_index-1) or string_table_index]
+			lcode_tblsize = lcode_tblsize + 1
+			lcodes[lcode_tblsize] = code
+			lcodes_counts[code] = (lcodes_counts[code] or 0) + 1
+			index = index + 1
+		else
+			match_available = true
+			index = index + 1
+		end
+	end
+	lcode_tblsize = lcode_tblsize + 1
+	lcodes[lcode_tblsize] = 256
+	lcodes_counts[256] = (lcodes_counts[256] or 0) + 1
+
+	return lcodes,lextra_bits,lcodes_counts,dcodes,dextra_bits
+		,dcodes_counts
+end
+local function GetBlockDynamicHuffmanHeader(lcodes_counts,dcodes_counts)
+	local lcodes_huffman_bitlens,lcodes_huffman_codes
+		,max_non_zero_bitlen_lcode =
+		GetHuffmanBitlenAndCode(lcodes_counts,15,285)
+	local dcodes_huffman_bitlens,dcodes_huffman_codes
+		,max_non_zero_bitlen_dcode =
+		GetHuffmanBitlenAndCode(dcodes_counts,15,29)
+	local rle_deflate_codes,rle_extra_bits,rle_codes_counts =
+		RunLengthEncodeHuffmanBitlen(lcodes_huffman_bitlens
+		,max_non_zero_bitlen_lcode,dcodes_huffman_bitlens
+		,max_non_zero_bitlen_dcode)
+	local rle_codes_huffman_bitlens,rle_codes_huffman_codes =
+		GetHuffmanBitlenAndCode(rle_codes_counts,7,18)
+	local HCLEN = 0
+	for i = 1,19 do
+		local symbol = _rle_codes_huffman_bitlen_order[i]
+		local length = rle_codes_huffman_bitlens[symbol] or 0
+		if length ~= 0 then
+			HCLEN = i
+		end
+	end
+	HCLEN = HCLEN - 4
+	local HLIT = max_non_zero_bitlen_lcode + 1 - 257
+	local HDIST = max_non_zero_bitlen_dcode + 1 - 1
+	if HDIST < 0 then HDIST = 0 end
+	return HLIT,HDIST,HCLEN,rle_codes_huffman_bitlens
+		,rle_codes_huffman_codes,rle_deflate_codes,rle_extra_bits
+		,lcodes_huffman_bitlens,lcodes_huffman_codes
+		,dcodes_huffman_bitlens,dcodes_huffman_codes
+end
+local function GetDynamicHuffmanBlockSize(lcodes,dcodes,HCLEN
+	,rle_codes_huffman_bitlens,rle_deflate_codes
+	,lcodes_huffman_bitlens,dcodes_huffman_bitlens)
+	local block_bitlen = 17
+	block_bitlen = block_bitlen + (HCLEN+4)*3
+	for i = 1,#rle_deflate_codes do
+		local code = rle_deflate_codes[i]
+		block_bitlen = block_bitlen + rle_codes_huffman_bitlens[code]
+		if code >= 16 then
+			block_bitlen = block_bitlen +
+			((code == 16) and 2 or (code == 17 and 3 or 7))
+		end
+	end
+	local length_code_count = 0
+	for i = 1,#lcodes do
+		local code = lcodes[i]
+		local huffman_bitlen = lcodes_huffman_bitlens[code]
+		block_bitlen = block_bitlen + huffman_bitlen
+		if code > 256 then
+			length_code_count = length_code_count + 1
+			if code > 264 and code < 285 then
+				local extra_bits_bitlen =
+					_literal_deflate_code_to_extra_bitlen[code-256]
+				block_bitlen = block_bitlen + extra_bits_bitlen
+			end
+			local dist_code = dcodes[length_code_count]
+			local dist_huffman_bitlen = dcodes_huffman_bitlens[dist_code]
+			block_bitlen = block_bitlen + dist_huffman_bitlen
+
+			if dist_code > 3 then
+				local dist_extra_bits_bitlen = (dist_code-dist_code%2)/2 - 1
+				block_bitlen = block_bitlen + dist_extra_bits_bitlen
+			end
+		end
+	end
+	return block_bitlen
+end
+local function CompressDynamicHuffmanBlock(WriteBits,is_last_block
+		,lcodes,lextra_bits,dcodes,dextra_bits,HLIT,HDIST,HCLEN
+		,rle_codes_huffman_bitlens,rle_codes_huffman_codes
+		,rle_deflate_codes,rle_extra_bits
+		,lcodes_huffman_bitlens,lcodes_huffman_codes
+		,dcodes_huffman_bitlens,dcodes_huffman_codes)
+
+	WriteBits(is_last_block and 1 or 0,1)
+	WriteBits(2,2)
+	WriteBits(HLIT,5)
+	WriteBits(HDIST,5)
+	WriteBits(HCLEN,4)
+	for i = 1,HCLEN+4 do
+		local symbol = _rle_codes_huffman_bitlen_order[i]
+		local length = rle_codes_huffman_bitlens[symbol] or 0
+		WriteBits(length,3)
+	end
+	local rleExtraBitsIndex = 1
+	for i=1,#rle_deflate_codes do
+		local code = rle_deflate_codes[i]
+		WriteBits(rle_codes_huffman_codes[code]
+			,rle_codes_huffman_bitlens[code])
+		if code >= 16 then
+			local extraBits = rle_extra_bits[rleExtraBitsIndex]
+			WriteBits(extraBits,(code == 16) and 2 or (code == 17 and 3 or 7))
+			rleExtraBitsIndex = rleExtraBitsIndex + 1
+		end
+	end
+	local length_code_count = 0
+	local length_code_with_extra_count = 0
+	local dist_code_with_extra_count = 0
+	for i=1,#lcodes do
+		local deflate_codee = lcodes[i]
+		local huffman_code = lcodes_huffman_codes[deflate_codee]
+		local huffman_bitlen = lcodes_huffman_bitlens[deflate_codee]
+		WriteBits(huffman_code,huffman_bitlen)
+		if deflate_codee > 256 then
+			length_code_count = length_code_count + 1
+			if deflate_codee > 264 and deflate_codee < 285 then
+				length_code_with_extra_count = length_code_with_extra_count + 1
+				local extra_bits = lextra_bits[length_code_with_extra_count]
+				local extra_bits_bitlen =
+					_literal_deflate_code_to_extra_bitlen[deflate_codee-256]
+				WriteBits(extra_bits,extra_bits_bitlen)
+			end
+			local dist_deflate_code = dcodes[length_code_count]
+			local dist_huffman_code = dcodes_huffman_codes[dist_deflate_code]
+			local dist_huffman_bitlen =
+				dcodes_huffman_bitlens[dist_deflate_code]
+			WriteBits(dist_huffman_code,dist_huffman_bitlen)
+			if dist_deflate_code > 3 then
+				dist_code_with_extra_count = dist_code_with_extra_count + 1
+				local dist_extra_bits = dextra_bits[dist_code_with_extra_count]
+				local dist_extra_bits_bitlen =
+					(dist_deflate_code-dist_deflate_code%2)/2 - 1
+				WriteBits(dist_extra_bits,dist_extra_bits_bitlen)
+			end
+		end
+	end
+end
+local function GetFixedHuffmanBlockSize(lcodes,dcodes)
+	local block_bitlen = 3
+	local length_code_count = 0
+	for i=1,#lcodes do
+		local code = lcodes[i]
+		local huffman_bitlen = _fix_block_literal_huffman_bitlen[code]
+		block_bitlen = block_bitlen + huffman_bitlen
+		if code > 256 then
+			length_code_count = length_code_count + 1
+			if code > 264 and code < 285 then
+				local extra_bits_bitlen =
+					_literal_deflate_code_to_extra_bitlen[code-256]
+				block_bitlen = block_bitlen + extra_bits_bitlen
+			end
+			local dist_code = dcodes[length_code_count]
+			block_bitlen = block_bitlen + 5
+			if dist_code > 3 then
+				local dist_extra_bits_bitlen =
+					(dist_code-dist_code%2)/2 - 1
+				block_bitlen = block_bitlen + dist_extra_bits_bitlen
+			end
+		end
+	end
+	return block_bitlen
+end
+local function CompressFixedHuffmanBlock(WriteBits,is_last_block,
+		lcodes,lextra_bits,dcodes,dextra_bits)
+	WriteBits(is_last_block and 1 or 0,1)
+	WriteBits(1,2)
+	local length_code_count = 0
+	local length_code_with_extra_count = 0
+	local dist_code_with_extra_count = 0
+	for i=1,#lcodes do
+		local deflate_code = lcodes[i]
+		local huffman_code = _fix_block_literal_huffman_code[deflate_code]
+		local huffman_bitlen = _fix_block_literal_huffman_bitlen[deflate_code]
+		WriteBits(huffman_code,huffman_bitlen)
+		if deflate_code > 256 then
+			length_code_count = length_code_count + 1
+			if deflate_code > 264 and deflate_code < 285 then
+				length_code_with_extra_count = length_code_with_extra_count + 1
+				local extra_bits = lextra_bits[length_code_with_extra_count]
+				local extra_bits_bitlen =
+					_literal_deflate_code_to_extra_bitlen[deflate_code-256]
+				WriteBits(extra_bits,extra_bits_bitlen)
+			end
+			local dist_code = dcodes[length_code_count]
+			local dist_huffman_code = _fix_block_dist_huffman_code[dist_code]
+			WriteBits(dist_huffman_code,5)
+
+			if dist_code > 3 then
+				dist_code_with_extra_count = dist_code_with_extra_count + 1
+				local dist_extra_bits = dextra_bits[dist_code_with_extra_count]
+				local dist_extra_bits_bitlen = (dist_code-dist_code%2)/2 - 1
+				WriteBits(dist_extra_bits,dist_extra_bits_bitlen)
+			end
+		end
+	end
+end
+local function GetStoreBlockSize(block_start,block_end,total_bitlen)
+	assert(block_end-block_start+1 <= 65535)
+	local block_bitlen = 3
+	total_bitlen = total_bitlen + 3
+	local padding_bitlen = (8-total_bitlen%8)%8
+	block_bitlen = block_bitlen + padding_bitlen
+	block_bitlen = block_bitlen + 32
+	block_bitlen = block_bitlen + (block_end - block_start + 1) * 8
+	return block_bitlen
+end
+local function CompressStoreBlock(WriteBits,WriteString,is_last_block,str
+	,block_start,block_end,total_bitlen)
+	assert(block_end-block_start+1 <= 65535)
+	WriteBits(is_last_block and 1 or 0,1)
+	WriteBits(0,2)
+	total_bitlen = total_bitlen + 3
+	local padding_bitlen = (8-total_bitlen%8)%8
+	if padding_bitlen > 0 then
+		WriteBits(_pow2[padding_bitlen]-1,padding_bitlen)
+	end
+	local size = block_end - block_start + 1
+	WriteBits(size,16)
+	local comp = (255 - size % 256) + (255 - (size-size%256)/256)*256
+	WriteBits(comp,16)
+	WriteString(str:sub(block_start,block_end))
+end
+local function Deflate(configs,WriteBits,WriteString,FlushWriter,str
+	,dictionary)
+	local string_table = {}
+	local hash_tables = {}
+	local is_last_block = nil
+	local block_start
+	local block_end
+	local bitlen_written
+	local total_bitlen = FlushWriter(_FLUSH_MODE_NO_FLUSH)
+	local strlen = #str
+	local offset
+	local level
+	local strategy
+	if configs then
+		if configs.level then
+			level = configs.level
+		end
+		if configs.strategy then
+			strategy = configs.strategy
+		end
+	end
+	if not level then
+		if strlen < 2048 then
+			level = 7
+		elseif strlen > 65536 then
+			level = 3
+		else
+			level = 5
+		end
+	end
+	while not is_last_block do
+		if not block_start then
+			block_start = 1
+			block_end = 64*1024 - 1
+			offset = 0
+		else
+			block_start = block_end + 1
+			block_end = block_end + 32*1024
+			offset = block_start - 32*1024 - 1
+		end
+		if block_end >= strlen then
+			block_end = strlen
+			is_last_block = true
+		else
+			is_last_block = false
+        end
+		local lcodes,lextra_bits,lcodes_counts,dcodes,dextra_bits
+			,dcodes_counts
+
+		local HLIT,HDIST,HCLEN,rle_codes_huffman_bitlens
+			,rle_codes_huffman_codes,rle_deflate_codes
+			,rle_extra_bits,lcodes_huffman_bitlens,lcodes_huffman_codes
+			,dcodes_huffman_bitlens,dcodes_huffman_codes
+		local dynamic_block_bitlen
+		local fixed_block_bitlen
+		local store_block_bitlen
+		if level ~= 0 then
+			LoadStringToTable(str,string_table,block_start,block_end + 3
+				,offset)
+			if block_start == 1 and dictionary then
+				local dict_string_table = dictionary.string_table
+				local dict_strlen = dictionary.strlen
+				for i=0,(-dict_strlen+1)<-257
+					and -257 or (-dict_strlen+1),-1 do
+					string_table[i] = dict_string_table[dict_strlen+i]
+				end
+			end
+			if strategy == "huffman_only" then
+				lcodes = {}
+				LoadStringToTable(str,lcodes,block_start,block_end
+					,block_start-1)
+				lextra_bits = {}
+				lcodes_counts = {}
+				lcodes[block_end - block_start+2] = 256 -- end of block
+				for i=1,block_end - block_start+2 do
+					local code = lcodes[i]
+					lcodes_counts[code] = (lcodes_counts[code] or 0) + 1
+				end
+				dcodes = {}
+				dextra_bits = {}
+				dcodes_counts = {}
+			else
+				lcodes,lextra_bits,lcodes_counts,dcodes,dextra_bits
+				,dcodes_counts = GetBlockLZ77Result(level,string_table
+				,hash_tables,block_start,block_end,offset,dictionary
+				)
+			end
+			HLIT,HDIST,HCLEN,rle_codes_huffman_bitlens
+				,rle_codes_huffman_codes,rle_deflate_codes
+				,rle_extra_bits,lcodes_huffman_bitlens,lcodes_huffman_codes
+				,dcodes_huffman_bitlens,dcodes_huffman_codes =
+				GetBlockDynamicHuffmanHeader(lcodes_counts,dcodes_counts)
+			dynamic_block_bitlen = GetDynamicHuffmanBlockSize(
+					lcodes,dcodes,HCLEN,rle_codes_huffman_bitlens
+					,rle_deflate_codes,lcodes_huffman_bitlens
+					,dcodes_huffman_bitlens)
+			fixed_block_bitlen = GetFixedHuffmanBlockSize(lcodes,dcodes)
+		end
+		store_block_bitlen = GetStoreBlockSize(block_start,block_end
+			,total_bitlen)
+
+		local min_bitlen = store_block_bitlen
+		min_bitlen = (fixed_block_bitlen and fixed_block_bitlen < min_bitlen)
+			and fixed_block_bitlen or min_bitlen
+		min_bitlen = (dynamic_block_bitlen
+			and dynamic_block_bitlen < min_bitlen)
+			and dynamic_block_bitlen or min_bitlen
+
+		if level == 0 or (strategy ~= "fixed" and strategy ~= "dynamic" and
+			store_block_bitlen == min_bitlen) then
+			CompressStoreBlock(WriteBits,WriteString,is_last_block
+				,str,block_start,block_end,total_bitlen)
+			total_bitlen = total_bitlen + store_block_bitlen
+		elseif strategy ~= "dynamic" and (
+			strategy == "fixed" or fixed_block_bitlen == min_bitlen) then
+			CompressFixedHuffmanBlock(WriteBits,is_last_block,
+					lcodes,lextra_bits,dcodes,dextra_bits)
+			total_bitlen = total_bitlen + fixed_block_bitlen
+		elseif strategy == "dynamic" or dynamic_block_bitlen == min_bitlen then
+			CompressDynamicHuffmanBlock(WriteBits,is_last_block,lcodes
+				,lextra_bits,dcodes,dextra_bits,HLIT,HDIST,HCLEN
+				,rle_codes_huffman_bitlens,rle_codes_huffman_codes
+				,rle_deflate_codes,rle_extra_bits
+				,lcodes_huffman_bitlens,lcodes_huffman_codes
+				,dcodes_huffman_bitlens,dcodes_huffman_codes)
+			total_bitlen = total_bitlen + dynamic_block_bitlen
+		end
+		if is_last_block then
+			bitlen_written = FlushWriter(_FLUSH_MODE_NO_FLUSH)
+		else
+			bitlen_written = FlushWriter(_FLUSH_MODE_MEMORY_CLEANUP)
+		end
+		assert(bitlen_written == total_bitlen)
+		if not is_last_block then
+			local j
+			if dictionary and block_start == 1 then
+				j = 0
+				while (string_table[j]) do
+					string_table[j] = nil
+					j = j - 1
+				end
+			end
+			dictionary = nil
+			j = 1
+			for i = block_end-32767,block_end do
+				string_table[j] = string_table[i-offset]
+				j = j + 1
+            end
+			for k,t in pairs(hash_tables) do
+				local tSize = #t
+				if tSize > 0 and block_end+1 - t[1] > 32768 then
+					if tSize == 1 then
+					else
+						local new = {}
+						local newSize = 0
+						for i = 2,tSize do
+							j = t[i]
+							if block_end+1 - j <= 32768 then
+								newSize = newSize + 1
+								new[newSize] = j
+							end
+						end
+						hash_tables[k] = new
+					end
+				end
+			end
+        end
+        if os and os.pullEvent then
+            os.queueEvent("nosleep")
+            os.pullEvent()
+        end
+	end
+end
+local function CompressDeflateInternal(str,dictionary,configs)
+	local WriteBits,WriteString,FlushWriter = CreateWriter()
+	Deflate(configs,WriteBits,WriteString,FlushWriter,str,dictionary)
+	local total_bitlen,result = FlushWriter(_FLUSH_MODE_OUTPUT)
+	local padding_bitlen = (8-total_bitlen%8)%8
+	return result,padding_bitlen
+end
+local function CompressZlibInternal(str,dictionary,configs)
+	local WriteBits,WriteString,FlushWriter = CreateWriter()
+
+	local CM = 8
+	local CINFO = 7
+	local CMF = CINFO*16+CM
+	WriteBits(CMF,8)
+	local FDIST = dictionary and 1 or 0
+	local FLEVEL = 2
+	local FLG = FLEVEL*64+FDIST*32
+	local FCHECK = (31-(CMF*256+FLG)%31)
+	FLG = FLG + FCHECK
+	WriteBits(FLG,8)
+	if FDIST == 1 then
+		local adler32 = dictionary.adler32
+		local byte0 = adler32 % 256
+		adler32 = (adler32 - byte0) / 256
+		local byte1 = adler32 % 256
+		adler32 = (adler32 - byte1) / 256
+		local byte2 = adler32 % 256
+		adler32 = (adler32 - byte2) / 256
+		local byte3 = adler32 % 256
+		WriteBits(byte3,8)
+		WriteBits(byte2,8)
+		WriteBits(byte1,8)
+		WriteBits(byte0,8)
+	end
+	Deflate(configs,WriteBits,WriteString,FlushWriter,str,dictionary)
+	FlushWriter(_FLUSH_MODE_BYTE_BOUNDARY)
+	local adler32 = LibDeflate:Adler32(str)
+	local byte3 = adler32%256
+	adler32 = (adler32 - byte3) / 256
+	local byte2 = adler32%256
+	adler32 = (adler32 - byte2) / 256
+	local byte1 = adler32%256
+	adler32 = (adler32 - byte1) / 256
+	local byte0 = adler32%256
+	WriteBits(byte0,8)
+	WriteBits(byte1,8)
+	WriteBits(byte2,8)
+	WriteBits(byte3,8)
+	local total_bitlen,result = FlushWriter(_FLUSH_MODE_OUTPUT)
+	local padding_bitlen = (8-total_bitlen%8)%8
+	return result,padding_bitlen
+end
+function LibDeflate:CompressDeflate(str,configs)
+	local arg_valid,arg_err = IsValidArguments(str,false,nil,true,configs)
+	if not arg_valid then
+		error(("Usage: LibDeflate:CompressDeflate(str,configs): "
+			..arg_err),2)
+	end
+	return CompressDeflateInternal(str,nil,configs)
+end
+function LibDeflate:CompressDeflateWithDict(str,dictionary,configs)
+	local arg_valid,arg_err = IsValidArguments(str,true,dictionary
+		,true,configs)
+	if not arg_valid then
+		error(("Usage: LibDeflate:CompressDeflateWithDict"
+			.."(str,dictionary,configs): "
+			..arg_err),2)
+	end
+	return CompressDeflateInternal(str,dictionary,configs)
+end
+function LibDeflate:CompressZlib(str,configs)
+	local arg_valid,arg_err = IsValidArguments(str,false,nil,true,configs)
+	if not arg_valid then
+		error(("Usage: LibDeflate:CompressZlib(str,configs): "
+			..arg_err),2)
+	end
+	return CompressZlibInternal(str,nil,configs)
+end
+function LibDeflate:CompressZlibWithDict(str,dictionary,configs)
+	local arg_valid,arg_err = IsValidArguments(str,true,dictionary
+		,true,configs)
+	if not arg_valid then
+		error(("Usage: LibDeflate:CompressZlibWithDict"
+			.."(str,dictionary,configs): "
+			..arg_err),2)
+	end
+	return CompressZlibInternal(str,dictionary,configs)
+end
+
+local function time()
+    if os.epoch ~= nil then return math.floor(os.epoch("utc") / 1000)
+    elseif os.time() < 30 then return 0
+    else return os.time() end
+end
+local function byte(num,b) return band(rshift(num,b * 8),0xFF) end
+function LibDeflate:CompressGzip(str,configs)
+    local arg_valid,arg_err = IsValidArguments(str,false,nil,true,configs)
+	if not arg_valid then
+		error(("Usage: LibDeflate:CompressGzip(str,configs): "
+			..arg_err),2)
+    end
+    local res,err = CompressDeflateInternal(str,nil,configs)
+    if res == nil then return res,err end
+    local t = time()
+    local cf = 0
+    local crc = self:CRC32(str)
+    local len = string.len(str)
+    if configs ~= nil and configs.level ~= nil then
+        if configs.level == 0 then cf = 0x04
+        elseif configs.level == 9 then cf = 0x02 end
+    end
+    return string_char(0x1f,0x8b,8,0,byte(t,0),byte(t,1),byte(t,2),
+        byte(t,3),cf,0xFF) .. res .. string_char(byte(crc,0),byte(crc,1),
+        byte(crc,2),byte(crc,3),byte(len,0),byte(len,1),byte(len,2),byte(len,3))
+end
+local function CreateReader(input_string)
+	local input = input_string
+	local input_strlen = #input_string
+	local input_next_byte_pos = 1
+	local cache_bitlen = 0
+	local cache = 0
+	local function ReadBits(bitlen)
+		local rshift_mask = _pow2[bitlen]
+		local code
+		if bitlen <= cache_bitlen then
+			code = cache % rshift_mask
+			cache = (cache - code) / rshift_mask
+			cache_bitlen = cache_bitlen - bitlen
+		else
+			local lshift_mask = _pow2[cache_bitlen]
+			local byte1,byte2,byte3,byte4 = string_byte(input
+				,input_next_byte_pos,input_next_byte_pos+3)
+			cache = cache + ((byte1 or 0)+(byte2 or 0)*256
+				+ (byte3 or 0)*65536+(byte4 or 0)*16777216)*lshift_mask
+			input_next_byte_pos = input_next_byte_pos + 4
+			cache_bitlen = cache_bitlen + 32 - bitlen
+			code = cache % rshift_mask
+			cache = (cache - code) / rshift_mask
+		end
+		return code
+	end
+	local function ReadBytes(bytelen,buffer,buffer_size)
+		assert(cache_bitlen % 8 == 0)
+		local byte_from_cache = (cache_bitlen/8 < bytelen)
+			and (cache_bitlen/8) or bytelen
+		for _=1,byte_from_cache do
+			local byte = cache % 256
+			buffer_size = buffer_size + 1
+			buffer[buffer_size] = string_char(byte)
+			cache = (cache - byte) / 256
+		end
+		cache_bitlen = cache_bitlen - byte_from_cache*8
+		bytelen = bytelen - byte_from_cache
+		if (input_strlen - input_next_byte_pos - bytelen + 1) * 8
+			+ cache_bitlen < 0 then
+			return -1
+		end
+		for i=input_next_byte_pos,input_next_byte_pos+bytelen-1 do
+			buffer_size = buffer_size + 1
+			buffer[buffer_size] = string_sub(input,i,i)
+		end
+		input_next_byte_pos = input_next_byte_pos + bytelen
+		return buffer_size
+	end
+	local function Decode(huffman_bitlen_counts,huffman_symbols,min_bitlen)
+		local code = 0
+		local first = 0
+		local index = 0
+		local count
+		if min_bitlen > 0 then
+			if cache_bitlen < 15 and input then
+				local lshift_mask = _pow2[cache_bitlen]
+				local byte1,byte2,byte3,byte4 =
+					string_byte(input,input_next_byte_pos
+					,input_next_byte_pos+3)
+				cache = cache + ((byte1 or 0)+(byte2 or 0)*256
+					+(byte3 or 0)*65536+(byte4 or 0)*16777216)*lshift_mask
+				input_next_byte_pos = input_next_byte_pos + 4
+				cache_bitlen = cache_bitlen + 32
+			end
+			local rshift_mask = _pow2[min_bitlen]
+			cache_bitlen = cache_bitlen - min_bitlen
+			code = cache % rshift_mask
+			cache = (cache - code) / rshift_mask
+			code = _reverse_bits_tbl[min_bitlen][code]
+			count = huffman_bitlen_counts[min_bitlen]
+			if code < count then
+				return huffman_symbols[code]
+			end
+			index = count
+			first = count * 2
+			code = code * 2
+		end
+		for bitlen = min_bitlen+1,15 do
+			local bit
+			bit = cache % 2
+			cache = (cache - bit) / 2
+			cache_bitlen = cache_bitlen - 1
+			code = (bit==1) and (code + 1 - code % 2) or code
+			count = huffman_bitlen_counts[bitlen] or 0
+			local diff = code - first
+			if diff < count then
+				return huffman_symbols[index + diff]
+			end
+			index = index + count
+			first = first + count
+			first = first * 2
+			code = code * 2
+		end
+		return -10
+	end
+	local function ReaderBitlenLeft()
+		return (input_strlen - input_next_byte_pos + 1) * 8 + cache_bitlen
+	end
+	local function SkipToByteBoundary()
+		local skipped_bitlen = cache_bitlen%8
+		local rshift_mask = _pow2[skipped_bitlen]
+		cache_bitlen = cache_bitlen - skipped_bitlen
+		cache = (cache - cache % rshift_mask) / rshift_mask
+	end
+	return ReadBits,ReadBytes,Decode,ReaderBitlenLeft,SkipToByteBoundary
+end
+local function CreateDecompressState(str,dictionary)
+	local ReadBits,ReadBytes,Decode,ReaderBitlenLeft
+		,SkipToByteBoundary = CreateReader(str)
+	local state =
+	{
+		ReadBits = ReadBits,
+		ReadBytes = ReadBytes,
+		Decode = Decode,
+		ReaderBitlenLeft = ReaderBitlenLeft,
+		SkipToByteBoundary = SkipToByteBoundary,
+		buffer_size = 0,
+		buffer = {},
+		result_buffer = {},
+		dictionary = dictionary,
+	}
+	return state
+end
+local function GetHuffmanForDecode(huffman_bitlens,max_symbol,max_bitlen)
+	local huffman_bitlen_counts = {}
+	local min_bitlen = max_bitlen
+	for symbol = 0,max_symbol do
+		local bitlen = huffman_bitlens[symbol] or 0
+		min_bitlen = (bitlen > 0 and bitlen < min_bitlen)
+			and bitlen or min_bitlen
+		huffman_bitlen_counts[bitlen] = (huffman_bitlen_counts[bitlen] or 0)+1
+	end
+	if huffman_bitlen_counts[0] == max_symbol+1 then
+		return 0,huffman_bitlen_counts,{},0
+	end
+	local left = 1
+	for len = 1,max_bitlen do
+		left = left * 2
+		left = left - (huffman_bitlen_counts[len] or 0)
+		if left < 0 then
+			return left
+		end
+	end
+	local offsets = {}
+	offsets[1] = 0
+	for len = 1,max_bitlen-1 do
+		offsets[len + 1] = offsets[len] + (huffman_bitlen_counts[len] or 0)
+	end
+	local huffman_symbols = {}
+	for symbol = 0,max_symbol do
+		local bitlen = huffman_bitlens[symbol] or 0
+		if bitlen ~= 0 then
+			local offset = offsets[bitlen]
+			huffman_symbols[offset] = symbol
+			offsets[bitlen] = offsets[bitlen] + 1
+		end
+	end
+	return left,huffman_bitlen_counts,huffman_symbols,min_bitlen
+end
+local function DecodeUntilEndOfBlock(state,lcodes_huffman_bitlens
+	,lcodes_huffman_symbols,lcodes_huffman_min_bitlen
+	,dcodes_huffman_bitlens,dcodes_huffman_symbols
+	,dcodes_huffman_min_bitlen)
+	local buffer,buffer_size,ReadBits,Decode,ReaderBitlenLeft
+		,result_buffer =
+		state.buffer,state.buffer_size,state.ReadBits,state.Decode
+		,state.ReaderBitlenLeft,state.result_buffer
+	local dictionary = state.dictionary
+	local dict_string_table
+	local dict_strlen
+	local buffer_end = 1
+	if dictionary and not buffer[0] then
+		dict_string_table = dictionary.string_table
+		dict_strlen = dictionary.strlen
+		buffer_end = -dict_strlen + 1
+		for i=0,(-dict_strlen+1)<-257 and -257 or (-dict_strlen+1),-1 do
+			buffer[i] = _byte_to_char[dict_string_table[dict_strlen+i]]
+		end
+	end
+	repeat
+		local symbol = Decode(lcodes_huffman_bitlens
+			,lcodes_huffman_symbols,lcodes_huffman_min_bitlen)
+		if symbol < 0 or symbol > 285 then
+			return -10
+		elseif symbol < 256 then
+			buffer_size = buffer_size + 1
+			buffer[buffer_size] = _byte_to_char[symbol]
+		elseif symbol > 256 then
+			symbol = symbol - 256
+			local bitlen = _literal_deflate_code_to_base_len[symbol]
+			bitlen = (symbol >= 8)
+				 and (bitlen
+				 + ReadBits(_literal_deflate_code_to_extra_bitlen[symbol]))
+					or bitlen
+			symbol = Decode(dcodes_huffman_bitlens,dcodes_huffman_symbols
+				,dcodes_huffman_min_bitlen)
+			if symbol < 0 or symbol > 29 then
+				return -10
+			end
+			local dist = _dist_deflate_code_to_base_dist[symbol]
+			dist = (dist > 4) and (dist
+				+ ReadBits(_dist_deflate_code_to_extra_bitlen[symbol])) or dist
+
+			local char_buffer_index = buffer_size-dist+1
+			if char_buffer_index < buffer_end then
+				return -11
+			end
+			if char_buffer_index >= -257 then
+				for _=1,bitlen do
+					buffer_size = buffer_size + 1
+					buffer[buffer_size] = buffer[char_buffer_index]
+					char_buffer_index = char_buffer_index + 1
+				end
+			else
+				char_buffer_index = dict_strlen + char_buffer_index
+				for _=1,bitlen do
+					buffer_size = buffer_size + 1
+					buffer[buffer_size] =
+					_byte_to_char[dict_string_table[char_buffer_index]]
+					char_buffer_index = char_buffer_index + 1
+				end
+			end
+		end
+		if ReaderBitlenLeft() < 0 then
+			return 2
+		end
+		if buffer_size >= 65536 then
+			result_buffer[#result_buffer+1] =
+				table_concat(buffer,"",1,32768)
+			for i=32769,buffer_size do
+				buffer[i-32768] = buffer[i]
+			end
+			buffer_size = buffer_size - 32768
+			buffer[buffer_size+1] = nil
+		end
+	until symbol == 256
+
+	state.buffer_size = buffer_size
+
+	return 0
+end
+local function DecompressStoreBlock(state)
+	local buffer,buffer_size,ReadBits,ReadBytes,ReaderBitlenLeft
+		,SkipToByteBoundary,result_buffer =
+		state.buffer,state.buffer_size,state.ReadBits,state.ReadBytes
+		,state.ReaderBitlenLeft,state.SkipToByteBoundary,state.result_buffer
+	SkipToByteBoundary()
+	local bytelen = ReadBits(16)
+	if ReaderBitlenLeft() < 0 then
+		return 2
+	end
+	local bytelenComp = ReadBits(16)
+	if ReaderBitlenLeft() < 0 then
+		return 2
+	end
+	if bytelen % 256 + bytelenComp % 256 ~= 255 then
+		return -2
+	end
+	if (bytelen-bytelen % 256)/256
+		+ (bytelenComp-bytelenComp % 256)/256 ~= 255 then
+		return -2
+	end
+	buffer_size = ReadBytes(bytelen,buffer,buffer_size)
+	if buffer_size < 0 then
+		return 2
+	end
+	if buffer_size >= 65536 then
+		result_buffer[#result_buffer+1] = table_concat(buffer,"",1,32768)
+		for i=32769,buffer_size do
+			buffer[i-32768] = buffer[i]
+		end
+		buffer_size = buffer_size - 32768
+		buffer[buffer_size+1] = nil
+	end
+	state.buffer_size = buffer_size
+	return 0
+end
+local function DecompressFixBlock(state)
+	return DecodeUntilEndOfBlock(state
+		,_fix_block_literal_huffman_bitlen_count
+		,_fix_block_literal_huffman_to_deflate_code,7
+		,_fix_block_dist_huffman_bitlen_count
+		,_fix_block_dist_huffman_to_deflate_code,5)
+end
+local function DecompressDynamicBlock(state)
+	local ReadBits,Decode = state.ReadBits,state.Decode
+	local nlen = ReadBits(5) + 257
+	local ndist = ReadBits(5) + 1
+	local ncode = ReadBits(4) + 4
+	if nlen > 286 or ndist > 30 then
+		return -3
+	end
+	local rle_codes_huffman_bitlens = {}
+	for i = 1,ncode do
+		rle_codes_huffman_bitlens[_rle_codes_huffman_bitlen_order[i]] =
+			ReadBits(3)
+	end
+	local rle_codes_err,rle_codes_huffman_bitlen_counts,
+		rle_codes_huffman_symbols,rle_codes_huffman_min_bitlen =
+		GetHuffmanForDecode(rle_codes_huffman_bitlens,18,7)
+	if rle_codes_err ~= 0 then
+		return -4
+	end
+	local lcodes_huffman_bitlens = {}
+	local dcodes_huffman_bitlens = {}
+	local index = 0
+	while index < nlen + ndist do
+		local symbol
+		local bitlen
+		symbol = Decode(rle_codes_huffman_bitlen_counts
+			,rle_codes_huffman_symbols,rle_codes_huffman_min_bitlen)
+		if symbol < 0 then
+			return symbol
+		elseif symbol < 16 then
+			if index < nlen then
+				lcodes_huffman_bitlens[index] = symbol
+			else
+				dcodes_huffman_bitlens[index-nlen] = symbol
+			end
+			index = index + 1
+		else
+			bitlen = 0
+			if symbol == 16 then
+				if index == 0 then
+					return -5
+				end
+				if index-1 < nlen then
+					bitlen = lcodes_huffman_bitlens[index-1]
+				else
+					bitlen = dcodes_huffman_bitlens[index-nlen-1]
+				end
+				symbol = 3 + ReadBits(2)
+			elseif symbol == 17 then
+				symbol = 3 + ReadBits(3)
+			else
+				symbol = 11 + ReadBits(7)
+			end
+			if index + symbol > nlen + ndist then
+				return -6
+			end
+			while symbol > 0 do
+				symbol = symbol - 1
+				if index < nlen then
+					lcodes_huffman_bitlens[index] = bitlen
+				else
+					dcodes_huffman_bitlens[index-nlen] = bitlen
+				end
+				index = index + 1
+			end
+		end
+	end
+	if (lcodes_huffman_bitlens[256] or 0) == 0 then
+		return -9
+	end
+	local lcodes_err,lcodes_huffman_bitlen_counts
+		,lcodes_huffman_symbols,lcodes_huffman_min_bitlen =
+		GetHuffmanForDecode(lcodes_huffman_bitlens,nlen-1,15)
+	if (lcodes_err ~=0 and (lcodes_err < 0
+		or nlen ~= (lcodes_huffman_bitlen_counts[0] or 0)
+			+(lcodes_huffman_bitlen_counts[1] or 0))) then
+		return -7
+	end
+	local dcodes_err,dcodes_huffman_bitlen_counts
+		,dcodes_huffman_symbols,dcodes_huffman_min_bitlen =
+		GetHuffmanForDecode(dcodes_huffman_bitlens,ndist-1,15)
+	if (dcodes_err ~=0 and (dcodes_err < 0
+		or ndist ~= (dcodes_huffman_bitlen_counts[0] or 0)
+			+ (dcodes_huffman_bitlen_counts[1] or 0))) then
+		return -8
+	end
+	return DecodeUntilEndOfBlock(state,lcodes_huffman_bitlen_counts
+		,lcodes_huffman_symbols,lcodes_huffman_min_bitlen
+		,dcodes_huffman_bitlen_counts,dcodes_huffman_symbols
+		,dcodes_huffman_min_bitlen)
+end
+local function Inflate(state)
+	local ReadBits = state.ReadBits
+	local is_last_block
+	while not is_last_block do
+		is_last_block = (ReadBits(1) == 1)
+		local block_type = ReadBits(2)
+		local status
+		if block_type == 0 then
+			status = DecompressStoreBlock(state)
+		elseif block_type == 1 then
+			status = DecompressFixBlock(state)
+		elseif block_type == 2 then
+			status = DecompressDynamicBlock(state)
+		else
+			return nil,-1
+		end
+		if status ~= 0 then
+			return nil,status
+        end
+        if os and os.pullEvent then
+            os.queueEvent("nosleep")
+            os.pullEvent()
+        end
+	end
+	state.result_buffer[#state.result_buffer+1] =
+		table_concat(state.buffer,"",1,state.buffer_size)
+	local result = table_concat(state.result_buffer)
+	return result
+end
+local function DecompressDeflateInternal(str,dictionary)
+	local state = CreateDecompressState(str,dictionary)
+	local result,status = Inflate(state)
+	if not result then
+		return nil,status
+	end
+	local bitlen_left = state.ReaderBitlenLeft()
+	local bytelen_left = (bitlen_left - bitlen_left % 8) / 8
+	return result,bytelen_left
+end
+local function DecompressZlibInternal(str,dictionary)
+	local state = CreateDecompressState(str,dictionary)
+	local ReadBits = state.ReadBits
+	local CMF = ReadBits(8)
+	if state.ReaderBitlenLeft() < 0 then
+		return nil,2
+	end
+	local CM = CMF % 16
+	local CINFO = (CMF - CM) / 16
+	if CM ~= 8 then
+		return nil,-12
+	end
+	if CINFO > 7 then
+		return nil,-13
+	end
+	local FLG = ReadBits(8)
+	if state.ReaderBitlenLeft() < 0 then
+		return nil,2
+	end
+	if (CMF*256+FLG)%31 ~= 0 then
+		return nil,-14
+	end
+	local FDIST = ((FLG-FLG%32)/32 % 2)
+	local FLEVEL = ((FLG-FLG%64)/64 % 4)
+	if FDIST == 1 then
+		if not dictionary then
+			return nil,-16
+		end
+		local byte3 = ReadBits(8)
+		local byte2 = ReadBits(8)
+		local byte1 = ReadBits(8)
+		local byte0 = ReadBits(8)
+		local actual_adler32 = byte3*16777216+byte2*65536+byte1*256+byte0
+		if state.ReaderBitlenLeft() < 0 then
+			return nil,2
+		end
+		if not IsEqualAdler32(actual_adler32,dictionary.adler32) then
+			return nil,-17
+		end
+	end
+	local result,status = Inflate(state)
+	if not result then
+		return nil,status
+	end
+	state.SkipToByteBoundary()
+	local adler_byte0 = ReadBits(8)
+	local adler_byte1 = ReadBits(8)
+	local adler_byte2 = ReadBits(8)
+	local adler_byte3 = ReadBits(8)
+	if state.ReaderBitlenLeft() < 0 then
+		return nil,2
+	end
+	local adler32_expected = adler_byte0*16777216
+		+ adler_byte1*65536 + adler_byte2*256 + adler_byte3
+	local adler32_actual = LibDeflate:Adler32(result)
+	if not IsEqualAdler32(adler32_expected,adler32_actual) then
+		return nil,-15
+	end
+	local bitlen_left = state.ReaderBitlenLeft()
+	local bytelen_left = (bitlen_left - bitlen_left % 8) / 8
+	return result,bytelen_left
+end
+function LibDeflate:DecompressDeflate(str)
+	local arg_valid,arg_err = IsValidArguments(str)
+	if not arg_valid then
+		error(("Usage: LibDeflate:DecompressDeflate(str): "
+			..arg_err),2)
+	end
+	return DecompressDeflateInternal(str)
+end
+function LibDeflate:DecompressDeflateWithDict(str,dictionary)
+	local arg_valid,arg_err = IsValidArguments(str,true,dictionary)
+	if not arg_valid then
+		error(("Usage: LibDeflate:DecompressDeflateWithDict(str,dictionary): "
+			..arg_err),2)
+	end
+	return DecompressDeflateInternal(str,dictionary)
+end
+function LibDeflate:DecompressZlib(str)
+	local arg_valid,arg_err = IsValidArguments(str)
+	if not arg_valid then
+		error(("Usage: LibDeflate:DecompressZlib(str): "
+			..arg_err),2)
+	end
+	return DecompressZlibInternal(str)
+end
+function LibDeflate:DecompressZlibWithDict(str,dictionary)
+	local arg_valid,arg_err = IsValidArguments(str,true,dictionary)
+	if not arg_valid then
+		error(("Usage: LibDeflate:DecompressZlibWithDict(str,dictionary): "
+			..arg_err),2)
+	end
+	return DecompressZlibInternal(str,dictionary)
+end
+do
+	_fix_block_literal_huffman_bitlen = {}
+	for sym=0,143 do
+		_fix_block_literal_huffman_bitlen[sym] = 8
+	end
+	for sym=144,255 do
+		_fix_block_literal_huffman_bitlen[sym] = 9
+	end
+	for sym=256,279 do
+	    _fix_block_literal_huffman_bitlen[sym] = 7
+	end
+	for sym=280,287 do
+		_fix_block_literal_huffman_bitlen[sym] = 8
+	end
+	_fix_block_dist_huffman_bitlen = {}
+	for dist=0,31 do
+		_fix_block_dist_huffman_bitlen[dist] = 5
+	end
+	local status
+	status,_fix_block_literal_huffman_bitlen_count
+		,_fix_block_literal_huffman_to_deflate_code =
+		GetHuffmanForDecode(_fix_block_literal_huffman_bitlen,287,9)
+	assert(status == 0)
+	status,_fix_block_dist_huffman_bitlen_count,
+		_fix_block_dist_huffman_to_deflate_code =
+		GetHuffmanForDecode(_fix_block_dist_huffman_bitlen,31,5)
+	assert(status == 0)
+	_fix_block_literal_huffman_code =
+		GetHuffmanCodeFromBitlen(_fix_block_literal_huffman_bitlen_count
+		,_fix_block_literal_huffman_bitlen,287,9)
+	_fix_block_dist_huffman_code =
+		GetHuffmanCodeFromBitlen(_fix_block_dist_huffman_bitlen_count
+		,_fix_block_dist_huffman_bitlen,31,5)
+end
+function LibDeflate:DecompressGzip(str)
+	local arg_valid,arg_err = IsValidArguments(str)
+	if not arg_valid then
+		error(("Usage: LibDeflate:DecompressGzip(str): "..arg_err),2)
+	end
+	if string_byte(string.sub(str,1,1)) ~= 31 or string_byte(string.sub(str,2,2)) ~= 139 then
+		return nil,-1
+    end
+    if band(string_byte(string.sub(str,4,4)),0xE0) ~= 0 then
+        return nil,-3
+    end
+    if string_byte(string.sub(str,3,3)) ~= 8 then
+        return nil,-4
+    end 
+    local offset = 10
+	if band(string_byte(string.sub(str,4,4)),4) == 4 then 
+		offset = offset + string_byte(string.sub(str,11,11)) * 256 + string_byte(string.sub(str,12,12)) 
+    end
+    if band(string_byte(string.sub(str,4,4)),8) == 8 then
+        while string_byte(string.sub(str,offset,offset)) ~= 0 do offset = offset + 1 end
+    end
+    if band(string_byte(string.sub(str,4,4)),16) == 16 then
+        while string_byte(string.sub(str,offset,offset)) ~= 0 do offset = offset + 1 end
+    end
+    if band(string_byte(string.sub(str,4,4)),2) == 2 then
+        local src_checksum = string_byte(string.sub(str,offset + 1,offset + 1)) * 256 + string_byte(string.sub(str,offset,offset)) 
+        local target_checksum = band(self:CRC32(string.sub(str,1,offset - 1)),0xFFFF)
+        if xor(src_checksum,target_checksum) ~= 0xFFFF then return nil,-5 end
+        offset = offset + 2
+    end
+    local res,err = DecompressDeflateInternal(string.sub(str,offset + 1,-8))
+    if res == nil then return res,err end
+    local src_checksum = string_byte(string.sub(str,-5,-5)) * 0x1000000 + string_byte(string.sub(str,-6,-6)) * 0x10000 + string_byte(string.sub(str,-7,-7)) * 256 + string_byte(string.sub(str,-8,-8))
+    src_checksum = bnot(src_checksum)
+    local target_checksum = self:CRC32(res)
+    if xor(src_checksum,target_checksum) ~= 0xFFFFFFFF then return nil,-2 end
+    return res
+end
+local _gsub_escape_table = {
+	["\000"] = "%z",["("] = "%(",[")"] = "%)",["."] = "%.",
+	["%"] = "%%",["+"] = "%+",["-"] = "%-",["*"] = "%*",
+	["?"] = "%?",["["] = "%[",["]"] = "%]",["^"] = "%^",
+	["$"] = "%$",
+}
+local function escape_for_gsub(str)
+	return str:gsub("([%z%(%)%.%%%+%-%*%?%[%]%^%$])",_gsub_escape_table)
+end
+function LibDeflate:CreateCodec(reserved_chars,escape_chars
+	,map_chars)
+	if type(reserved_chars) ~= "string"
+		or type(escape_chars) ~= "string"
+		or type(map_chars) ~= "string" then
+			error(
+				"Usage: LibDeflate:CreateCodec(reserved_chars,"
+				.." escape_chars,map_chars):"
+				.." All arguments must be string.",2)
+	end
+	if escape_chars == "" then
+		return nil,"No escape characters supplied."
+	end
+	if #reserved_chars < #map_chars then
+		return nil,"The number of reserved characters must be"
+			.." at least as many as the number of mapped chars."
+	end
+	if reserved_chars == "" then
+		return nil,"No characters to encode."
+	end
+	local encode_bytes = reserved_chars..escape_chars..map_chars
+	local taken = {}
+	for i = 1,#encode_bytes do
+		local byte = string_byte(encode_bytes,i,i)
+		if taken[byte] then
+			return nil,"There must be no duplicate characters in the"
+				.." concatenation of reserved_chars,escape_chars and"
+				.." map_chars."
+		end
+		taken[byte] = true
+	end
+	local decode_patterns = {}
+	local decode_repls = {}
+	local encode_search = {}
+	local encode_translate = {}
+	if #map_chars > 0 then
+		local decode_search = {}
+		local decode_translate = {}
+		for i = 1,#map_chars do
+			local from = string_sub(reserved_chars,i,i)
+			local to = string_sub(map_chars,i,i)
+			encode_translate[from] = to
+			encode_search[#encode_search+1] = from
+			decode_translate[to] = from
+			decode_search[#decode_search+1] = to
+		end
+		decode_patterns[#decode_patterns+1] =
+			"([".. escape_for_gsub(table_concat(decode_search)).."])"
+		decode_repls[#decode_repls+1] = decode_translate
+	end
+	local escape_char_index = 1
+	local escape_char = string_sub(escape_chars
+		,escape_char_index,escape_char_index)
+	local r = 0
+	local decode_search = {}
+	local decode_translate = {}
+	for i = 1,#encode_bytes do
+		local c = string_sub(encode_bytes,i,i)
+		if not encode_translate[c] then
+			while r >= 256 or taken[r] do
+				r = r + 1
+				if r > 255 then
+					decode_patterns[#decode_patterns+1] =
+						escape_for_gsub(escape_char)
+						.."(["
+						.. escape_for_gsub(table_concat(decode_search)).."])"
+					decode_repls[#decode_repls+1] = decode_translate
+					escape_char_index = escape_char_index + 1
+					escape_char = string_sub(escape_chars,escape_char_index
+						,escape_char_index)
+					r = 0
+					decode_search = {}
+					decode_translate = {}
+					if not escape_char or escape_char == "" then
+						return nil,"Out of escape characters."
+					end
+				end
+			end
+			local char_r = _byte_to_char[r]
+			encode_translate[c] = escape_char..char_r
+			encode_search[#encode_search+1] = c
+			decode_translate[char_r] = c
+			decode_search[#decode_search+1] = char_r
+			r = r + 1
+		end
+		if i == #encode_bytes then
+			decode_patterns[#decode_patterns+1] =
+				escape_for_gsub(escape_char).."(["
+				.. escape_for_gsub(table_concat(decode_search)).."])"
+			decode_repls[#decode_repls+1] = decode_translate
+		end
+	end
+	local codec = {}
+	local encode_pattern = "(["
+		.. escape_for_gsub(table_concat(encode_search)).."])"
+	local encode_repl = encode_translate
+	function codec:Encode(str)
+		if type(str) ~= "string" then
+			error(("Usage: codec:Encode(str):"
+				.." 'str' - string expected got '%s'."):format(type(str)),2)
+		end
+		return string_gsub(str,encode_pattern,encode_repl)
+	end
+	local decode_tblsize = #decode_patterns
+	local decode_fail_pattern = "(["
+		.. escape_for_gsub(reserved_chars).."])"
+
+	function codec:Decode(str)
+		if type(str) ~= "string" then
+			error(("Usage: codec:Decode(str):"
+				.." 'str' - string expected got '%s'."):format(type(str)),2)
+		end
+		if string_find(str,decode_fail_pattern) then
+			return nil
+		end
+		for i = 1,decode_tblsize do
+			str = string_gsub(str,decode_patterns[i],decode_repls[i])
+		end
+		return str
+	end
+	return codec
+end
+local _addon_channel_codec
+local function GenerateWoWAddonChannelCodec()
+	return LibDeflate:CreateCodec("\000","\001","")
+end
+function LibDeflate:EncodeForWoWAddonChannel(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:EncodeForWoWAddonChannel(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	if not _addon_channel_codec then
+		_addon_channel_codec = GenerateWoWAddonChannelCodec()
+	end
+	return _addon_channel_codec:Encode(str)
+end
+function LibDeflate:DecodeForWoWAddonChannel(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:DecodeForWoWAddonChannel(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	if not _addon_channel_codec then
+		_addon_channel_codec = GenerateWoWAddonChannelCodec()
+	end
+	return _addon_channel_codec:Decode(str)
+end
+local function GenerateWoWChatChannelCodec()
+	local r = {}
+	for i = 128,255 do
+		r[#r+1] = _byte_to_char[i]
+	end
+
+	local reserved_chars = "sS\000\010\013\124%"..table_concat(r)
+	return LibDeflate:CreateCodec(reserved_chars
+		,"\029\031","\015\020")
+end
+local _chat_channel_codec
+function LibDeflate:EncodeForWoWChatChannel(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:EncodeForWoWChatChannel(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	if not _chat_channel_codec then
+		_chat_channel_codec = GenerateWoWChatChannelCodec()
+	end
+	return _chat_channel_codec:Encode(str)
+end
+function LibDeflate:DecodeForWoWChatChannel(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:DecodeForWoWChatChannel(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	if not _chat_channel_codec then
+		_chat_channel_codec = GenerateWoWChatChannelCodec()
+	end
+	return _chat_channel_codec:Decode(str)
+end
+local _byte_to_6bit_char = {
+	[0]="a","b","c","d","e","f","g","h",
+	"i","j","k","l","m","n","o","p",
+	"q","r","s","t","u","v","w","x",
+	"y","z","A","B","C","D","E","F",
+	"G","H","I","J","K","L","M","N",
+	"O","P","Q","R","S","T","U","V",
+	"W","X","Y","Z","0","1","2","3",
+	"4","5","6","7","8","9","(",")",
+}
+local _6bit_to_byte = {
+	[97]=0,[98]=1,[99]=2,[100]=3,[101]=4,[102]=5,[103]=6,[104]=7,
+	[105]=8,[106]=9,[107]=10,[108]=11,[109]=12,[110]=13,[111]=14,[112]=15,
+	[113]=16,[114]=17,[115]=18,[116]=19,[117]=20,[118]=21,[119]=22,[120]=23,
+	[121]=24,[122]=25,[65]=26,[66]=27,[67]=28,[68]=29,[69]=30,[70]=31,
+	[71]=32,[72]=33,[73]=34,[74]=35,[75]=36,[76]=37,[77]=38,[78]=39,
+	[79]=40,[80]=41,[81]=42,[82]=43,[83]=44,[84]=45,[85]=46,[86]=47,
+	[87]=48,[88]=49,[89]=50,[90]=51,[48]=52,[49]=53,[50]=54,[51]=55,
+	[52]=56,[53]=57,[54]=58,[55]=59,[56]=60,[57]=61,[40]=62,[41]=63,
+}
+function LibDeflate:EncodeForPrint(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:EncodeForPrint(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	local strlen = #str
+	local strlenMinus2 = strlen - 2
+	local i = 1
+	local buffer = {}
+	local buffer_size = 0
+	while i <= strlenMinus2 do
+		local x1,x2,x3 = string_byte(str,i,i+2)
+		i = i + 3
+		local cache = x1+x2*256+x3*65536
+		local b1 = cache % 64
+		cache = (cache - b1) / 64
+		local b2 = cache % 64
+		cache = (cache - b2) / 64
+		local b3 = cache % 64
+		local b4 = (cache - b3) / 64
+		buffer_size = buffer_size + 1
+		buffer[buffer_size] =
+			_byte_to_6bit_char[b1].._byte_to_6bit_char[b2]
+			.._byte_to_6bit_char[b3].._byte_to_6bit_char[b4]
+	end
+	local cache = 0
+	local cache_bitlen = 0
+	while i <= strlen do
+		local x = string_byte(str,i,i)
+		cache = cache + x * _pow2[cache_bitlen]
+		cache_bitlen = cache_bitlen + 8
+		i = i + 1
+	end
+	while cache_bitlen > 0 do
+		local bit6 = cache % 64
+		buffer_size = buffer_size + 1
+		buffer[buffer_size] = _byte_to_6bit_char[bit6]
+		cache = (cache - bit6) / 64
+		cache_bitlen = cache_bitlen - 6
+	end
+	return table_concat(buffer)
+end
+function LibDeflate:DecodeForPrint(str)
+	if type(str) ~= "string" then
+		error(("Usage: LibDeflate:DecodeForPrint(str):"
+			.." 'str' - string expected got '%s'."):format(type(str)),2)
+	end
+	str = str:gsub("^[%c ]+","")
+	str = str:gsub("[%c ]+$","")
+	local strlen = #str
+	if strlen == 1 then
+		return nil
+	end
+	local strlenMinus3 = strlen - 3
+	local i = 1
+	local buffer = {}
+	local buffer_size = 0
+	while i <= strlenMinus3 do
+		local x1,x2,x3,x4 = string_byte(str,i,i+3)
+		x1 = _6bit_to_byte[x1]
+		x2 = _6bit_to_byte[x2]
+		x3 = _6bit_to_byte[x3]
+		x4 = _6bit_to_byte[x4]
+		if not (x1 and x2 and x3 and x4) then
+			return nil
+		end
+		i = i + 4
+		local cache = x1+x2*64+x3*4096+x4*262144
+		local b1 = cache % 256
+		cache = (cache - b1) / 256
+		local b2 = cache % 256
+		local b3 = (cache - b2) / 256
+		buffer_size = buffer_size + 1
+		buffer[buffer_size] =
+			_byte_to_char[b1].._byte_to_char[b2].._byte_to_char[b3]
+	end
+	local cache  = 0
+	local cache_bitlen = 0
+	while i <= strlen do
+		local x = string_byte(str,i,i)
+		x =  _6bit_to_byte[x]
+		if not x then
+			return nil
+		end
+		cache = cache + x * _pow2[cache_bitlen]
+		cache_bitlen = cache_bitlen + 6
+		i = i + 1
+	end
+	while cache_bitlen >= 8 do
+		local byte = cache % 256
+		buffer_size = buffer_size + 1
+		buffer[buffer_size] = _byte_to_char[byte]
+		cache = (cache - byte) / 256
+		cache_bitlen = cache_bitlen - 8
+	end
+	return table_concat(buffer)
+end
+local function InternalClearCache()
+	_chat_channel_codec = nil
+	_addon_channel_codec = nil
+end
+LibDeflate.internals = {
+	LoadStringToTable = LoadStringToTable,
+	IsValidDictionary = IsValidDictionary,
+	IsEqualAdler32 = IsEqualAdler32,
+	_byte_to_6bit_char = _byte_to_6bit_char,
+	_6bit_to_byte = _6bit_to_byte,
+	InternalClearCache = InternalClearCache,
+}
+local arg = _G.arg
+local debug = debug
+if pcall(require,"LibDeflate") then 
+    arg = {...} 
+    arg[0] = "LibDeflate.lua"
+    debug = {getinfo = function()
+        return {source = "LibDeflate.lua",short_src = "LibDeflate.lua"}
+    end}
+    os.exit = function() error() end
+    io.stderr = {write = function(self,text) printError(text) end}
+end
+local function openFile(file,mode) 
+    if shell then 
+        local file = fs.open(file,mode)
+        local retval = {close = file.close}
+        if string.find(mode,"r") then retval.read = function()
+            local retval = ""
+            local b = file.read()
+            while b ~= nil do
+                retval = retval .. string.char(b)
+                b = file.read()
+            end
+            file.close()
+            return retval
+        end end
+        if string.find(mode,"w") then retval.write = function(this,str)
+            if type(str) ~= "string" then error("Not a string: " .. textutils.serialize(str),2) end
+            for s in string.gmatch(str,".") do file.write(string.byte(s)) end
+            file.close()
+        end end
+        return retval
+    else return io.open(file,mode) end
+end
+if io and os and debug and arg then
+	local io = io
+	local os = os
+	local debug_info = debug.getinfo(1)
+	if debug_info.source == arg[0]
+		or debug_info.short_src == arg[0] then
+		local input
+		local output
+		local i = 1
+		local status
+		local compress_mode = 0
+		local is_decompress = false
+		local level
+		local strategy
+		local dictionary
+		while (arg[i]) do
+			local a = arg[i]
+			if a == "-h" then
+				print(LibDeflate._COPYRIGHT
+					.."\nUsage: lua LibDeflate.lua [OPTION] [INPUT] [OUTPUT]\n"
+					.."  -0    store only. no compression.\n"
+					.."  -1    fastest compression.\n"
+					.."  -9    slowest and best compression.\n"
+					.."  -d    do decompression instead of compression.\n"
+					.."  --dict <filename> specify the file that contains"
+                    .." the entire preset dictionary.\n"
+                    .."  --gzip  use gzip format instead of raw deflate.\n"
+					.."  -h    give this help.\n"
+					.."  --strategy <fixed/huffman_only/dynamic>"
+					.." specify a special compression strategy.\n"
+					.."  -v    print the version and copyright info.\n"
+					.."  --zlib  use zlib format instead of raw deflate.\n")
+				os.exit(0)
+			elseif a == "-v" then
+				print(LibDeflate._COPYRIGHT)
+				os.exit(0)
+			elseif a:find("^%-[0-9]$") then
+				level = tonumber(a:sub(2,2))
+			elseif a == "-d" then
+				is_decompress = true
+			elseif a == "--dict" then
+				i = i + 1
+				local dict_filename = arg[i]
+				if not dict_filename then
+					io.stderr:write("You must speicify the dict filename")
+					os.exit(1)
+				end
+				local dict_file,dict_status = openFile(dict_filename,"rb")
+				if not dict_file then
+					io.stderr:write(
+					("LibDeflate: Cannot read the dictionary file '%s': %s")
+					:format(dict_filename,dict_status))
+					os.exit(1)
+				end
+				local dict_str = dict_file:read("*all")
+				dict_file:close()
+				dictionary = LibDeflate:CreateDictionary(dict_str,
+                    #dict_str,LibDeflate:Adler32(dict_str))
+            elseif a == "--gzip" then
+                compress_mode = 2
+			elseif a == "--strategy" then
+				i = i + 1
+				strategy = arg[i]
+			elseif a == "--zlib" then
+				compress_mode = 1
+			elseif a:find("^%-") then
+				io.stderr:write(("LibDeflate: Invalid argument: %s")
+						:format(a))
+				os.exit(1)
+			else
+				if not input then
+					input,status = openFile(a,"rb")
+					if not input then
+						io.stderr:write(
+							("LibDeflate: Cannot read the file '%s': %s")
+							:format(a,tostring(status)))
+						os.exit(1)
+					end
+				elseif not output then
+					output,status = openFile(a,"wb")
+					if not output then
+						io.stderr:write(
+							("LibDeflate: Cannot write the file '%s': %s")
+							:format(a,tostring(status)))
+						os.exit(1)
+					end
+				end
+			end
+			i = i + 1
+		end
+		if not input or not output then
+			io.stderr:write("LibDeflate:"
+				.." You must specify both input and output files.")
+			os.exit(1)
+		end
+		local input_data = input:read("*all")
+		local configs = {
+			level = level,
+			strategy = strategy,
+		}
+		local output_data
+		if not is_decompress then
+			if compress_mode == 0 then
+				if not dictionary then
+					output_data =
+					LibDeflate:CompressDeflate(input_data,configs)
+				else
+					output_data =
+					LibDeflate:CompressDeflateWithDict(input_data,dictionary
+						,configs)
+				end
+			elseif compress_mode == 1 then
+				if not dictionary then
+					output_data =
+					LibDeflate:CompressZlib(input_data,configs)
+				else
+					output_data =
+					LibDeflate:CompressZlibWithDict(input_data,dictionary
+						,configs)
+                end
+            elseif compress_mode == 2 then
+                output_data = LibDeflate:CompressGzip(input_data,configs)
+			end
+		else
+			if compress_mode == 0 then
+				if not dictionary then
+					output_data = LibDeflate:DecompressDeflate(input_data)
+				else
+					output_data = LibDeflate:DecompressDeflateWithDict(
+						input_data,dictionary)
+				end
+			elseif compress_mode == 1 then
+				if not dictionary then
+					output_data = LibDeflate:DecompressZlib(input_data)
+				else
+					output_data = LibDeflate:DecompressZlibWithDict(
+						input_data,dictionary)
+                end
+            elseif compress_mode == 2 then
+                output_data = LibDeflate:DecompressGzip(input_data)
+			end
+		end
+		if not output_data then
+			io.stderr:write("LibDeflate: Decompress fails.")
+			os.exit(1)
+		end
+		output:write(output_data)
+		if input and input ~= io.stdin then
+			input:close()
+		end
+		if output and output ~= io.stdout then
+			output:close()
+		end
+		io.stderr:write(("Successfully writes %d bytes"):format(
+			output_data:len()))
+		os.exit(0)
+	end
+end
+return LibDeflate]=]
+
+local libDef = load(libDefE)()
+
+local PrimeUI = load(PrimeUIE)()
+
+FS = textutils.unserialize([=[{
+  [ "lib/kernel/http.la" ] = "�V͎� ��)F��H��Mz�aUUꡇj�=GĞ�VXp�6Zm����?�麫��V����f�9e���Am�,{J�}���ZנK�	��\
+�j�y|lp��{�p{���4�4l�l7\
+���$�����d)lk���J�JeV��Sy��3��PJ�+���L���G�CY1-�B�Nz\000x��X���wW~^�yݥ@��n{o��Ȕ����fĦk��<G�P^x���F�C�n$�\"	d\
+cG{Z�F��G{�Er�{��4��\rײZB�tw{~��;է[IX�7�Ҳ�f<\
+�\000��Pyh�l��\\��֘k,�UM� 4Ȳ�q�M�$��YO�g���	�%�	'-JMwg�\\\r@:�co~N_1�P7�N���ƹ���1��ó@=_&�G��2�>S���\\�bfyЋ�f������ML_�%L����މ�@�,����<����Y�F���2�'���{�\000����~��l�m��Z��;�8�?*Y��ä��E��������U��nW�a�Z�x>-�\"��ҟ��H|�������6�Zf����D����!0n�\rpتN�\
+�af/j��:'$�'��",
+  [ "ect/PXBoot/bootconfig.conf" ] = "uP1n�0��\
+B��NA��[�����L+Bd2�����ʮi������GW�\"����S')��Z�qB.Z�'�;ω�b��M�*c2&���*h̄T~�y��@=f/�	���M�2�����V��0�m��k���uo�7����|ٙ��Pxþ����RE*\r��k�?�H�݀r���Zjާڶ�~����3�14˰��^ō�����Hʰ�n]��s���",
+  [ "sys/debug/boot/Lua.lua" ] = "�Wmo۶ �ᠮ���rӾ�c2�K��E�۰�s�ds�I���xE��wG��q�	m$Qw�{~�d�/��:����\\ovF.��'�s�������P+�$\\^ɲ��Ʉ�����8��@�d)ќBs�	���������Q�sQ�{g��dY��G����;x\rn������\\����P@�hD��-�E-�B�7.��1�S+P�������� HgA�5v|]mH(��WsC�nGz���I~�=Gy����B��7����t���B;]��y>Ż\r�.#e��r�8����V%��#~^T�3�x��`�jAb����ȹ^�I��:m��/�ݷ����\"��.�щE�F'���0�r��$|��N[g���V9�'��!:;A::s�?e���!F�Tc�N�RT�I�j8�|���'%Z�#7Z�a8(d��$6��\"=�*����>�L�؛���pS�Aצ��V�%(�R�Z'}uK�Ң�PR�8�!���:��Xrv��3��fP��G�I_��/��X!���&q���{�c�6�P^i��#����t�uM�r�K$���B����Wb����dl���i�<d��e�7nfW�Lix끇rb��2L��)Hi�Τ=�����S��@qoj>��f�����i�$��M��˾U4�$!�o�v04��	yۥt��ŕ/k����.m�bC枤�������Bs���{�U`a$]���!��\
+�����=���\000oGW�6��I �X�*�oi_]�B*�'�F2�TD�U�D�tN!��a�od/W}v¸K�\"t����2R�����w��^O����Ng�:�{��R��X=��oZ��s��m{��\
+0�5��6��嵓��Z�[i�a�4zi�(]��.�|�N�4��q��3��[�^Į^�����&�{9�\r�5?����O��1�\
+��b!�ΩA�u9�an���K����Ҿz� ϖ�W��R�Q���o��A�9Zۤ�0�A�VA%=(lS\
+�Zߢo�v���6E6����8:E��ǛI\
+�,���4:#O^E4����/�,J����+24ܒ���^ߴ��\\4�9�'�ک̰!�{ΥY�\r7C�M�Ib�M����'�Oj�~��i�������[�uT�����y,�>Q���v���ro$��I55�-\r�%�+�j�@�L%��@%�A�+JURI�jY��n8;�B%W��dr\rq�TA�E�p�\"��:�i�ۭ�[�ޓ>R��$z,|u�>y� '(H^�8 �x�bԙ_���{���A5��\000�Jg��Wp���Y�֕�\rm�w����b�0����dv�PK�c%�I[�Luqx��H��Ϣ�)g�Q�UJ񧲭$��6�eq�ԛ�=\rx�}ux�cm.�ϔ�mmD%�38�j>ǧ��A����9X�;|usc�r\000	i�~���=>�NK!����{��q?p��m@���p��D��F�h���D�z;l_��X��׺��y;�v����F�82��:U<�C��%���������8���9���{��0SZԛ�i��+�F������",
+  [ "lib/kernel/table.la" ] = "��ON�Q��L�-IL�I�*J-)-�	�(�E�\000",
+  [ "sys/serv/reboot.sys" ] = "��u�/�,�L�(Q�p�T0202UP.I,���:;s$'��hW�h��Ԣ����Ԥ��%M�t~1TD��",
+  [ "ect/PXBoot/repairconfig.conf" ] = "��=�!�{VAX\000���׸��-?W$\"wr�bbܻw`3�Rp�����jZ��+-�_��qw%,߁�e�0!1�Y�MLD���P!��S�)$�Q�k�<��ȏ��������Ĝ�x �&�X������R���P��Ʀ��0_c�kp��ar��D��r�!K��&ch���",
+  [ "bin/SLVim/init.lua" ] = "�<�r�F���(�TO$O�&?�e��q�����*۹��fT9\"Q.\000Zd���~�=�O���L*1�������ir<�~dMt��,jʈ-�f���4��Wղ�.�D��$�m��E'��2:��+4���e��ߦkc�j9=�Ee�Փ%k�;�W,���ݶ(�by͇$�!��TY�$��u�dϣf5��c�ؤ��e�T��Vŀ��\000ȸ�*�o�b�{@.���a\000,��]��̿��Ș^̆��K+�=@�Z>'4~��C?�euS��(-����}�)���iQ�\rq5J�EV�ySV�����K�4ߦ�!ut���.��\r.Qy��/��\\N�b�_���&�7���5����@����Q�GI�˜��n�k���������n��Z�f���������^�_��	�r;�@��?_n�/^Ø�U�	������꺬w�b��R�W�n��k�����|nQ�Fn��(�=�h%'N��~e���z^�y�q$>|��Qt>�Z�&+��oJ��x#�j��Ζy	��l�����w��{�(��|���5+���B~�]�O���	���ռ#Ѷ]����2&�y:���-n���*k��V���A��2V�1(�@�����\000*��w���	�B��h!tp\000Rt.ն�+�O�j:]��e�H�(Ț�%ZߒĻ����(:���9;�0Ry�G�p��L���q�(*�|�\\��2l�=Ɋ���y��`�����6�,X\"���}̯[�D����������˪������k��yV�'w)H����k����\"h\000E�U0���t�$�n=8���}��)h�0��v�؛��p�P�X�`����F�F�gu\rS�QF񜞗�-���l�y~�w��6�fdv��[itn��7d��+�阮��J�&��Q�i�Ȗ��6g���Y�$�08wާ_X���E�ܰ�Cz�g8�v�U�fŪ4�g[L[�*�d��F`�,u��HZ��M�\000ߺ�����y�T9Iv���#X/�S�|�/�fl�֎�;���	�2z���w��p�h��aIv�Fx5�:���g�ӹ��l#:��QV��\
+H`e%܅��P�`�s�pI�h8ĢTݴ0c�h�#94��#�gz?�˚	\000b~ �V���l�ˈ����5ȿb���Vd�p@���ʢ�p~\
+�@�\\J �cx^oo�x���=A�k�M����,oPZ	/��=#�ߚ\\���k�B��_0�z�$;+\
+V� m�A�צ�<h��G�����418A\000S4��Wʧ:ȸ�Ia�����]?t<�7���LE��w��3����P@�l٬�W�_�?!m�A�N�xqOs$�nA���E�t!O��ٝ�홈�����>!\"��L�E�;��Ƹ}e��y�S�\rh��7���t;�ӹ�S�]Y9��7�`4՞1Y�HÒ�F�Mj2�N�9�P<ڣGc��=ih�	����-��fٮ�V�c�^�:��j�~�L������Z7��#x��Rp�3�,��*��|�Z�*�H�c��X'��y	��vl���d����/�c�oz:��Og���\
+���D�@0��G��c3r�5j2������Q��}~��Qr�G6x{��������IY�%R6T%i��3�N؄���k�5����5�I� M��F�:/�n��-C������U�=\"m�]k0\
+pSM�)%t��2pq��������n��}5����oN'�gg�f:�pgo���\r5�o��%W���նlgA=1�128�w144!Q�D���(�N�3�|��(\000���6�Þ��,����IFt��_1��xO�/�4!�0\
+����b\"g�d�>�Z���r��4hGXb���pmL��i�����v*V���L��[����V>h��lhN����*�������9%H>��̯b�� 0����<�a�I�\000������s�V�s0��G�ր�\\�Ln�OW��|\r�\"�2�'���?c\
+M;�˚xR���ça���n�O�*��_���{�`��c����!��\"��u��S�v��07=Tt��e1���(�5����#؀��J(\"���T�P:I�7\"���-2ћ޷�E��D�QG�6E��w�8�P��䇘�q�^Lz9{t r@S`<EʃfE�I����C;3�V�'M/��We���#�9����AG$�Bx�\"gO[�sЫ�?N�?t��|:R)!5��s��[�\"O��O�zV�Xa�2��:���LI���<���0���lZ&�OA/X��E���ޤ6vӦ�П����|�u��9l�|7\"����	ͣ���:5\
+3hm�C\"��ȠQa�d+�~�7�#�TJr1D�˯H�!S�a�6�]\000�a:XN�gZ�杰Bw��e��N؜�\
+^�]��压�����m�.���1]���T`iӤ�.��D��|Tj�MD���u���E%�^�bf��n�O�?�o��'��ϵ0.k���m�w ��݋���>�u\
+l|�l{,���0V|\000;����6��b��?����Y��0�=2�����ծ�7{MP�$ =� ��OU��/��P��l]�z����u[�lp<�.G��C��gRDJM�&{��צ'Ʋu��(:�Hذ<v0<F��L��k�#o\000wS�{��<W��z��=����F��J'LUr-�ʆQY9t���\000�$����4�����$I���}55�?���A��3.����/��ܓ�u ��}^A��\"X�4�-s�]d�S�C?3]��������L����K�d�ᗽN˅-m~�;�a�{W�����4v�p��-�m�a+�\
+-��r�jR�C���z����kU=��\
+�6��q`��\"@D�����'�mD�(G�K����S|�m!��3� E+���;��P˱��:���,�I$%��3X�B��l�9��u\
+zNčD�ʼ,�V�����OP؛k^����1Hk\"@/���hA�#x���f�B$���p��lpg�iH����`���]r�^����j�^�/J�FJnDV���m*jzS�f�?�q��f�$H����Z��f+9#����a�UJ7I�e�Q1Z��&�l�-~�d�Xw2m�����q� L2��i�2�Q��\
+V��@��pj��l��OY��e��_������#Q��y9���/��	x�G�k$�������=u�-�ν���暜��NK?��O`��\000C���x^L!&����Bھ7���%\"	����<�:�m-�$=@��M§�H�$�+��)�z&Z�\"ȹ)�@�7�v���z���$Zp�w��Cߋ}���u���7��-�9���_͛m����4)ͳfݲeFu�B::�*��~�I t������'x���c7�$�ʏu��ƹ��~Fl�l^`��������Ӳ� Ҫ� |�N�ڬ�'�\\�wK��l <�(a���Պ�A����!|Hagşo��?�ʌ�x�+>���{���VLG�p|\ro��v��Ɵ7FO��Vxώ�M�^��A������V���4�w٬%t�W��35�1��%����20ޠL6�C����h��B�����z�QKO�]?�lF����}��C�&O2]uȴ�!g���#xe/��5�W���/�G;�$����V������Ty|���W*����h�<�#�!\r�l����dC��J����Mlk3�#%X��Nw<#���8:���4?<3T9���D3/�~v�e�#�y�	0��K6��֨���x)��������cG�Rq�xM#��@�,��W�Fک�b�^�� ��#-[p��XW�|�倎���w���z7�<�w?�Nڽ'1tl=r����<lj�>�=z��vS-����;H���ʵ�{N�ËGn�8�����}Щ��ή�k)��:F~��G��wl�lM�v���3����uX4�ٝgR��\r�8�C����an�!�~����8prv��P|u��|�.:/���Q�9�da���(����g��lV\000�ᔎ�M�$[�\
+��TX���w��H��]t���Y�l�c�)g0�RJ�`�~�ŏ%���:|O��O��Uÿ~�l�R�~Z���z�n���r���-Lx����ix��$as��.�����1v0�hD���tZ�u�?�D�A��֓*-5�����t~_oҹ_��o�,����wĦh��%��V�b;F�Ĭ��*}�5��T �bqPl���O\\������w��K����_���?��G��Z�7O]����泦�3�BZ �9���ؗ7���9r���]�K�YS�c�P�D-�˵���՟�Z���.���tq�y�`�����z�.�Ó\r`}�ɾ�.��d�����4��y*�Ţ��pP q�d?�^��k�O��x<�$Ϣg�ܠ�v�5B꼧�!q�xq�:��|��q'�Vm�/{��R����#O����#�|��r��B'W����A���U�.��5�ݥ1j�%f^�3���=�]7M�B���[����Y��ޔ�c�^�ej(�N�� �ƛ>V��6�&r��98}1�����jޓj�p)s�y�N!X�h�*\
+�⋕��K��!G�Cr�`\"��1ҵ����9o|��9 7��nX@p:E�5�8����(�Uk���e��4���m[�ۚ�Џ�Y����aU�Ys�\r>���c��YM�;z>\r�c��:'�Ŀ����.�Vg�I���:�\r��}Dl;[�-��7؂��Q����I�J�Sr�_^�x.8�S]����	E���{���f�B��#���.a����L����h�:��æ��b�\"��f��ژ�����	=h���u9 �Ff�2����<�Dٝ����b���Oe�*锟B�D�Lg���SA��FE�e�{/��(Ss�ks�A/��}9��qx�#y�O�P�o*Vg�ڞ����[��5�Y�\
+�u�E[�?�Q� uԙ�[�J�����",
+  [ "sys/modules/require.la" ] = "��ON�QH+�K.���S\000s�R5r4���+5/�",
+  [ "sys/serv/shutdown.sys" ] = "��u�/�,�L�(Q�p�T0202UP.I,���:;s$'��hW�h��Ԣ����Ғ���<%M���b��&�",
+  [ "lib/kernel/vec2.la" ] = "�Tێ�0}�+O���&��	�b*T%�%����}z�eE�M��3���t�,Y�ϯ��l.�����HY�F��\"�); ��~)�%BA�c�����+�[��\000�<lȨ(͗u�Wn=#�~\"�6��ʥ��X�����T�P*��j�+�,�6J�8k^)�b��WP��5�U��0*���p`N�	�g�c�h[̒�����T���.p��tB�͆�(N&tJ6b��dTQ�;��r�R�[�Y,�p��R���+ϑn�g���R���+s%ֲ֪��-��05��熰z�-�D�W�Y܆D���6����k��DI�=�1d!�b�9f�!r �!r �]B�@xe�ȁ�0�q[��g�0��/����E���%�SM4�3_�a��\r�S�I�e�{3t�l7����``\000c�b����\"8�G��",
+  [ "startup.lua" ] = "��u�/�,�L�(Q�p�T0202UP.I,���:;�r礦hhY�99zE�yJ�I��%�N@J���XA?5��%��e��(%M�",
+  [ "lib/kernel/vec4.la" ] = "��Qo�0���)P������^N�L�d+RH�4B��~�8��¨�!M8?W�?�C�������sg���c�S�e�ֈ��������QL7JD���g�3�����-��w��\0007�M���{�mr&J��{s���lE^�\"/[��}!�n�B^���C�&H�C�&��>�+���&H�㪬F�����YU$\000�4!�ھR����n�0��\"���#�b3ܔ����w}��p]�+�ߔ�1-L�\
+�ٗKh_�	��W=��;�?0���q4��8Y�S����B\\�ԣ�[�T�=m6x,��R�X���8����8�;x�|����b���XN-�ZU���NҖ�=�Sjw?_��b1�����<���J�<���\
+Q���nb�13�ޱ�u�:z}�DɆ5\\R�QP���!X�D#�A�\"�A�!�AWr���s�:l�\r�\
+��ݒ��ӗO�L�8s?|q[���h�3Sq�g�4�T7�vK��{���Ͻ���I�����\
+((��o�B�=l����",
+  [ "tmp/shellSet.lua" ] = "+�H���+*��P��N�,R(��/�W������M�.�����X�Y��",
+  [ "lib/kernel/thread.la" ] = "�UKo�0��W��\\#�7�a��Nv\
+�B��E�Bz����Q˲g��\\\"�ɏ�$JȖ\
+\"�ٓ��\"����p	�U�V�u�-�l���pC��/�}�+��!���R�fS�/k�HC:��\\J��� �mDZ��5X9�*2���b�*�_�7oEY�	�����M���<\
+���҂��w)ʃ����7'C�]\"1����'���D9.S�8��^�/�P�Ď���#FY�K�$� i��acV���'!؍�]L�xj�'���3o\"}h��؈o0��7k�\\hd*�+r���';���gV�*5���:��?Y5l��%��k���I)�JϢ\"��TLh��`\"Ohg9I<,<�޵���Rm�����:�|��߲��t>��4��H*F=��U����⽸���K��/���G�	\
+����\r�ߢ�?齪��s'�R�+�W�����v��h�~H�ym�fm9^��2[\000l�L�*�(ދ4��J�=��r�\000}�|b���	2{��L�`|\000�2U���U���M��Z�1'�N֟",
+  [ "boot/PXBoot.sys" ] = "�<ks�8���+PL]�ܑ��If��z��'���L*v�ʛ�(\
+���H\r�}>�o�~\000 ��bgrW{J%�F���7���ȋZ��J��e���M�od^G�^�\\Ȳ,�08]�J���LVb�T��IQ6�X��J�ɢ��$\"!���NV�I&��Z��8���Q�A����h.d��uR'�L�ܧ'��=q{~�3��h�VEV2[LD��S7%��z��ځ��hGf��2k�Q���\000<�˓�k�Y$@�n�E����V`X�ץ����9M7�y��qt��p����i*Y�͊��6��\\�Ei(3�M>SE��z�k������7�~=���Iz��$��ϋ�����\\)`Q���X CE�L�Y=N�s��Tb�̥P9�\"ډ�5�����&�_ �\rpu�\000�U���r.`��s9k.��j�d���ȒP�j'�(��,I�H��gM25��4CڼT��>�<׎��?�R�V�)SfIDa�Lj��`���YVj����_���=��HE=�i��Ӄ)����Z,@��bW3����Z���\
+���n]bS[UdsA�\"G���#�Y�ra�=��\r5�ryPY�#I &ŗV��o�<�ӬH��V~B\\�!�d��(h/o\
+�uM˚I/a)�N�~�����;hY��퉬��\\-��1�L��R�v�`kY��R�I涂�֙��J����E���Ų�laޫT� �,Il���ā�	���r>/\
+�z(�������e.3PwTE��x\r�Z=3`����w��$-]6 �3��;M媹n�|�.�ǲhj�K�B\"`�����O�}P���g�U���3�s��^5��m*%�|�PV�����^���?�zr�>��x���O�O�O�OO������|w��������^?�?����駏��o�O����mH*��s�,+~���䢥���}�HU�hync!���j���:Q�zQ\r����`��C.��6]�8\r�-�>��V����w�5\000y�c��y��^pk��ͣ��jh��u�����j�P]t�o�-x�����km�����BJw#W+�-c�߶4� ��9���o���%:�nx�6��t a����3Yls�-6S<���r����600s�Oh����Y��\"�C����2�9��\r.Y{q���ޠ���Fjt �b�N nE�p�Lֵ<*��&�\r5Wi)��-�:w@!�ß�H�&ô�!^��h�i$��.ez���{��5��n�������s���}�^+�ná��9g���Z��P�,tⴤn����ͺ%Cyh��|������{�H��H�lr�ʤ\\w�f��ф�����O\rI�.�G��0.e2�ﺄp���(G������0N��a�b&QՏS}��9J4ٴj�$����&��oZ�?K��l�|;߬����_���DƩ�%6b\
+'�u�bĕņ:ܔ�`�_�r��a^\r�<i�\rQD�,���t��(?{c� Ĕ~N�y\
+q1��$7H�j]�p������B\000KxY����1)�8�9��Ǽ�RVMV�\\��S2�S=�Y5+T�Vz3�h��N��U��`cZ�mDM���\000��$a$�<�\
+�v���0�C:0n_��\\%�l�\
+��#)�i�@���*�\000�'��J��\000\r��)D��@2kS��ME�rཪwI����v��Ȕ1Ύ2�]��>��%�>��4LY�(��Z�\r�^,~RyB����W���gI�An�纰�2,�\000�1#�#��j�˛^�����T+;��/[b��UBh���	j�{\
+�˼Y�`AեZ�Ơ��9B��<3\"$B�_���2b���˟0��.�\"��z�U�=Ho��x[�5$7)si\"��*]\
+�X�r@FX~i)�Kx�)�L�M~;�4��>�6��4ڂ@��t���Pv/}���:�\\/md�N��Ь���8P�7W]�Q>=���/��)ę���<jʪ(?U�?��o`�/C��:i&��Y��G��0F�T�����r�?bҶb���p����b-s]�� �`and/ԛ?C�\
+O4\
+�����/��\000���#r>[.H;琱��o���&9v=���Y��:�>��ph�\r�w�6�L0�ߦ���<`�\000���^����%���l-�_�im���@P�e!ؕ���ә��Ҭ�d����_d{)�?�^`�=�<����GCH�:�l������n�6�N{��@RJ�k�<䜏3װ�����8e�8��ޚ��k6�\\�S�(��dm�K���vp@�X�����58A�n���(ʘcU�O�	�4,���p׺��i�-�����g~=X��E�u4��\
+yq�G[�u�*��8ocp���CX��g�D4�M�Cl�j�mJ�\000���\\��#`��/��P}��Ւ�ယ����6(�����]��{m��폃��##0�D'��v�ϧ�>�Ƨ#��\
+�R�����e�R���v�G���P���;���**�bM�n|d_EE��a�nu���B�VEcU�u�mO�5W�f#� ���᩿J�!��ʻV���A�9&�GU�_��*k.Y,}��������2�Z;��ªN�\
+y_α(�C\\�����2�\\:0��NĳqS��}��\
+���j^��Bm���^L-��y�	�\"��1ƮwC�%�3���Z-e��~a}w�z����wᴚ�=�&�8�q�#}L�����F�)�/෻ԏ�R���o$f�-�Lm\rf*֥�0�P�Zz����R��������1N���\"<����N܄9��E�c���s��1͔5I\r�Pb1v��2�7�v�\r���*\000�u���\
+^	�ֵW�S���/�d%e}`{�D^�\\�I}T�|������>z^�<S�	���.�^oVu���]�ᡤ���V�[\000��!��0�pʱ�p������~wX�=Y���cpw5S)�A��7$���k:�.퉯�Hv�����t�f�j~���V���C�1x�o�&(���1��S�ժ�~�ŷu\000����E����&��{-gZxJ������G,*<8��<��]�j��JnÇ�\\<�����pv,uK{�m���͛LV����1Z�W�Ԗ��t/�m���_���51wP�kҹ��<M�[��펮�\000�%k����]E!�/;����'銌#6�-m�g���۬w�L���eL�hy���\000�'m�����ͪ��Q�9焄Vjϭ��F缗�|bJh�����FU�r)@�.�K���l��Eߧh�P\\��wW�� �z�.���`0Bn�J�>ԯ�p�r��y�ѭ�tN|��&�O���@r���E�/xp��\\�JUf��	7t#��-�K�-�t���Ձ���zC�C}r�\\N3�T|��Z���Z���t\r����=�ށ!�(@��`(��v�3\"�������v���:����j�s��V+�瀇���5�$춆�!n�S�/$�jL�K}0�S�Ar0!��'��zP�z�h^;YEm�f.S�qRl��f�6M�	��ī�:�sV��<���ܡ^�s�{w�'KP<�e�Zh�����ԇD~Q��\\�s)�ٚ\\r�T�E�˳dnb��Gd���n9+a�_�X��#��<���\000�l@8�*¸� �1MSo�p�P�h�u8�N{Xu�+D�sɶ����@L1��(:t;���'�^<�s��/�`���g����L����|���0��QPy�5s��?GJv��}�����bM�}C'm���Ţ^A��k��wМ�8gnЎ��\\xEC2J�_���~�+��h������m>5:~���a��5�3+erٗ�Ŵg(\000�킵]��I6���Іr����\
+�6d(�3wC~J^T\000F���qO�.���B�H�|kf��ڐ6b�o|K��7�<Zyl��{mE����� �Ӧ�S���-���萨�\\'&{�a_I�S���$:X��o�N��\000�;��4K;E��s^��;ݘ��gB@�T���rq@01��<['Q:|w�����@��^�ڀN	xu��/q0k�R7(��q�_�]�C�>{TS}���g�YZ ��`W���ݠ�h<��a��@q*v�A08�>D\rG�hN���O���!fb�+V��o?�$��=���杳$���D/N!�#0��ڷrە�/�~��������羻������Kͨ�8�����;��uCU}>�XM�b'W�]��=��Rq~�xc�3�d��;��qj��Hbݙ�-�;�g�ip�z�s�A�g�>�L������bC�\000�ׂ�P��YOJ5�����B�[6T4���j�c��']MQ��:Q�ЕgIL�>yX��-�m�Z#�^T��G\
+��r	o&c%Gr�?�'�o�ˉ��\r����9a]��ȡxb+(�-���Ky����0x���������e2K�rD��f��5�\\M�Y�T�~����[���dN��R��}��������؍SXm-CVV�:	��l\"�`�����ܗ��P0fz�C�Q}pi4p���;����XF�m�W�E9�Vc2��R�j�� ��⒯�Wo!s+Ȝ��AaѸ����x�HMI}�#���QL��I�h��XK�Ra��(�h\r�9�e�|�<�F<��#��2�:桡��-�S�2�to�~˭��Gu���vC�cE%����l�m;�ӧ����Wj��:P��i��l\
+Y��W/����ht�{���&���=f�݋2{X�#�����,�;�v�#�������Ȫ��]����0/c?�����+OoӴ@��j\r�!��h�l)�}T��7��܍�*��s�9���;���9{��Nw��N�5w�I����L�wr��I0|3\000��	�����.q݌�g�3^d6-Jn*���{���M+��ݺ�������{����]�<��\
+�8�h�a<��Y�j\
+��\\k^1����ל���s�	���f�A����˸<b�=��K�<>ķ�{�bGힽ�ql�ȔA�1�z�#W�\"񘢷{��8���z3l7O{��O������dq��K��5�/ُ�=���DA��]Q�z�T�!����h;��>��t����ؕ����I�~l�r��%m�j|3~(��:؄���IY�B����1J��ZuT��_�m�2�'0�ܜa�+̈�O������d�a�9��7)�����>��@?���~�I{����{tͬ]2f������v@�&y*3�W�|�s�$t��Ժ��;��(�1�v��ך7��� �+�6H�K�=��&���:�5����a h�D�$7m$!����t٬ǖ����4\r�X�޶����>����.ȧ][�.����Y��?���v�B��O*~�3�A�Ӂ#����6�oȮ���TyR�3�N����",
+  [ "sys/modules/expect.la" ] = "�XmO���_q�Q[�ׁ�UK�J ��B0�{�fw�wg_�����93�/6&�U?4�;s�s�_�����ws���S��c�\\j��S�Ky@�o���4�t||@ӕ�dL�L�R��H�F��b��j�dq@?^���÷��X�`���E�ȣ�*��h���$�o\\��ɐ($͡RLU˂>]|�O2��H骚�*\"/9��5�S�x����Z�˛�%�&�вЋ\
+��y!%=/Ww@k]Q$r*d�LY�YUB��D��m�c5_[ :�Jx��EfH����z��l>1���b�S���kA�ȢT:�T�/���7���x�!�¢�E�����8��kJE����s ;Al�a�J�)�$j^�C�j�r6����.�җ��룋�׿��L4n�!Ke�T�\"/���B�xr}�x��zv~6�\
+3��lzqrsC���tDWG�ӳ���G�t������$D8%+&-�w�<���'cY\
+�o�W�@�4�D<J9���	��;�>~E�:_XCA��ڝ�)���|�����ǫ�*\\�U���8u0f��)�QiF��Z�B�	��^0*+�t6>��^_^]|wKf\\ȹ'R�f�	��S�����C��ǥ>��|�E��e)���R5+D�fSU,\r%2EyӼ�#�&c=�<B�+Ϲѫ/Q��*�~�bW2MG �دy\\;5��]R�^�\\{���*�q�E�Ш<�����h�Q\"� ��?�1|ku�YP��^qNF\"��+�N�\\^�QzH�DE	�\
+�dո���I�M{����6W9�f� ޭm��}�RH�ߵ�1��W��9h� �~������!:�D>NhC�a�io��fq|�-X��\\dh*��O$����!�ۀ�<_O(�'(J1Ke�_r���!TsK����!�[���4\\������x8�hU6�E0<ǻ��G����U�֬cB�꟮6[�G�0���O\"�hD��;��\"}��7Cʯl\r\"����cu�|��Xh�%j`��GYT��ɢ��� {.�9����72����\\*`�O��fh�`!KKw�Q6�0�d�ò9��RD�Z\
+�h�wL�Z�*�=�u7���V��d�o���2ӏ�oi�D���\000�+���	�m&P!˪\000�v�m��o�]*+�,e-0����1���!<K��i��ͬv���I�L�����(�\
+eS:���Jp����ʎ��O4\000��D�I�>�grm��Ƅ~�L��'#הjP;�!�F*G�r�0����7�Yn�<���h���'_��'^��U\r{�g\"-]���۹Zl���똕��I�,�;��|ԡi��|�ʘ`�ΪE�6�α�Z�e�Ỹ֛�b�~Ä,p�P@>ؼ��c݂q�m��\"G���k⢝n��:\\wXs#?�F#���r)x�r��_���a��0���Uhy�u���i�wv��H���rā�ߏ��1zۘz�x#{��6)����N	d8�Dcֈ]1�v��!bM�/��.��uZZ7�&�7����U�p�Gt�Ty�nx�1O����+�C`7���S��l,��a�;A	�+J����@�ϱ�F��-!!��*�B����O�͍Xع䍥�T��t�x�ݴ髿٢���j��ť�g��ٱ�p_'-Cc>�;�nkp���Yv�._��h�v����Lt2��똽��yC���g��1�l�� ��(�LrKK+���vL�g�L�s\"v7������6Km�/�-���n[�㜫������5���`E��N���/�M��;����fj���ٸ�o�ڵ�����'�k���/��K�\rB�5��ݵ�B`�'S�p���	���/����jdG�],[I�8�<�2��'o�q��VO$��5a,V�*+�M���e�i3�v��-v��v%aR-�]͉�ޗ*WY�=���q�pՊ��|����Ui0_��1��'2?���m���C6d�Z��;�@�j^c�b�'���l5A���}��s��띕���˄4gi,w'�]Z|�񞌨c#�W6�-o�?W\\��Z�}k�+0~��	�Ԝ� �񌼾W��q�>��ŀ:��B|���(�Mg�r�ڵ������*�k��5>ua��*`�#�����~�w��=/L�Ӡ������d�����",
+  [ "lib/kernel/io.la" ] = "S\000�",
+  [ "ect/Kernel/settings.conf" ] = ".I,*)-�/(�ON-.�U�/N���/�H��Q��",
+  [ "lib/kernel/string.la" ] = "��ON�Q(q,J/����ӫ傈�d&)�*�e�s�����t� BJ�",
+  [ "lib/kernel/vec3.la" ] = "���n�0��y\
+�+hC�����g�(�+R>�6H�w�'p��RU�g��q���<�!/���3�,����dE�^j��Rɨb�BT�;�G3SkJ�y�=�{�9(ڐ��.p�z<$a�ެ��2�Ɋ����3�Q{�$b�ڽXP���\
+8.\
+X���*�����!?Y��\\�~��f`�a�XaX��խ���kUUO6V�&>�b/u:/ɒ���O�Y�;g��\\7J/2s��M�c�F���P��7K#�/-�������co�xN�Z���8ә��ԣ�[���=m.E?�WJG8郏�?ѿ�q̷�&�9F�1�#1�Vۨ��R�=�\
+��tGv�ʧ�Y��[��o�n�L�N��K�0�6�c�Ȭc�|�*i�M��Zʂuc�_\"�^@�r{�`9͆,�8D��pD!�AWQ���s�:�\"�p��;�!-��e3��ΜEw_�n�F�Z�����k���/���νv�S�'�z�8�����~JDv0�?��",
+  [ "sbin/shell/shellCMD.pla" ] = "�}�s�F����+�u�(��f�պ$�e�����/��&OVh��8�\000���)�o���'\000��^�&zzzz�{zz��j�Q�ϣ�藏�!e�l��v�ͫ����\\&�ɃҪ��|z�e���Id�I��S�����<ZD횕�5�������z��{V.��*+�\000_�`i)[�m��)��ץ���j��>DJ�����Iζ��6���dW�y���m֮_ē&��:���\r�Bi͚EZ��*nXBe]�^�tͿg��?���WM�7�wB8&�P��n�m��(+�<�Wy-��j�2+˪�5Ȣe^�E[�w�@=�H��-?4-����O��Q���4n��mY�`KX�B�&�b@��.�*��I0�6�C���y�DC{�eI�e�Ms�bW�T{�_�8��O��+oZ;�N#l��it���O#D۲z��y���%z�6��*����G�}:������5\\�����we	uA�\rڧu~�.���eUT�z]��}U/��E�ٰR}m���y~%�8��/V�U�PAJ_�C�΋lqM;����:o��Z�(�Zk\000�����Q\r�f�au�5����+^�V'\r�fЪ3�]�\r�S���bb�s�9}��K�w��/wu\r�%�i��g���������A���m�Q�m@>��h��>Uv��\000���4��z���Y(}\
+�nl�r}���;P�(^,R0�.�\"U\000����&P� �K��.A�Ȫ�<TS`)�DTyb~F>\
+��z�7�YnMd����}}�!T.���$^�ծ\\r������bMU�����z\r���U׮� ��\
+�(�L�o_j���6,�B�r�MuI\"�/�8q�v^�%��6��Bo�5we���:�<CJfۺ�����n��J��ۆ5��A���h�;�Ҩ��y�ci,eNp��E�G���,���y��X^ڌ�Ri4y���CW�,�ζ[���� ��Yh�I��Q�4�O�޹��v�4����H�:��x�8W`TY.Mdœ;�%?B����\000�^Ba�<S\"�ƧS\rQhO-��נ��u��A�W5�vW�n��<�{Ŀ�u��t�7��^����Թ3�++w�dRH���۲\rVP{���Z'&��sn�j�y��0�6鲃�6�a�YGt\000��V[V���cQA�bڲ:߮Y\r� �%&a����Ѿ��0����M�kw���x��TP�,ʌ�$2��C���?��ͥ}ǌ�E�ݽ4�Vl�u^�(o@��eTh<��	%l��]S�Я�o~��Lz�g���g_���7׈��>T��UV�R����z���!E������l����T�z$���}r���&2�YLZ5E���~�����i?&�1�df>�_Î�w�i��������P�!�sl�Ą���q(ͤ�d�\000Q>��v�(�V2ܢ��L�����`�3���%/�=s��0L����׆c\"81�z���h�ů`�U�5x���'c�c��\000���`�]3�!��1�$L�_p�o��yY����F���<�-yBEYqH����6A Wrl�0�zI�N�u(���H.�Gl#p\r��w�!��o�g�(6M��M}�+�E,C9�zY���;4�AP.b�c�6q�8���A���_���5�2�!_�?\
+'��R���B���~h�������>@+��,���\r������\000��v�x�	&cl}��[0n�\
+EFw\
+w�n�b�e[�M�.(J�c;���h�<�v��PlFAq�r������z{���#:KO}�̛u���E�9����݅>LP�ǂoh�׎8��u��c\000@0�O�V$����L���w�G�c}��C��e�%�OO࿋����ˇ��M��g5I���������P�Ι�\\�����<z��9e��D`���/�g���>��I�L���;� ��p��I�����&��+�q� �ت��u����p�m��1����^��٫�=�W��ӧ�ek#�X� w�k+��nj��p�����0���_d'�����?=���a������ա���]c�2�[Mt�;K�-Ck��aMj�jjp���PYʚ���\\T���w�z�Q��r���[��D���{F��E�A��Ј��xd�&������� ��{*��l;�U#;o��X�z�.�G}t�Ei��uZ/�ܗf��xt Ҭ���W5�����F]�S�)B�˹�A���Ĳ��X���D�08?�]\
+\
+�b�C���c�hblT�z��(XVc�'Z�_KA���٥�D�W>���M2ŀ�k�`͐�EiB=b��t.Oo\r��?NF4;qzV�8`\r°���k������9���?�i' \
+ѫ���\
+q�U��0���~طh�{���w���91ry��߉ ����b3�2�4�˭����3^��^�M1\"MpP�F��^�|'��*�R�.,?��/���s��DGP�a��O0�\"�W]#��y��ш&�����UQgގ�d#��kT��%��GA�b�]\000iҖ�{�n����p�;~��'9�l�(Ĉ%�P�CǶf�d�'n��)KV�li����m�.�:��8����K�`L��31������̫�*'�c��h���}i�XG�>��[@ ��:l�Is�v�ј��!�ȶ��^\"M�#�a���+pxN� \r�B�͊���37�˘�)\000u�Q��\r�9@1�`��`[;p@(�\r���J�fm�-�!-������0�Dh�\r��|��ּ����%�p�8'��-��c7�Hh�v�ZoD��]U+м��j�'�5�d�\000�B�F���`P+߁��K��]�e��в�┯�mAi�j�^O}��ejz3�2f!(.��'��o��˪�XV4L�5\\b���MZ�/���L}~�EdU8:|;	xnM)0�ioZ�=�I���J\"S��L#�d\r�\\���}�E�!�9��CK�Bam�݁��*�m���@a�f�D*����G��/�d���|�'���s�<M�4R�������OV�<�Ϫm�oㅻ�L����|�M����>�uz�����|%} v��Ĥ��}���W�b�d'&��w�����=t����h[@kl�I�閼ˤ���x?air�O�E�WW|�N)���`��{Nmݿ�9\000�r��1.!��K'_�����e��z�W�v:�NZV�#�b��+q\
+���ؔ��\000U]���#`��^��'�S5m�,�3�ixH#�n꿥=S�^\ri��W�v[��9�d`S��S��mQ��L[�\\��oO�1��X�BFH�E�e\r�B_���OLV��B�-����]�'���yg5�)S����HA~��O���4h<�!K�����e%c��L���C]<�bV^^j�Á؁>�1�Z�7V�N�X t�0&��0��_g\"��X:3Wb�V������0[^�� j-�f/;��q؂�U��u�E���S�� �|ߕen����2��U\\i.��lꩦ䡯�?ޫ�?B5���@����V! D�k��1���2�AT��䝂���)L�@6�B�I�㝉tX��d�D�zXw��t1�x��=��c-8ՕL��US�aC�Sg5��x�~A�asp�������+䚔H[�B]��BI��Y�[T�e��̞��C�fj�A=m&���l#�<��[����?^�;����8�&�m�~@���	z\
+C��'k����V=Y%F]0�%9�|��z�d��Lّ��H�Njz�\000>�:��)�ݑZ������n@QO��ד�wa�1��ʘ�!B�jh����:2Y%���z(P�r>����4��(��>�~nQj���2�����V�h���K�0��Fz�\r�-�����Da�O넇T �1�x�'��{}�,�����q̿}R�\"���AO�+ʻ���-��z\\R�z[R���D�\000��T��bYCJ�x=�پ�D�>��UÝ���w���?��Dy5������k@|#i��5Һڄw��h ��=�W9���An]��Z��.�P<�4��z��,#+ϡ??҂�D�����H�F���[>	�]�A���R!-�q-�����s��E�)������ɍ&S���8Y�q�ۧ�?InE����?��\"+����`��5h�?���4B�B���b{�3���G�GH���o*������Â���t�|!C=:ZƷ�!a8;Ml�lS�)z��We0PS+.������lqMg�|^I��*r�D�O�Np�&�#|�)��I�s����[ߞG;���?�$?�̘LO$<�����cE��Ah���2��C�BR����;V궏\\�A��׹�[��C�zL�@�;��a�\ru��2����m�d�W����U�C�Z͎�\
+�'��\"�<,�T�����,��hc�F����s�%B��6y=�,��АY�N[��1͕(.@��6q��,�Q�C<y���O^J�D�R���7SZz2���\
+\
+��}����\"<�oxq�L�k�i�S��r����ó��r���&h�j�J�v�U�F����i.�%VA�b���jԷ@\\ZT{�[�:�en���|%��:�	�6 ܭ�Oޯ�����#0۬iY������\\Y0�����gvܟ�f�T����COc�:.�'\\\
+eN�\rA�I����(l��BϹPz�B�z4�?d��\\�s�P�T�;�\r������xk`��c;��;n07���,�Rn�i����Fp�S5��e0�cB��1A�O3��L��_��E���_��$�z�8��sp�:�@��^L}\
+��f��o���D��$��s\\����A�u�o���	��#S��P>�-|5\
+���H�+52�}+w���\\���V�3=�����{V�0!A�լ����\\��ˤ��N?f��OR�(X�茎�%��O��;���;�+��](�by��(�<�y;�b�ލ\" �uU��]�<w���P&�v���hZy��~@�\
+7���lA�	@��禖�l��������ѫ�ߦ�S�Ւ8���+��$���MB�B�p�4���LR8&�À<|(��G`��ʕ��V�3������U�u�?6�߿���ʸ������:��j���P��^�A\
+�W��c��Y��u��1]���)��C��a���`�nn�i7A�0��HY;�߻�u��x�ܮ��l�v]��ɗK�������~�&\000A�ܵi��$�K��i�O7ӆ�t�P1�˂��gX_A�i�\rm��_fF+�/^t^���K��g��K��p4�,}�%�����6�z��l�+��o�6�S9x��U��Hb�L�)��G��m������\
+FY}u�q���Y:�*ܗ��iO��\
+h�#���c�An�}��`�q\"��?���ow�}���(����?�t%�<w�yߦ��W�I�2s����3��892�<�ގ>\000�B��lR�4��z�]�	)jЧS�O-:QA⢇D�Gŋx\000ɼ	rr:}:D���0�|1��I���/`��6����=-���NN�\\d���#L$ߙ{���:��Q�\\��Hd��ke1y��ǃǿ_�;G�i��a�q�<��-�\r�a�n?Ѭ#KOuL~L�l�T�.�J�Ü'�#:�w���2���ˠ ��v@T�m�����\
+����PW�M�vMK�Dy��e}C�kr�a@۶�6uck0����^�&?-Om��1�e��d��Up����x�_0���jn�ڌ|�䗏S�ī٬����GS(}���Q	�Oh�S�QX�#1�L'��3tڈZ�_I�L� x�k��M��5E��~�Y^.�m�σ�K���$��m\\�'F���0�(��i��V�em�{d�h��TC1����-�$�'��!nM����? �-(���s�FAw��؟����Z\"�{$��=ZBl�L�g(��m��5?�H��x���!+��;�ńKEV~e��֋J��1MLm����vu���v�`��\
+)#���	M��W��K�FSj%DO�\"<�)�b�+�g�'��q�m#:W[�ߗ[��r�� %��25r}w*���\
+����9�敜�����K<,%[&tK�eh�N�g;[��]6xaBW��^� H�8��0}y&��ǔ_��i�\"�L#}0��~c�F-��_�Woҭ�f�^Y/(�Ņ�R#�a�e�W:�Y]β���g��Ռ�APj�����1}|��Di��a�Qy~{m��tB\\G(�Y�#k��Е�9�\r^�D�)vV����<l�t�,��7W� \000Ɏρ���S�,��7�<�3�R7��⸍m	N\\,�����e9�Ygt�+�\000z,��=!�^��|0�3(��!]�i��.�m3��\
+@�ٚ(!�^���v�k����j�$�^W`���C��O+�\"4V�/m|a\rù�� �x��M�/ņ��\\�k}���|�NoV3+]������O>��_�^��w���{_N�f��D��~y�X'�紓����ǿt�{���x�����v�=㤢&�[��\
+�͍\
+��uY5P:qz��^��>�Jд-L����|s޷�n}e��0R����q���O��)Gi��z�]�,��:q�^؀�X�~d&���a��O�Ƥ�O�,*�������(�@$!N���ze�����ͤ�Fv���;�;`%\\������M�=:W��a!�/z[e�J��/�D3�z��+�u��c�E��;lp~=����2 �θ佈Ζ��̰�p�~���3#�V�B�ԛ��\
+� ��j�l��3���!P�~�˘�P�n���1!��\\�܂�\"�Ss�rM�s#Ǝf���$;jˍs{H���S~�5]����ڜ�\\�:XL�q��	�u�W�y�5/�L|��%�g�(��XVV�����_��aVCrZ>ٲ�����hoX͏�+n7`��-�u�o��T1\r���^��\
+~�(:KX�,���l=���g�c�f�)E��)IƵ<�0:��ŋ��&G(\000��C��uk�1��皟��V���s�n��ͽV;�׃q�*VhP�L�ڜ�!�H�z+��K�,�oݶ[O�BV83y�Gcv��o���޼E}.I������[�KJ:��\
+4�/_>���Yv͖���@h��_�/��	\r!I�Z;�a7�_aT!�8����q�5��ݓ�?�V�<��>I.~zry<�CX�t�,J`���<(S�ҿ}�r��t�,��h���NǗ�ϴ6=\r\\�[RAX�5Ƶ-�Q+L\"���*K����:n��� ԥxbfS�mU6L��勨���F^;�'�{K���R?���)J%-)vY_睫O���R^�z��	��v�1<�UP62���BKY�S�@ܠ�5-�~ r1TŠ�S�$j9�	�-��Q��d�]IM>	w�8���ha���;�-d3��_;�X�d:��щռ���%)�HIV�x���q<�<\"C�\ro��9-/�������w%������	Z\\�t���gs�{T�����_<�\
+��Gy���Z+��l�r�KHŻj�/�E��P�ع�@p�YW�ѐ�%\000A,�m��}�\
+��������Z�G%*DȚ�5�<X}�y\\�Ƴ�g�9'h�!�x��q��Z%8�h�V�Î�e�^JC����,:��b���R�{B�&f}ON..N�78�̛����3ymA�n[��ns\r�NL1n��/\r�Оg�'p� �n�6)/��9�O��|@U�T�t]�u�f4z�^~�n�RU�bY>�ڡ��-��}�2J����+���.��q#��0/��Q���9N���������ȡ�b1����'��Hn$�\r~��\"�'�KUͱ���taJ��\"��Y���+D�q*C�Y-X�D��Q~H=r�������������������\
+��^���\
+�Nc��c�����H\r���;l�Ԫ��T{ECrtO�u�x[9x�����E��;��j��]��}\000��C��P�=ݭ8�V �s�%���-Xղ�:�e�R�\
+��@ӰK��y��'Wh-�iEK��S���gz\
+^9�/p�ڗ>�s�e�������m;も�~�TD;��I���8准g��A�2����n���L�\0006ٴ{�1����/��\r������B>�ߟq-s#]\"۹^�Pʄ�g8YtOe9%%��)\r_�L9�����ő��c~h����%��8\
+\"����{�$	Ĺ�'2\r�X�2� ��-�a��%E��[����$����Xc��V;�+�Z���i��$'$*���Pg�B\rf�/�GyI6��{��R�3�Pr(��Dv�zӴ�6N�\000\"&i��v�Q�D�\\�vb���_b�a'�qM�����N����70�5�Edx\0002�q�7���N�֛��5\\]HF�ɺ6�5�մ��\r[�[�C4��y���#��9�����țL8�}�����?�G���=O1��WR��TZ�W��V����HT�-s&�4($��s�Q#�f�SP����ђ�y��).ZX�c5�������H�I�E1W�l��,q0��\\� o��\
+�_�^O�[�6C��� z{q}��ͮf3�g�9c�ʸ���os�mn}�ɇ�z�u�����\
+��_.q��ꮠ���_E�~+^ن�m��/�ѹ,���>)t�Op`.D�3\\+��*�+���O����L���h��9�@�X�3����f��F��A0���c�6Ѱ�5�1�-��{6�ԇ�lz�_uz�1�z��חeuE�<%���#�29�|\000�ً`�/�O�,z�E�BI�%�Z?o���Pg}�3ڽ��LI)�9gM���gadLu͊mZT��n��h�C[q ,v��R�JD��.�f\"���P�5���v��Q���S������Ld�wzlu��;s2��5sk�V�s2墴e�l��AA񊬼&���b�\000~1����^�+�_���g�ʚK�rLWLn���P��#�-AG�r�C2��xOt088S��e��\r�%�R���m���/��PJ�1�\000a�P:HU���]�\
+�ڷ#YܺӍ[bG�h#���7o�+�RA5�Q�ٹ]k�Όߌ׷QG.���5�#p<1'���|Eʤ�S������F���܊�I����k��\"�ށ������=���t̄�D��Z���Z>��p}��c�d��.���J��\
+�çe�ǔ�:�Dq�[�f*�*�����V(<����h�T�A֬^�yg�O�/�=t����9H:t�y��rٰוU�Б$�vޟ��b8�3�/S��3�F�+K�7ȝv��C~&�2ۘ���k��Q���Q�J@�}J?��(��׬�e�sy+�����&�%�\r����8J6��ka%g-<��Kѹ��$��@Y8�������z�r�s�*~�Wj���\r������\"��H�jVK����%�~�1�\r���YEg���F���@M1R@<�[��\"�x,o��9*��\
+O.����-��p��b55�a�ydrR�6��]��\r��{n�v-��l��:[�'����9�\r��0�>s��M�txz�cմd��IǴ�#����\rq�*�{\\��.����N\"{��2Ky0� �ֽpO+��T��^D&� _,o,A⦯���΅T����e=�!B�W��SjnW���~�xkv	��N��'͛�?�EN�nUKc}���+BB�L/<�{��ݣ�Ğu��}�>�t�{�R�J�}�Nyp�6v4}q\
+�E+<��s(�{�ѹp\
+��Frj��`d?>���0�:��8B���>fa>>����Ccp��*v���[-c�c+\\�t�G�:�3���	�\
+9z�\
+���X|�X;���A����a1j�kVS�����u�Q&�U���&{��ش���S\000@7~M=w-��#q�:ل7��g����;~�*����,1�\
+w������Brݞ�:�����Go/����^�{��5�2�[k����}U��/�1�d_��rm�@Q�D���d)x\000�\
+��fQf�ǉ/&�Ǉl�_��,�7�M�+Z:�'����Xl��\
+z�:(�aC��5){fy�Zje)�Uϣ�V#��ۆz�ٶ����-�]NaK~��&ό#�2�ĤU�- 6��f2��Z-V���p]�n�%2$��'����6�:��e���DC���m��h�e��c�C�j�~��6��3bMr>v�'|0����s3�������O\rP��ʼ��і�&�u�Ǎ�ڸ[ɿ��wԍ��nJW5��n�<���]��ev���@���!����Fc�費�����d��P:K�{���S�\rs9]r��i��\000%Y��7�dJ&�L6F�v\000����G�K��>b�����o�O���x:��?t3Y�[�����n�����4��:�s1��h����R�8��@��Nx�[VV�g���p���`o��7��������den��u	�1�f:����y���Mn\
+o��v�v--S��!Ã8��;���ͱ���yn���a�tN�&)�w��`!n)�]�J����uN�ԭ�w�\000z��vTG�IᒇG�d� Zvy�@����",
+  [ "ect/ssh/settings.conf" ] = "KIMK,�)IO,I-O�T�U02�",
+  [ "boot/SLKernel.sys" ] = "�SMk�0��W��`I/���Bi!�^BYd{��G^i����+y#���c�����x>����z��Xl�>�c�t+�@b0$���O���7'�8T�d��{!�)'�Ɩ�`���]�O���\"Z�^G�I�-��ɍ\r���&�v����i9$��$�׈�<�+d3'Sn�S�,���8}zK\000���e���q��{=м���`�N�Ik��4���t�4J~I=��f��q	8�?G�A^��\"��z|������we����e�]��Nl��	X�:���Q�@��9�\\��{1��V*�/@���k�~်��k#���2�e�6\\�N'��>��!a��R8�ldZL���B��p3��2�b؆M�4K��ueU���)z��]�]��\\�|	�7��*���<�_s��o?�9]��10~�����",
+  [ "sbin/shell/init.lua" ] = "�X]o�6��� �\r�PE��@^ls������.�,`)�,�*I��������d�x�����|�e����?��c^�R�o�*�M�OL�F�a�iuS��jU)�*R��-�^T�D?��H!��֐rKJKJCaőI.\
+`V7�:pi��^6���I�ő�_�G� ����1�$t\r�o��V�V�\"�!{&��`UɌ0�~�p��e_���߿l�p̼)5l����w^��*M�9���{U���JJ�#@�q��\
+5l+(�x�5n��f��\"c��gp���]ށS/ȖU��	=s�0~`;�X�mY����9nm%̹_�R��b4͝'A o�U5	��m+�-�$\\f���R�<]X�L�#��ts��Ga���¡<H�܏A�؆^e���m�D���EP3�A3��%m(+ں>��j�����h'���R�s�.M30������C`^~��<t�x��5N1q�\000��EGB9��&\rZ�;.�݈��\000Sɪ�ۑC��\00033PCTQ�͇7���C��[����Z�l��V�R��Ƅ{e섐�	��0�\\N,�\")fm�8`�L	�%�����vV�,�H�<w&r%�B[���1��\
+;�*%��m�p�3���A2B	���M��W�h�k�,�.�����f��	H/:߹�ĉ��3��?��RxJI\000.p@����۸����\000��i�yAiO&:%�唙+���������X�'�#2��s��l���iS��&�	�j�坅2	{��KEpx3��c�6�9h�ׅ+�#w�b�q��\r:~ۃbu+�ƣ� ��H@�1:�ܭ`�գ��eA��r�t�Ή�(���g��<�Y�~�J�l!�#��_��]�Q�Az�^�H�>7���]rz�2�ҡ4B�9o��4���:�̝���i�AW�M:wt�\r�R�ބJXn	|�I�Vy���f���\\���\"�)�Jl1I_c��t��NWI8�.���(Y��-*Vk��iQ��x�`�7���1��#B`��m�_�$��ۨOz�v��>����������!@lf�)H7��hD0+�n5?�;���5	S��$�`�M�GՁG7���඲��i����f��Ȱ.�G=����#�^�dc�n�*D�1�\000�a޵�B�`�k���P)���vZ�&��}�\r^��R���ș�6�E86��t�pyv�-��X�G�����AFUG�4������  E�Q7�%�̽����g4a�+˴������D���a��������R�z��9��)lD޹�C$Ľ�T>�@�g~���ͪ��o_�`P��\r�ʦ�F��+>[�_\r(�o�������#q���.w{K�MJ^�|�!�\
+��6�NGp�de��S#�s�e��xs���v��V$�����$q�qȶe��}�W=t��7]Z����<�?�<\rް���/<�@�Sz����Ǌ9�w���W��C�#�'W��C�R�4�~��,u�S��&�P�@f�7y����Z��$��W@keQ�`ƍ�r�p�!������P	�=R��=01ПZL�XII��a�iG�}r�U���gG�!a�0 �	��.7�W�Zͤ�\
+�P�A�ٓ�z�U��H��iO�B���	5�/�������f=�0�����洳V�4�,�N�����*�[���帿J�u���i�c�ꦻ��i<q�&@�:��:�Ӎ��ZC��^:�P��JI��N�xu �'�B\000<��㗂u�|�O�\000�}�u-�a��r�K�&�l��eq���q��v��=��IO;�\\/##/�2���U��{�����+�Ab�&����d�B0������S��0�T]c��",
+  [ "lib/kernel/Configure.la" ] = "͏An� D�9�H�9�_�U��	�Hկ�޽&$Rz����<��Q��Y.�Bğ��1�M�F������jH�\\��o�%��~&ru�Rs�ײ���	FD��#�}!�8�8���X��@����V+d3`&��Ũ��!��\
+�B�'�P���ėD\000E�`��g���$~cG=�??�F��^zw��/۷�W�08��",
+  [ "lib/kernel/Gloabal.la" ] = "�Y_o�8ϧ�M�m�m���a;`�zOm78��ulCV�d���?��:ɺaǇ6�H����(���$�5[�Wߧ�鏑�lM������]}�1-6U΋�i[Rڤ��+֔�GHi�j�v��qd`��f��f��{���WZ�	i2����fS�b4%�Н(���漒�h5wݲ�Ӕ�wt�AҰt;Y����tI���M���m7�l����Cݦ�\
+��z_T������9��0�:�*�E6%�T,Ȟ�����_Ѫ�B���/'R�WA˖Z�<9��25u���W����:m+G�R��₈y�BTQ�-��4�n s�5��-˚�����*JJZ2�iI�T�rL�!�浓A��i�d9c��:��J���$���<�y�10�t�L>�*�=6��y�I�igz��u��E���@�'Ў��P9�h�8 ���f�G���qpK���և����<8g.�FX������_�+#�M	EK�<��C�����/�M�vq[4�C�Ɍ�If�KK\"l�\\ �n/v竈�q[ɵЫ�H��f�,������~�8�!���8L���Ub�V��8p668���#|� ��u!�KK��49K&������q�8�\
+ݢ���:�jH��8�\\j=�F#@�$<��@:t6��@��E�K�ry\
+�o���y]�o�ް�r]�@��AhL,�;n#Y�xi�Q7�$��?k������!��i�r\
+F�yJ��iS�)v��؄|��l�m�nJ�)|i��E�S������O��؆��]�����7455aϘ�,Ll��\000�1K?�\
+�Y��Pm��[s��ęe��m�=eWS7�l/\r��E�`�l重�.@��\
+{�M5�B�j�\\��Z3�n�b\rC�^S���XK�;�F��e�9,D�|����E�Z��ٶ[�l\\�Y�C!��~V��h���c�]��	gȜe[H��mI3fO%�'q���$��Ys}:V{��c�Sxk�欕�&��Cӿ�-r��zg�\r�;L��$c��Z[��M�op���[���YKL��+�gwi`+]hT&xu����^I6��j��+�Y��6]1���F�d囙����c@N�hÇ������wi��J<p�@&�0xo��i��M5�I��Zb�[W�i��n-�dٞ�;8��B:�D�5���3H�*h-`���`�������p<��u�1vTW\000���)v9�f$�.~����N�.�Y����<�q;�\r�n# ���.�_T0|m�֠�atQ�H� p5�a��,����${�\"�	O�� [��)�\000_��R�1\
+w�����N��J��v�uM���R_u.E ��`�#'T��{ɒs�\000��f�\r�\
+���h�I��4�s�D��H�cj~���B5F0�a�j��@.��C�gOD��\
+��w������SsqQ���nf�T���0 �(��{��v\
+�4Rj��8�M*'�B�j\
+��&y�FS�1dW�'o�P�ޗtx@���d�w�s�nHC��)p�d��h�{��9+��8ŬCQ`.���i��_)<J��hz���	�~-�Z�mx��Y�dMV�!B�4x_����6�����\000����Ů`���?hO�Qȓ��d��i|��$ǧK���� �+�y�!�=f������|Fr��v3Nt<�N��ȸ,u��M[I�ߟpb�b�?��Ҫ(Cbg�����I�R��A�X8Ĝ��{}�ް1�\r�¡�1���P���G��<��8⼩����#�GkhZ�����c����s�F��}�ש��(b�P������^����-�_��:�gY��Q	�Fsx������\\����.$�~Wz�U��#�&=��y����S���\r\r��?�g?3�$�+2v��	@�`K.�~݈�I~N�T���	D�<�Eḃ�4�/2�Z�[���i����_m�o�Ǚ;`(��$�ɎR�w&M����a���&��N���E�)FA0�7I��+���G�<�c���VX�F�b6I�e=���",
+  [ "ect/PXBoot/debugconfig.conf" ] = "���n� ��y\
++�<��K���iѤ]	8��������s�9t�v,�~ۿmpR�'��p�����mF�-SF�'Pb�F/���Q�_(c��r-VK��9�f�$G�H�rք�})*}�O� CۏD��:J��5>4�m(���4���n\r��?���E9�u�`\000.���BY9e���3\"xa{ݥcop̶�YW�ϥ5!�dp�\
+CR�='���M��|A�q��ky����g��",
+  [ "sbin/ssh/init.lua" ] = "�Y_o�6�� �Ie��GaH�-V��=A�H�ͅ�4�J���;��o���@�w����.��\r�5ߊ \r~$I�r~f&�S�����˒[���R�'�Ba#)?Pd���e�%<]]���+��qpq�<����B(�DV���7���B�v�̑2� �	�F{$w	G,/��/��ջ�*IB���(R��\
+�p&q���*ĥoR���E��@�Ĝ�;�MˣP/���C�2I\
+~�*�s���?�C��*�1�e�k�D1�'�Qٸ�{q5�o6o���|M%����Q[J��\
+ǲ��^o=�I(r���Mj������H�4�\\x����󳇂$~\
+��C��H'�*ȋzW��DT�ћ��U�B�\\Ti�f=&��J��H��\raȏ	�rBE҈U�{̣k��A�̠�I��>	��@�tc�L���|�C��0s\"`�����f��˟������a���.o�j)�	��ɪ�Ĭ�Q\000t���x��J�>�t���|��fN��jd#��0�6��KGx�B��j�\"i�F\000���[,�O	{��2��30TuY�����|��V�j��p��\"�F���=����X��T�]�[�=s\"O��n�-b� ���Nf�cg%��I,�'�1���\r=J���n\r��\"���?!0$gT�V�Y�9fˊ�ֱ��<�����:K_I��qZ[9�Sb\r���Ҷ3P2�p���䕳Ҽs����!I�����QqEx�I����%ǌ���!n�\\A0��m!Nr�Eq:�Jz����H��w&gZg�^�z�d#0�t�ؐ��X������;�n�}�W���H������wx�e\\�z���w��]S�z5��i�����pD����h!���&ψ��f���l��wD��x�\"Ӆ��y�yG(X!ۏb�Lj�az3�	^��@��A�C�4� ���n��X��u�0��e�9U�'tE�R�>�k�pulL}gJ�\"�3 �==���j����X�G:u�G�j�ǡ=BP�5U�n#:��;E�	b��C��5a�����\000@�~�a��U���-��+\rҠ��7�ܸ�>�&�5�\"��6��k�1�]�r*\r�F[�V!��:�Xӫ:}oG��\000K��6�,�����%4\
+M[2������.�W$Эp}\")�x���՝G���;����*�1GN��	�.N.M&�`]Gjp�t�������a*m�y5�2B͌6��`8j7��ocs-�.��*��W`o��W\ri��1����Q����&����	��m�û|~ɭ�������d�֗�G�b���Ͽ&�i�T�/�\"J������>�0n�T��",
+  [ "sys/system/defualtProgs.json" ] = "��R\000%��\"%+%���b.I��O�HM�\
+��J:e8�U�(�IĦ,'3�(�(��������4��ii �I�y�n�y%e���9�:�h0,\000V���U��)MT�\r!�S_IE	.}�\\��",
+  [ "lib/kernel/json.la" ] = "�ks��;��k]\
+�[!��-�Nqa	YT$P>ǅ�nYXi�%��P\\�oOw��>xY�9��˰=�~M������>܅�Wqc� _O��S�Lg��2ԫ�*KG-^�`�{��0�=�4��H�M�B�?{fSaB��=�B(�Qd9��M�� &��f�)�'ѣ�����X�ƾυY��8���=Ea�Y�XX.8�d(@�£��8�@�Q����D<ۍǤ�^v����9�\"_��h\
+)l��;�l�\"�N83a��Q!0$�-<�Bk�\000B���!1Deud4�aA΍��H:<��y���$<�*�f�*�>˽vD@�����?����2-<VQ��5��%���j-U��,�H��pf�#�܇�D�q@�ƣ0�|p0?`��W�M�u��_�&�zp����:k�����a��V�����m��ߠs��7�[�}fB����f��.qk]]_��n�O/���ڟ���;}�l]��ȷ�a��[��#~W����6>�.[�o&�:o�����Ӆ\\7�����F��t�;�&*q��ۭ�y5���~#����.��$��5��]RN;�ߺ��}��\\�5����5>]6�4����Ѻ2�q���d�2b#	S�	_/�%�\r�{�ou�d�i���⫉�v�	��V�iB���gλ�+����D惤��dD��Q��K�����f����X٪�9�׷1���	|��Ln�_�j�V��\\@ğ��M����sV��]�������n�ւ-\000���1`H��S�\r2�H�F	d� ��)��@	H� B��(w�x	$8P��	��	T��	��\
+e�z\rl�7x 6��Z�$���f�q?A����I�T*�*f`��`?���jnE%#ޫ.��ǣ�H����i�[�qK���Ůk�$���+�{id��D-1q� �=#�W�E~��E0�N`Ǯ ��E�q��H��RDqA�%�^�7���A��� �*��\"�:����@KIO,\\�	#IHÚ�aE����A�@���� �3�֏��~l�.� �B:�j���*i��X�\rzP��i!J���}>���>�(`�`v�1̝%�)�[�Q?�eEJ��H~�Z!G��}��\"7�&J�(�Q�A����\rg��̰���D%�S�T�A�R�}.�.�Lp]H��wۖbi�� �b\rJ���\"Lc�i�r5�3V��~~��z�^{��:f������q�FA����V�G�(Oq�){����߼�a�l�cYH��Cq]h)�>�$)bm�m¾�MdEzY���%�@$�����;�*�x*4�'�H�(��'�;�\000���e����aE��t���Jcޫ��ؘِ����du~KĘ���[�-�cg�W��u�f�%L!�v�c�0�0�}WXj7��vY��ֱڸDDGE�B�«��Ńh(�6I��<8Y�+ݻ!�#�DC�8�&>���el	2`Є?p^�Фu&����܅V�Ȧ~��ǽ�R�lܨ�g�Kͤ�z�d��<%t�\000{���l�+i��҅Rn����d2���0f�f��VVtc�'�WЙ��M�\\���u�*�5i�3��<U� ɳ#��<!�'�\\'�冲]�ّ3����ʅ<i�ș_�ғ�_��u]�̍�y�g�t#'H�W<�����ą)*Z΄��� �2\r`\" �7��)yrb��f�B��'�̖F���}�up+�8�sN��t���u�Z�}7��.�}�ik���w=񰙱��A>:d�̩�y�<`M��/�}k�\000����1q���73B̔wڒVK���/����8��<�C΢hq|pځ���J�?���P��TT�������xx��~:�᾵X�Dgi�6o������q[�.߯�me2�!�DX�b7ɤ���;,��?�1ya_�~��n2y���wı^?4�@{J%Տ~$�V}����z퐹��Z�f4!�*�֞+�#���{��I�@qoYĤ��o&���V6�R���W�@�fr%a�M��;�`�7`��CYQ&�l/F������H�����/�2���Q�Z�?��j=TBj����㇏�n�^M{w��([���j	��ڭ�B�;:�<�W �W�K�%�p���]��[�~���l�Zo�w��h�a(3-������P�T�/�~�,)���~M�� ��q�ҽ�%w�t�I���4Hմ�D�j�il�ks�WNR�l&������d�c0>�>X�ѧ��roys��1L)��^P�$a�2�\r%Cѩ�U%�#�Y�'糍%�6���{o��I��C�G����r�ۘ\
++�+�����m95o4\"=����~�V�XK���i��px��'J���]:z���SWD��T�\r3z(9Qخ�/���H��eG?PMn�P�ffv�MQ�L� �R�zi��2�J	/M�͆�Ы���z�����]v�Q�����-�*���= ��K\rTT�B�����<.E��h�������ƈ����|��k+͝�;]�94�|0��Nwm�E�#����J}��6���\\g��D�O/�I�(	]a��e��\
+s\"cd��gB��\"Ґ�5#�i�U>�2T�� �\"Jr��E1�Vڕؤ���T?���H{@�,����#.R�Jy��+[~���/�^��4���ȓ��2OP��L��t�sD��\\�Wy+V/����PkR<.�NCe�z�m2��Y_n\000)`Mh�Z��*��]!d��ґ!|��=!ﱩ(Q<��N��O)>��R|~u)�@�v�J�8���_�V��J���u��u��֕í+ٺ�n����+G[W>l]�ߺeWԦ�勇/yۗ�%������lY�K����nեQ�YW��r�t��K�R�x�J�	���*{����X�J����,���{���^7�ʤn�yV0�����k���UZ��'y��v$;�o(+]acbUǛF=�l��E�2��g�]��4\
+,ǥ�`j#k*և�䒹�\000�O���?",
+}]=])
+function err(s)
+    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    print(s)
+end
+function info(s)
+    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
+    print(s)
+end
+function ok(s)
+    term.blit("[ OK ] ","7755777","bbbbbbb")
+    print(s)
+end
+PrimeUI.clear()
+local x,y = term.getSize()
+PrimeUI.borderBox(term.current(),2,y-2,x-2,2, colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-2,"Do you accept?"..string.rep(" ",x-16), colors.white, colors.blue)
+PrimeUI.label(term.current(),2,y-1,"Yes = Y | No = N"..string.rep(" ",x-18), colors.white, colors.blue)
+local scroller = PrimeUI.scrollBox(term.current(), 1, 1, x, y-4, 9000, true, true, colors.white, colors.blue)
+PrimeUI.drawText(scroller, copyR, true, colors.white, colors.blue)
+PrimeUI.keyAction(keys.y, "done")
+PrimeUI.keyAction(keys.n, "Terminate")
+local _,ac = PrimeUI.run()
+if ac == "Terminate" then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    os.pullEvent = pullEvent
+    error("Install terminated",0)
+end
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+print("This will delete EVERYTHING on / are you sure you want to install")
+print("(Y/N)")
+while true do
+    local _,k,_ = os.pullEvent("key")
+    if k == keys.y then
+        break
+    elseif k == keys.n then
+        term.setBackgroundColor(colors.blue)
+        term.clear()
+        term.setCursorPos(1,1)
+        os.pullEvent = pullEvent
+        error("Install terminated",0)
+    else
+    end
+end
+local function deleteFiles(directory, exceptions)
+    for _, entry in ipairs(fs.list(directory)) do
+        local fullPath = fs.combine(directory, entry)
+        if fs.isDir(fullPath) then
+            if not exceptions[entry] then
+                deleteFiles(fullPath, exceptions)
+                fs.delete(fullPath) -- Delete the folder after deleting its contents
+                print("Deleted "..fullPath)
+            end
+        elseif not exceptions[entry] then
+            fs.delete(fullPath) -- Delete the file
+            print("Deleted "..fullPath)
+        end
+    end
+end
+local exceptions = {
+    ["rom"] = true,
+    [shell.getRunningProgram()] = true,
+    ["sbin"] = true
+}
+local function installFs(l)
+    info("Installing OS")
+    for i,v in pairs(l) do
+        info("Opn: "..i)
+        local file = fs.open(i,"w")
+        file.write(libDef.DecompressDeflate("",v))
+        file.close()
+        ok("ist: "..i)
+    end
+end
+term.setTextColor(colors.purple)
+print("cleaning drive")
+sleep(1)
+deleteFiles("/",exceptions)
+term.setTextColor(colors.white)
+print("Installing")
+info("formating XFS")
+sleep(1)
+installFs(FS)
+term.setTextColor(colors.gray)
+shell.run("tmp/shellSet.lua")
+print("Rebooting ...")
+sleep(1)
+term.setTextColor(colors.green)
+print("SL.reboot service started")
+shell.run("sys/serv/reboot.sys")
