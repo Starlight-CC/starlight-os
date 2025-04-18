@@ -145,7 +145,7 @@ if tFlags.setHost then
             shell.run(shellC)
         end,
         function()
-            while true do
+            while not tFlags.close do
                 local event, side, channel, replyChannel, message, distance = os.pullEvent("modem_message")
                 if type(message) == "table" then
                     if message._SSHPACKET then
@@ -174,12 +174,6 @@ if tFlags.setHost then
                     end
                 end
             end
-        end,
-        function()
-            while not tFlags.close do
-                sleep(0)
-                os.pullEvent()
-            end
         end
     )
 elseif tFlags.close then
@@ -189,32 +183,24 @@ elseif tFlags.close then
     end
 else
     send(connected,"SSH","connect",tFlags.ip)
-    parallel.waitForAny(
-        function()
-            while true do
-                local event, side, channel, replyChannel, message, distance = os.pullEvent("modem_message")
-                if message._SSHPACKET then
-                    if message.address == tFlags.ip then
-                        if message.type == "SSH" then
-                            if message.query == "reject" then
-                                error(message.data[1])
-                            end
-                        elseif message.type == "term" then
-                            term[message.query](message.data)
+    while true do
+        local event, side, channel, replyChannel, message, distance = os.pullEvent()
+        if event == "key" then
+            send(connected,"key","key",side,channel)
+        elseif event == "key_up" then
+            send(connected,"key","key_up",side)
+        elseif event == "modem_message"
+            if message._SSHPACKET then
+                if message.address == tFlags.ip then
+                    if message.type == "SSH" then
+                        if message.query == "reject" then
+                            error(message.data[1])
                         end
+                    elseif message.type == "term" then
+                        term[message.query](message.data)
                     end
                 end
             end
-        end,
-        function()
-            while true do
-                local event, key, is_held = os.pullEvent()
-                if event == "key" then
-                    send(connected,"key","key",key,is_held)
-                elseif event == "key_up" then
-                    send(connected,"key","key_up",key)
-                end
-            end
         end
-    )
+    end
 end
