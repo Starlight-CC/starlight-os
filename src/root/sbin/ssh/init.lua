@@ -175,7 +175,7 @@ if tFlags.setHost then
             end
         end,
         function()
-            while not tFlags.close then
+            while not tFlags.close do
                 sleep(0)
             end
         end
@@ -189,15 +189,17 @@ else
     send(connected,"SSH","connect",tFlags.ip)
     parallel.waitForAny(
         function()
-            local event, side, channel, replyChannel, payload, distance = os.pullEvent("modem_message")
-            if message._SSHPACKET then
-                if message.address == tFlags.ip then
-                    if message.type == "SSH" then
-                        if message.query == "reject" then
-                            error(message.data[1])
+            while true do
+                local event, side, channel, replyChannel, payload, distance = os.pullEvent("modem_message")
+                if message._SSHPACKET then
+                    if message.address == tFlags.ip then
+                        if message.type == "SSH" then
+                            if message.query == "reject" then
+                                error(message.data[1])
+                            end
+                        elseif message.type == "term" then
+                            term[message.query](message.data)
                         end
-                    elseif message.type == "term" then
-                        term[message.query](message.data)
                     end
                 end
             end
