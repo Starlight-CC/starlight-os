@@ -2,4 +2,5 @@ local code = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-
 local file = fs.open("/tmp/netInstall.vi","wb")
 file.write(code)
 file.close()
+_G.require = require
 dofile("/tmp/netInstall.vi")
