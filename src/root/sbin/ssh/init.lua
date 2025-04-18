@@ -8,7 +8,8 @@ local tFlags = {
     ip=tostring(math.random(1,1000000000)),
     connected=""
 }
-local modem = peripheral.find("modem")[1]
+print(tFlags.ip)
+local modem = peripheral.find("modem")
 local function send(address,Itype,query,...)
     modem.transmit(tFlags.port,tFlags.port,{
         _SSHPACKET=true,
@@ -138,15 +139,14 @@ if tFlags.setHost then
             return _SSH.term.nativePaletteColor(...)
         end
     }
+    print("your id is "..tFlags.ip)
     parallel.waitForAny(
         function()
             os.run({},shell)
         end,
         function()
-            sleep(1)
-            print("your id is "..tFlags)
             while true do
-                local event, side, channel, replyChannel, payload, distance = os.pullEvent("modem_message")
+                local event, side, channel, replyChannel, message, distance = os.pullEvent("modem_message")
                 if type(message) == "table" then
                     if message._SSHPACKET then
                         if message.address == tFlags.ip then
@@ -190,7 +190,7 @@ else
     parallel.waitForAny(
         function()
             while true do
-                local event, side, channel, replyChannel, payload, distance = os.pullEvent("modem_message")
+                local event, side, channel, replyChannel, message, distance = os.pullEvent("modem_message")
                 if message._SSHPACKET then
                     if message.address == tFlags.ip then
                         if message.type == "SSH" then
