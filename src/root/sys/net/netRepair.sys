@@ -1,4 +1,7 @@
 local code = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/net/latest.vi").readAll()
 _G.require = require
 _G.shell = shell
-load(code)()
+file = fs.open("/boot/vi/net.vi","w")
+file.write(code)
+file.close()
+shell.run("/boot/vi/net.vi")

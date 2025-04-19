@@ -188,8 +188,8 @@ local function deleteFiles(directory, exceptions)
 end
 local exceptions = {
     ["rom"] = true,
-    [shell.getRunningProgram()] = true,
-    ["sbin"] = true
+    ["boot/vi"] = true,
+    ["home"] = true
 }
 local function installFs(l)
     info("Installing OS")
@@ -211,6 +211,9 @@ info("formating XFS")
 sleep(1)
 installFs(FS)
 term.setTextColor(colors.gray)
+sleep(.2)
+info("Moving VI to /boot/vi")
+fs.move(shell.getRunningProgram(),"/boot/vi/")
 shell.run("tmp/shellSet.lua")
 print("Rebooting ...")
 sleep(1)
