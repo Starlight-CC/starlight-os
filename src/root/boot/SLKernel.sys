@@ -20,7 +20,7 @@ local function isin(q,t,m)
 end
 local function loadAPI(_sPath)
     local list,name=dofile(_sPath)
-
+    if name=="global" then
 local function loadAPIs(_sFolder)
 
 function kernel.run(_tEnv, _sPath, ...)
