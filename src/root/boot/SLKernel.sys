@@ -18,6 +18,33 @@ local function isin(q,t,m)
     end
     return false
 end
+function loadfile(_env,_sPath,_args)
+        -- Support the previous `loadfile(filename, env)` form instead.
+    if type(mode) == "table" and env == nil then
+        mode, env = nil, mode
+    end
+
+    expect(1, filename, "string")
+    expect(2, mode, "string", "nil")
+    expect(3, env, "table", "nil")
+
+    local file = fs.open(filename, "r")
+    if not file then return nil, "File not found" end
+
+    local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)
+    file.close()
+    return func, err
+end
+function dofile(_sFile,_args)
+    expect(1, _sFile, "string")
+
+    local fnFile, e = loadfile(_sFile, nil, _G)
+    if fnFile then
+        return fnFile(_args)
+    else
+        error(e, 2)
+    end
+end
 local function loadAPI(_sPath)
     local list,name=dofile(_sPath)
     if name=="global" then
@@ -29,6 +56,9 @@ local function loadAPI(_sPath)
     end
 end
 local function loadAPIs(_sFolder)
+    local targets=fs.list(_sFolder)
+    for i in targets do
+        loadAPI(i)
 
 function kernel.run(_tEnv, _sPath, ...)
     local tEnv = _tEnv

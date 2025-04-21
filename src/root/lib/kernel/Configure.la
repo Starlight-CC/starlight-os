@@ -1,17 +1,4 @@
 local lib = {}
 local conf = {}
-function lib.get(x,y)
-    local fp = "/ect/"..string.gsub(x,".","/")..".conf"
-    local file = fs.open(fp,"r")
-    local data = file.readAll()
-    file.close()
-    if data == nil then data = "nil" end
-    return load("return "..data)()[y]
-end
-function lib.set(x,y,v)
-    local fp = "/ect/"..string.gsub(x,".","/")..".conf"
-    local file = fs.open(fp,"r")
-    local data = file.readAll()
-    file.close()
-end
+lib.load
 return lib,"conf"
