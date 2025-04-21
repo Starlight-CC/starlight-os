@@ -18,15 +18,11 @@ local function isin(q,t,m)
     end
     return false
 end
-function loadfile(_env,_sPath,_args)
-        -- Support the previous `loadfile(filename, env)` form instead.
+function loadfile(filename, mode, env)
+    -- Support the previous `loadfile(filename, env)` form instead.
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
-
-    expect(1, filename, "string")
-    expect(2, mode, "string", "nil")
-    expect(3, env, "table", "nil")
 
     local file = fs.open(filename, "r")
     if not file then return nil, "File not found" end
@@ -36,7 +32,6 @@ function loadfile(_env,_sPath,_args)
     return func, err
 end
 function dofile(_sFile,_args)
-    expect(1, _sFile, "string")
 
     local fnFile, e = loadfile(_sFile, nil, _G)
     if fnFile then
@@ -61,8 +56,8 @@ local function loadAPIs(_sFolder)
         loadAPI(_sFolder..i)
     end
 end
-function require(lib)
-    
+local make_package = dofile("rom/modules/main/cc/require.lua").make
+require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
 function kernel.run(_tEnv, _sPath, ...)
     local tEnv = _tEnv
