@@ -6,7 +6,7 @@ local function printCentered(h,string)
     term.setCursorPos((w/2)-(#string/2),h)
     term.write(string)
 end
-printCentered(h-2,"Press alt+1 to enter boot menu")
+printCentered(h-2,"Press ctrl+1 to enter boot menu")
 term.setTextColor(colors.cyan)
 local id = os.startTimer(3)
 printCentered(h/2,"S")
@@ -27,6 +27,7 @@ printCentered(h/2,"Starligh")
 sleep(.05)
 printCentered(h/2,"Starlight")
 sleep(.05)
+term.setTextColor(colors.orange)
 printCentered(h/2+1,string.rep("\129",9))
 local key,withCtrl,withAlt,withShift = keys.one,true,false,false
 local heldCtrl, heldAlt, heldShift, result = false, false, false, false
