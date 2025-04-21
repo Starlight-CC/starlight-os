@@ -1,27 +1,8 @@
---[[
-SPDX-FileCopyrightText: 2023 The CC: Tweaked Developers
-SPDX-License-Identifier: MPL-2.0
-Edited by Starlight-OS team for use in Starlight-OS.
-Edits are filed under GNU General Public License.
-    Copyright (C) 2025  StarlightOS
+-- SPDX-FileCopyrightText: 2017 Daniel Ratcliffe
+--
+-- SPDX-License-Identifier: MPL-2.0
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>
-
-    contacts-
-      <https://raw.githubusercontent.com/ASTRONAND/Starlight-OS/refs/heads/main/legal/contacts.md>
-]]
---[[- The [`cc.expect`] library provides helper functions for verifying that
+--[[- The @{cc.expect} library provides helper functions for verifying that
 function arguments are well-formed and of the correct type.
 
 @module cc.expect
@@ -137,8 +118,8 @@ end
 --- Expect a number to be within a specific range.
 --
 -- @tparam number num The value to check.
--- @tparam[opt=-math.huge] number min The minimum value.
--- @tparam[opt=math.huge] number max The maximum value.
+-- @tparam number[opt=-math.huge] min The minimum value.
+-- @tparam number[opt=math.huge] max The maximum value.
 -- @return The given `value`.
 -- @throws If the value is outside of the allowed range.
 -- @since 1.96.0
