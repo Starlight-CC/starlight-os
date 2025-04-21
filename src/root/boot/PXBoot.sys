@@ -5,7 +5,12 @@ if not getmetatable(expect) then setmetatable(expect, {__call = function(self, .
 elseif not getmetatable(expect).__call then getmetatable(expect).__call = function(self, ...) return self.expect(...) end end
 
 local Exit = false
-local bootArg = ...
+local bootArgs = {...}
+local bootArg = bootArgs[1]
+local bootNow = false
+if bootArgs[2] == "-i" then
+    bootNow = true
+end
 local entries = {}
 local entry_names = {}
 local bootcfg = {}
@@ -156,11 +161,6 @@ function cmds.chainloader(t)
     bootcfg.args = {t.path}
 end
 
-function cmds.Back(t)
-    bootcfg.fn = function() Exit = true end
-    bootcfg.args = {}
-end
-
 function cmds.craftos(t)
     bootcfg.fn = function()
         term.setTextColor(colors.yellow)
@@ -298,7 +298,6 @@ local config = setmetatable({
         expect(1, path, "string")
         return {cmd = "chainloader", path = path, line = debug.getinfo(2, "l").currentline}
     end,
-    Back = {cmd = "Back"},
     args = function(args)
         expect(1, args, "string", "table")
         if type(args) == "table" then
@@ -463,6 +462,7 @@ end
 drawScreen()
 
 local tm = config.defaultentry and config.timeout and os.startTimer(1)
+if bootNow then boot(entry_names[config.defaultentry]) end
 while not Exit do
     local ev = {coroutine.yield()}
     if ev[1] == "timer" and ev[2] == tm then

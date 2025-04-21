@@ -21,6 +21,13 @@ end
 local function loadAPI(_sPath)
     local list,name=dofile(_sPath)
     if name=="global" then
+        for i,v in pairs(list) do
+            _G[i]=v
+        end
+    else
+        _G[name]=list
+    end
+end
 local function loadAPIs(_sFolder)
 
 function kernel.run(_tEnv, _sPath, ...)

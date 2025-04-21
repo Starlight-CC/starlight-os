@@ -5,13 +5,13 @@ selectcolor = colors.blue
 menuentry "Back" {
     description "Back to main menu.";
     chainloader "/boot/PXBoot.sys";
-    args "/ect/PXBoot/bootconfig.conf";
+    args "/ect/PXBoot/bootconfig.conf.skip";
 }
 
 menuentry "Repair" {
     description "Open repair menu.";
     chainloader "/boot/PXBoot.sys";
-    args "/ect/PXBoot/repairconfig.conf";
+    args "/ect/PXBoot/repairconfig.conf.skip";
 }
 
 menuentry "Lua" {

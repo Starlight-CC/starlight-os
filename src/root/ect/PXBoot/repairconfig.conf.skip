@@ -5,7 +5,7 @@ selectcolor = colors.blue
 menuentry "Back" {
     description "Back to debug menu.";
     chainloader "/boot/PXBoot.sys";
-    args "/ect/PXBoot/debugconfig.conf";
+    args "/ect/PXBoot/debugconfig.conf.skip";
 }
 
 menuentry "Net repair" {
@@ -13,3 +13,7 @@ menuentry "Net repair" {
     chainloader "/sys/net/netRepair.sys";
 }
 
+menuentry "Local repair" {
+    description "Repair Starlight locally";
+    chainloader "/sys/net/netRepair.sys";
+}
