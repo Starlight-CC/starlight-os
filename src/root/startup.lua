@@ -7,7 +7,7 @@ local function printCentered(h,string)
 end
 printCentered(h-2,"Press alt+1 to enter boot menu")
 term.setTextColor(colors.cyan)
-os.startTimer(1.2)
+local id = os.startTimer(1.2)
 printCentered(h/2,"S")
 sleep(.1)
 printCentered(h/2,"St")
@@ -26,6 +26,7 @@ printCentered(h/2,"Starligh")
 sleep(.1)
 printCentered(h/2,"Starlight")
 sleep(.2)
+local key,withCtrl,withAlt,withShift = keys.one,true,false,false
 local heldCtrl, heldAlt, heldShift, result = false, false, false, false
 while true do
     local event, param1, param2 = os.pullEvent() -- wait for key
@@ -34,23 +35,30 @@ while true do
         if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then
             result = false
             break
-        end
         -- activate modifier keys
-        elseif param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = true
-        elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = true
-        elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = true end
+        elseif param1 == keys.leftCtrl or param1 == keys.rightCtrl then 
+            heldCtrl = true
+        elseif param1 == keys.leftAlt or param1 == keys.rightAlt then 
+            heldAlt = true
+        elseif param1 == keys.leftShift or param1 == keys.rightShift then 
+            heldShift = true 
+        end
     elseif event == "key_up" then
         -- deactivate modifier keys
-        if param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = false
-        elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = false
-        elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = false end
-    elseif event == "timer" then
+        if param1 == keys.leftCtrl or param1 == keys.rightCtrl then 
+            heldCtrl = false
+        elseif param1 == keys.leftAlt or param1 == keys.rightAlt then 
+            heldAlt = false
+        elseif param1 == keys.leftShift or param1 == keys.rightShift then 
+            heldShift = false 
+        end
+    elseif event == "timer" and param1 == id then
         result = true
         break
     end
 end
 if result == true then
-    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf -i")
+    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf.skip -i")
 else
-    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf")
+    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf.skip")
 end
