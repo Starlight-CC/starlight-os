@@ -1,5 +1,3 @@
-local tArgs={...}
-local term = tArgs.term
 local lib={}
 
 function lib.sleep( nTime )
@@ -89,6 +87,18 @@ function lib.printError( ... )
     if term.isColour() then
         oldColour = term.getTextColour()
         term.setTextColour( colors.red )
+    end
+    print( ... )
+    if term.isColour() then
+        term.setTextColour( oldColour )
+    end
+end
+
+function lib.printWarning( ... )
+    local oldColour
+    if term.isColour() then
+        oldColour = term.getTextColour()
+        term.setTextColour( colors.orange )
     end
     print( ... )
     if term.isColour() then

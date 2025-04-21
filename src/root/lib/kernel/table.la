@@ -1,2 +1,0 @@
-local lib=table
-return lib,"table"

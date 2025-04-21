@@ -1,42 +1,3 @@
-os.pullEvent = os.pullEventRaw
-local internal={}
-internal._LuaBuiltins = {
-    "pairs",
-    "ipairs",
-    "load",
-    "xpcall",
-    "gcinfo",
-    "pcall",
-    "tostring",
-    "tonumber",
-    "type",
-    "collectgarbage",
-    "unpack",
-    "rawget",
-    "rawset",
-    "rawequal",
-    "next",
-    "select",
-    "newproxy",
-    "getmetatable",
-    "setmetatable",
-    "getfenv",
-    "setfenv",
-    "error",
-    "assert",
-    "coroutine",
-    "math",
-    "table",
-    "string",
-    "debug",
-    "utf8",
-    "bit",
-    "bit32",
-    "_VERSION",
-    "_G"
-}
-internal.restricted={}
-internal.static={}
 kernel={}
 local function isin(q,t,m)
     if m == nil then
@@ -57,9 +18,36 @@ local function isin(q,t,m)
     end
     return false
 end
-for i,v in pairs(_G) do
-    if not isin(i,internal._LuaBuiltins) then
-        internal.restricted[tostring(i)] = v
-        _G[i] = nil
+local function loadAPI(_sPath)
+    local list,name=dofile(_sPath)
+
+local function loadAPIs(_sFolder)
+
+function kernel.run(_tEnv, _sPath, ...)
+    local tEnv = _tEnv
+    setmetatable(tEnv, { __index = _G })
+
+    if conf.get("kernel.strict_globals", false) then
+        tEnv._ENV = tEnv
+        getmetatable(tEnv).__newindex = function(_, name)
+          error("Attempt to create global " .. tostring(name), 2)
+        end
     end
+
+    local fnFile, err = loadfile(_sPath, nil, tEnv)
+    if fnFile then
+        local ok, err = pcall(fnFile, ...)
+        if not ok then
+            if err and err ~= "" then
+                printError(err)
+            end
+            return false
+        end
+        return true
+    end
+    if err and err ~= "" then
+        printError(err)
+    end
+    return false
 end
+kernel.run(runtime,"/Test.lua")
