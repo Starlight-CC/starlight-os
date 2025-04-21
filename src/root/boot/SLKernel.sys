@@ -56,7 +56,7 @@ local function loadAPIs(_sFolder)
         loadAPI(_sFolder..i)
     end
 end
-local make_package = dofile("rom/modules/main/cc/require.lua").make
+local make_package = dofile("/sys/modules/sys/require.lua").make
 require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
 function kernel.run(_tEnv, _sPath, ...)
