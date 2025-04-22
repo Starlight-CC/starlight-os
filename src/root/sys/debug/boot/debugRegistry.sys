@@ -41,6 +41,7 @@ while not exit do
         print("exit               - Exit to bootloader")
         term.setTextColor(colors.orange)
     elseif args[1] == "set" then
+        
         registry.set(args[2],args[3])
     elseif args[1] == "get" then
         local value = registry.get(args[2])
