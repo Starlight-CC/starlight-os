@@ -1,4 +1,4 @@
-local expect = require "cc.expect".expect
+local expect = require "cc.expect".expect or dofile("/sys/modules/cc/expect.lua").expect
 local PrimeUI = {}
 do
     local coros = {}
