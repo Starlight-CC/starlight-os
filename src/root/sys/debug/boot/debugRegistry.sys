@@ -3,6 +3,11 @@ term.setTextColor(colors.white)
 term.setBackgroundColor(colors.black)
 print("Registry editor")
 local registry = dofile("/sys/modules/kernel/registry.la")
+local history = {}
 while true do
-    local input = read()
-    
+    local input = read(nil,history)
+    history[#history+1]=input
+    if input.sub(1,4) == "help" then
+    elseif input.sub(1,3) == "set" then
+    elseif input.sub(1,3) == "get" then
+    elseif input.sub(1,4)
