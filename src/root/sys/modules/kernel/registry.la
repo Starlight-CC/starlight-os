@@ -1,2 +1,17 @@
 local lib = {}
+local file = fs.open("/ect/registery.conf","r")
+local registery = load("return {"..file.readAll().."}")()
+file.close()
+function lib.get(entry)
+    return registery[entry]
+end
+function lib.set(entry,value)
+    registery[entry]=value
+end
+function lib.void(entry)
+    registery[entry]=nil
+end
+function lib.save()
+    local file = fs.open("/ect/registery.conf","w")
+end
 return lib,"registery"
