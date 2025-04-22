@@ -240,7 +240,7 @@ local config = setmetatable({
     selecttext = colors.black,
     background = nil,
     defaultentry = nil,
-    timeout = 30,
+    timeout = 300,
 
     menuentry = function(name)
         expect(1, name, "string")

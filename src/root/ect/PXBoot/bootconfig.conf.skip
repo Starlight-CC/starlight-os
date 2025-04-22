@@ -1,5 +1,4 @@
 defaultentry = "Starlight"
-timeout = 5
 backgroundcolor = colors.black
 selectcolor = colors.blue
 

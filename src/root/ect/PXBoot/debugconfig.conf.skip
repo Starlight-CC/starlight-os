@@ -8,10 +8,21 @@ menuentry "Back" {
     args "/ect/PXBoot/bootconfig.conf.skip";
 }
 
+menuentry "Safe mode" {
+    description "Boot Starlight in safe mode.";
+    kernel "/boot/SLKernel.sys";
+    args {safe=true};
+}
+
 menuentry "Repair" {
     description "Open repair menu.";
     chainloader "/boot/PXBoot.sys";
     args "/ect/PXBoot/repairconfig.conf.skip";
+}
+
+menuentry "Registery" {
+    description "Edit registery";
+    chainloader "/sys/prog/regiseryEditor.sys";
 }
 
 menuentry "Lua" {
@@ -19,9 +30,5 @@ menuentry "Lua" {
     chainloader "/sys/debug/boot/lua.lua";
 }
 
-menuentry "Safe mode" {
-    description "Boot Starlight in safe mode.";
-    kernel "/boot/SLKernel.sys";
-    args {safe=true};
-}
+
 

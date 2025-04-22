@@ -1,4 +1,0 @@
-local lib = {}
-local conf = {}
-lib.load
-return lib,"conf"
