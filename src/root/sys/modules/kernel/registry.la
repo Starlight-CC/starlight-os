@@ -1,4 +1,5 @@
 local lib = {}
+local textutils = dofile("/lib/cc/textutils.la")
 local file = fs.open("/ect/registery.conf","r")
 local registery = load("return {"..file.readAll().."}")()
 file.close()
@@ -13,5 +14,8 @@ function lib.void(entry)
 end
 function lib.save()
     local file = fs.open("/ect/registery.conf","w")
+    local tmp = textutils.serialise(registery)
+    file.write(string.sub(string.sub(tmp,2,#tmp),1,#tmp-1))
+    file.close()
 end
 return lib,"registery"
