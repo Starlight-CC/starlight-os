@@ -4,16 +4,44 @@ term.setBackgroundColor(colors.black)
 print("Registry editor")
 local registry = dofile("/sys/modules/kernel/registry.la")
 local history = {}
-while true do
+local function tokenise(...) -- convert arg string to table
+    local line = table.concat({ ... }, " ")
+    local words = {}
+    local quoted = false
+    for match in string.gmatch(line .. "\"", "(.-)\"") do
+        if quoted then
+            table.insert(words, match)
+        else
+            for m in string.gmatch(match, "[^ \t]+") do
+                table.insert(words, m)
+            end
+        end
+        quoted = not quoted
+    end
+    return words
+end
+local exit = false
+while not exit do
     local input = read(nil,history)
     history[#history+1]=input
-    if input.sub(1,4) == "help" then
-
-    elseif input.sub(1,4) == "set " then
-        
-    elseif input.sub(1,4) == "get " then
-    elseif input.sub(1,5) == "void " then
-    elseif input.sub(1,4) == "save" then
+    local args = tokenise(input)
+    if args[1] == "help" then
+        print("help               - Show this")
+        print("set [name] [value] - Set a registry value")
+        print("get [name]         - Get a registry value")
+        print("void [name]        - Delete a registry")
+        print("save               - Save registry to disk")
+        print("exit               - Exit to bootloader")
+    elseif args[1] == "set" then
+        registry.set(args[2],args[3])
+    elseif args[1] == "get" then
+        registry.get(args[2])
+    elseif args[1] == "void" then
+        registry.void(args[2])
+    elseif args[1] == "save" then
         registry.save()
+    elseif args[1] == "exit" then
+        exit = true
     end
 end
+shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")
