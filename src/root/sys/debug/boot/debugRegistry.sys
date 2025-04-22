@@ -2,6 +2,7 @@ term.clear()
 term.setTextColor(colors.white)
 term.setBackgroundColor(colors.black)
 print("Registry editor")
+_G.require = require
 local registry = dofile("/sys/modules/kernel/registry.la")
 local history = {}
 local function tokenise(...) -- convert arg string to table
@@ -26,16 +27,23 @@ while not exit do
     history[#history+1]=input
     local args = tokenise(input)
     if args[1] == "help" then
+        term.setTextColor(colors.green)
         print("help               - Show this")
         print("set [name] [value] - Set a registry value")
         print("get [name]         - Get a registry value")
         print("void [name]        - Delete a registry")
         print("save               - Save registry to disk")
         print("exit               - Exit to bootloader")
+        term.setTextColor(colors.orange)
     elseif args[1] == "set" then
         registry.set(args[2],args[3])
     elseif args[1] == "get" then
-        registry.get(args[2])
+        local value = registry.get(args[2])
+        if type(value) == "table" then
+            print(textutils.serialize(value))
+        else
+            print(value)
+        end
     elseif args[1] == "void" then
         registry.void(args[2])
     elseif args[1] == "save" then

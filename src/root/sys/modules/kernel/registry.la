@@ -1,6 +1,6 @@
 local lib = {}
 local textutils = dofile("/lib/cc/textutils.la")
-local file = fs.open("/ect/registery.conf","r")
+local file = fs.open("/ect/registry.conf","r")
 local registry = load("return {"..file.readAll().."}")()
 file.close()
 function lib.get(entry)
@@ -17,5 +17,12 @@ function lib.save()
     local tmp = textutils.serialise(registry)
     file.write(string.sub(string.sub(tmp,2,#tmp),1,#tmp-1))
     file.close()
+end
+function lib.list()
+    local ret = {}
+    for i,_ in pairs(registry) do
+        ret[#ret+1]=i
+    end
+    return ret
 end
 return lib,"registry"
