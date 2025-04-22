@@ -1,21 +1,21 @@
 local lib = {}
 local textutils = dofile("/lib/cc/textutils.la")
 local file = fs.open("/ect/registery.conf","r")
-local registery = load("return {"..file.readAll().."}")()
+local registry = load("return {"..file.readAll().."}")()
 file.close()
 function lib.get(entry)
-    return registery[entry]
+    return registry[entry]
 end
 function lib.set(entry,value)
-    registery[entry]=value
+    registry[entry]=value
 end
 function lib.void(entry)
-    registery[entry]=nil
+    registry[entry]=nil
 end
 function lib.save()
-    local file = fs.open("/ect/registery.conf","w")
-    local tmp = textutils.serialise(registery)
+    local file = fs.open("/ect/registry.conf","w")
+    local tmp = textutils.serialise(registry)
     file.write(string.sub(string.sub(tmp,2,#tmp),1,#tmp-1))
     file.close()
 end
-return lib,"registery"
+return lib,"registry"
