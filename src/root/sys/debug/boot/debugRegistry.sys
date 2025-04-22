@@ -22,9 +22,12 @@ local function tokenise(...) -- convert arg string to table
     return words
 end
 local exit = false
+term.setTextColor(colors.orange)
 while not exit do
     write("> ")
+    term.setTextColor(colors.white)
     local input = read(nil,history)
+    term.setTextColor(colors.orange)
     history[#history+1]=input
     local args = tokenise(input)
     if args[1] == "help" then
