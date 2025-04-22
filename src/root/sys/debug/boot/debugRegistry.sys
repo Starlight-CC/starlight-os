@@ -23,6 +23,7 @@ local function tokenise(...) -- convert arg string to table
 end
 local exit = false
 while not exit do
+    write("> ")
     local input = read(nil,history)
     history[#history+1]=input
     local args = tokenise(input)
@@ -32,6 +33,7 @@ while not exit do
         print("set [name] [value] - Set a registry value")
         print("get [name]         - Get a registry value")
         print("void [name]        - Delete a registry")
+        print("list               - List registry")
         print("save               - Save registry to disk")
         print("exit               - Exit to bootloader")
         term.setTextColor(colors.orange)
@@ -50,6 +52,13 @@ while not exit do
         registry.save()
     elseif args[1] == "exit" then
         exit = true
+    elseif args[1] == "list" then
+        local list = registry.list()
+        local stdout = ""
+        for i in list do
+            stdout = stdout..i.."\n"
+        end
+        textutils.pagedPrint(stdout)
     end
 end
 shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")
