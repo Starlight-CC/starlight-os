@@ -61,7 +61,7 @@ while true do
     end
 end
 if result == true then
-    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf.skip -i")
+    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf -i")
 else
-    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf.skip")
+    shell.run("/boot/PXBoot.sys /ect/PXBoot/bootconfig.conf")
 end
