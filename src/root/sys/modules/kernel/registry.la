@@ -15,7 +15,7 @@ end
 function lib.save()
     local file = fs.open("/ect/registry.conf","w")
     local tmp = textutils.serialize(registry)
-    file.write(string.sub(string.sub(tmp,2,#tmp),1,#tmp-1))
+    file.write(string.sub(tmp,2,#tmp-1))
     file.close()
 end
 function lib.list()
