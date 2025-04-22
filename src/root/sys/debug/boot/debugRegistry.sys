@@ -1,0 +1,8 @@
+term.clear()
+term.setTextColor(colors.white)
+term.setBackgroundColor(colors.black)
+print("Registry editor")
+local registry = dofile("/sys/modules/kernel/registry.la")
+while true do
+    local input = read()
+    
