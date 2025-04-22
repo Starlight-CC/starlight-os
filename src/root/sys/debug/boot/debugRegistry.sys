@@ -55,8 +55,8 @@ while not exit do
     elseif args[1] == "list" then
         local list = registry.list()
         local stdout = ""
-        for i in list do
-            stdout = stdout..i.."\n"
+        for i,v in ipairs(list) do
+            stdout = stdout..v.."\n"
         end
         textutils.pagedPrint(stdout)
     end
