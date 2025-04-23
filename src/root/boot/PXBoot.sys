@@ -48,7 +48,7 @@ local function unbios(path, ...)
     _G.http.websocket = _G.http.websocketAsync
     if _G.commands then _G.commands = _G.commands.native end
     if _G.turtle then _G.turtle.native, _G.turtle.craft = nil end
-    local delete = {os = {"version", "pullEventRaw", "pullEvent", "run", "loadAPI", "unloadAPI", "sleep"}, http = {"get", "post", "put", "delete", "patch", "options", "head", "trace", "listen", "checkURLAsync", "websocketAsync"}, fs = {"complete", "isDriveRoot"}}
+    local delete = {os = {"pullEventRaw", "pullEvent", "run", "loadAPI", "unloadAPI", "sleep"}, http = {"get", "post", "put", "delete", "patch", "options", "head", "trace", "listen", "checkURLAsync", "websocketAsync"}, fs = {"complete", "isDriveRoot"}}
     for k,v in pairs(delete) do for _,a in ipairs(v) do _G[k][a] = nil end end
     -- Set up TLCO
     -- This functions by crashing `rednet.run` by removing `os.pullEventRaw`. Normally

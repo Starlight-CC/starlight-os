@@ -38,7 +38,7 @@ do
     function PrimeUI.run()
         while true do
             if restoreCursor then restoreCursor() end
-            local ev = table.pack(os.pullEvent())
+            local ev = table.pack(kernel.pullEvent())
             for _, v in ipairs(coros) do
                 if v.filter == nil or v.filter == ev[1] then
                     local res = table.pack(coroutine.resume(v.coro, table.unpack(ev, 1, ev.n)))
@@ -97,7 +97,7 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
         local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
-            local event, button, clickX, clickY = os.pullEvent()
+            local event, button, clickX, clickY = kernel.pullEvent()
             if event == "mouse_click" and periphName == nil and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
                 buttonDown = true
                 win.setCursorPos(x, y)
@@ -175,7 +175,7 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
     PrimeUI.addTask(function()
         local scrollPos = 1
         while true do
-            local ev = table.pack(os.pullEvent())
+            local ev = table.pack(kernel.pullEvent())
             local dir
             if ev[1] == "key" then
                 if ev[2] == keys.up then dir = -1
@@ -225,7 +225,7 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
         local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
-            local event, button, clickX, clickY = os.pullEvent()
+            local event, button, clickX, clickY = kernel.pullEvent()
             if (event == "monitor_touch" and periphName == button)
                 or (event == "mouse_click" and button == 1 and periphName == nil) then
                 if clickX >= screenX and clickX < screenX + width
@@ -327,7 +327,7 @@ function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacemen
         local ok, res = coroutine.resume(coro, replacement, history, completion, default)
         term.redirect(old)
         while coroutine.status(coro) ~= "dead" do
-            local ev = table.pack(os.pullEvent())
+            local ev = table.pack(kernel.pullEvent())
             old = term.redirect(box)
             ok, res = coroutine.resume(coro, table.unpack(ev, 1, ev.n))
             term.redirect(old)
@@ -335,33 +335,33 @@ function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacemen
         end
         if type(action) == "string" then PrimeUI.resolve("inputBox", action, res)
         else action(res) end
-        while true do os.pullEvent() end
+        while true do kernel.pullEvent() end
     end)
 end
 function PrimeUI.interval(time, action)
     expect(1, time, "number")
     expect(2, action, "function", "string")
-    local timer = os.startTimer(time)
+    local timer = kernel.startTimer(time)
     PrimeUI.addTask(function()
         while true do
-            local _, tm = os.pullEvent("timer")
+            local _, tm = kernel.pullEvent("timer")
             if tm == timer then
                 local res
                 if type(action) == "string" then PrimeUI.resolve("timeout", action)
                 else res = action() end
                 if type(res) == "number" then time = res end
-                if res ~= false then timer = os.startTimer(time) end
+                if res ~= false then timer = kernel.startTimer(time) end
             end
         end
     end)
-    return function() os.cancelTimer(timer) end
+    return function() kernel.cancelTimer(timer) end
 end
 function PrimeUI.keyAction(key, action)
     expect(1, key, "number")
     expect(2, action, "function", "string")
     PrimeUI.addTask(function()
         while true do
-            local _, param1 = os.pullEvent("key")
+            local _, param1 = kernel.pullEvent("key")
             if param1 == key then
                 if type(action) == "string" then PrimeUI.resolve("keyAction", action)
                 else action() end
@@ -378,7 +378,7 @@ function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)
     PrimeUI.addTask(function()
         local heldCtrl, heldAlt, heldShift = false, false, false
         while true do
-            local event, param1, param2 = os.pullEvent() -- wait for key
+            local event, param1, param2 = kernel.pullEvent() -- wait for key
             if event == "key" then
                 if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then
                     if type(action) == "string" then PrimeUI.resolve("keyCombo", action)
@@ -456,7 +456,7 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
     local scrollPos = 1
     PrimeUI.addTask(function()
         while true do
-            local ev = table.pack(os.pullEvent())
+            local ev = table.pack(kernel.pullEvent())
             innerHeight = select(2, inner.getSize())
             local dir
             if ev[1] == "key" and allowArrowKeys then
@@ -542,7 +542,7 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
     drawEntries()
     PrimeUI.addTask(function()
         while true do
-            local event, key, cx, cy = os.pullEvent()
+            local event, key, cx, cy = kernel.pullEvent()
             if event == "key" then
                 if key == keys.down and selection < #entries then
                     selection = selection + 1
@@ -638,17 +638,17 @@ end
 function PrimeUI.timeout(time, action)
     expect(1, time, "number")
     expect(2, action, "function", "string")
-    local timer = os.startTimer(time)
+    local timer = kernel.startTimer(time)
     PrimeUI.addTask(function()
         while true do
-            local _, tm = os.pullEvent("timer")
+            local _, tm = kernel.pullEvent("timer")
             if tm == timer then
                 if type(action) == "string" then PrimeUI.resolve("timeout", action)
                 else action() end
             end
         end
     end)
-    return function() os.cancelTimer(timer) end
+    return function() kernel.cancelTimer(timer) end
 end
 function PrimeUI.toggleButton(win, x, y, textOn, textOff, action, fgColor, bgColor, clickedColor, periphName)
     expect(1, win, "table")
@@ -672,7 +672,7 @@ function PrimeUI.toggleButton(win, x, y, textOn, textOff, action, fgColor, bgCol
         local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
-            local event, button, clickX, clickY = os.pullEvent()
+            local event, button, clickX, clickY = kernel.pullEvent()
             if event == "mouse_click" and periphName == nil and button == 1 and clickX >= screenX and clickX < screenX + #textOn + 2 and clickY == screenY then
                 buttonDown = true
                 win.setCursorPos(x, y)

@@ -9,8 +9,9 @@ if #tArgs > 0 then
     return
 end
 
-local pretty = require and require "cc.pretty" or dofile "/rom/modules/main/cc/expect.lua"
-local exception = require and require "cc.internal.exception" or dofile "/rom/modules/main/cc/internal/exception.lua"
+local pretty = dofile("/sys/modules/cc/expect.lua")
+local exception = dofile("/sys/modules/cc/internal/exception.lua")
+local registry = dofile("/sys/modules/kernel/registry.la")
 
 local running = true
 local tCommandHistory = {}
@@ -29,7 +30,7 @@ setmetatable(tEnv, { __index = _ENV })
 -- rather than from /rom/programs. This makes it more friendly to use and closer
 -- to what you'd expect.
 if shell then
-    local make_package = require "cc.require".make
+    local make_package = dofile("sys/modules/sys/require.la").make
     local dir = shell.dir()
     _ENV.require, _ENV.package = make_package(_ENV, dir)
 end
@@ -50,7 +51,7 @@ while running do
     term.setTextColour( colours.white )
 
     local input = read(nil, tCommandHistory, function(sLine)
-        if settings.get("lua.autocomplete") then
+        if registry.get("lua.autocomplete") then
             local nStartPos = string.find(sLine, "[a-zA-Z0-9_%.:]+$")
             if nStartPos then
                 sLine = string.sub(sLine, nStartPos)
@@ -64,7 +65,7 @@ while running do
     if input:match("%S") and tCommandHistory[#tCommandHistory] ~= input then
         table.insert(tCommandHistory, input)
     end
-    if settings.get("lua.warn_against_use_of_local") and input:match("^%s*local%s+") then
+    if registry.get("lua.warn_against_use_of_local") and input:match("^%s*local%s+") then
         if term.isColour() then
             term.setTextColour(colours.yellow)
         end
@@ -93,8 +94,8 @@ while running do
             for i = 2, results.n do
                 local value = results[i]
                 local ok, serialised = pcall(pretty.pretty, value, {
-                    function_args = settings.get("lua.function_args"),
-                    function_source = settings.get("lua.function_source"),
+                    function_args = registry.get("lua.function_args"),
+                    function_source = registry.get("lua.function_source"),
                 })
                 if ok then
                     pretty.print(serialised)
@@ -104,10 +105,10 @@ while running do
             end
         else
             printError(results[2])
-            require "cc.internal.exception".report(results[2], results[3], chunk_map)
+            dofile("/sys/modules/cc/internal/exception.lua").report(results[2], results[3], chunk_map)
         end
     else
-        local parser = require "cc.internal.syntax"
+        local parser = dofile("sys/modules/cc/internal/syntax/init.lua")
         if parser.parse_repl(input) then printError(err) end
     end
 end

@@ -1,6 +1,6 @@
 local debugMode = false
 local CURRENT_VERSION = "1"
-local THIS_COMPUTER_ID = os.getComputerID()
+local THIS_COMPUTER_ID = kernel.getComputerID()
 
 local currentProtocol = "wpp@default"
 local prefetchCache = {}
@@ -182,7 +182,7 @@ function wireless.listen(networkId)
     print("Listening for WPP events on ".. currentProtocol)
     print("Control+T to quit")
     while(true) do
-        local event = {os.pullEvent()}
+        local event = {kernel.pullEvent()}
         wireless.localEventHandler(event)
     end
 end

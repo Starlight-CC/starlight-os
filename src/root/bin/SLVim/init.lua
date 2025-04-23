@@ -71,7 +71,7 @@ if ok then
     write("Program finished. ")
 end
 write("Press any key to continue")
-os.pullEvent('key')
+kernel.pullEvent('key')
 ]]
 
 -- Menus
@@ -536,7 +536,7 @@ end
 
 -- Handle input
 while bRunning do
-    local sEvent, param, param2, param3 = os.pullEvent()
+    local sEvent, param, param2, param3 = kernel.pullEvent()
     if sEvent == "key" then
         if param == keys.up then
             -- Up

@@ -28,7 +28,9 @@ while not exit do
     term.setTextColor(colors.white)
     local input = read(nil,history)
     term.setTextColor(colors.orange)
-    history[#history+1]=input
+    if input ~= "" then
+        history[#history+1]=input
+    end
     local args = tokenise(input)
     if args[1] == "help" then
         term.setTextColor(colors.green)
@@ -60,7 +62,11 @@ while not exit do
         local list = registry.list()
         local stdout = ""
         for i,v in ipairs(list) do
-            stdout = stdout..v.."\n"
+            if i == #list then
+                stdout = stdout..v
+            else
+                stdout = stdout..v.."\n"
+            end
         end
         textutils.pagedPrint(stdout)
     end

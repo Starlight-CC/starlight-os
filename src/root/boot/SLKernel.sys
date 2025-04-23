@@ -1,4 +1,6 @@
 kernel={}
+kernel.CraftOSVer = os.version
+_G.os.version = nil
 local function isin(q,t,m)
     if m == nil then
         local m = 1
@@ -59,14 +61,17 @@ end
 local make_package = dofile("/sys/modules/sys/require.lua").make
 require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
+kernel.version = function()
+    return registry.get("kernel.version")
+end
 function kernel.run(_tEnv, _sPath, ...)
     local tEnv = _tEnv
     setmetatable(tEnv, { __index = _G })
 
-    if conf.get("kernel.strict_globals", false) then
+    if registry.get("kernel.strict_globals", false) then
         tEnv._ENV = tEnv
         getmetatable(tEnv).__newindex = function(_, name)
-          error("Attempt to create global " .. tostring(name), 2)
+            error("Attempt to create global " .. tostring(name), 2)
         end
     end
 

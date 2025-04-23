@@ -1,3 +1,3 @@
 --Copyright (C) 2025  Starlight-CC
-pcall(kernel.reboot)
+pcall(kernel["reboot"])
 pcall(os.reboot)

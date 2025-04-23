@@ -18,12 +18,12 @@ the key and char events will be delivered in different ticks, but it should be
 very rare, and not worth adding extra delay for.
 ]]
 local function discard_char()
-    local timer = os.startTimer(0)
+    local timer = kernel.startTimer(0)
     while true do
-        local event, id = os.pullEvent()
+        local event, id = kernel.pullEvent()
         if event == "timer" and id == timer then break
         elseif event == "char" or event == "key" or event == "key_up" then
-            os.cancelTimer(timer)
+            kernel.cancelTimer(timer)
             break
         end
     end

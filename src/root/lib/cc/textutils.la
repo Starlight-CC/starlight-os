@@ -4,9 +4,9 @@
 -- @module textutils
 -- @since 1.2
 
-local expect = dofile("rom/modules/main/cc/expect.lua")
+local expect = dofile("/sys/modules/cc/expect.lua")
 local expect, field = expect.expect, expect.field
-local wrap = dofile("rom/modules/main/cc/strings.lua").wrap
+local wrap = dofile("/sys/modules/cc/strings.lua").wrap
 local lib={}
 
 --- Slowly writes string text at current cursor position,
@@ -54,16 +54,16 @@ end
 
 --- Takes input time and formats it in a more readable format such as `6:30 PM`.
 --
--- @tparam number nTime The time to format, as provided by @{os.time}.
+-- @tparam number nTime The time to format, as provided by @{kernel.time}.
 -- @tparam[opt] boolean bTwentyFourHour Whether to format this as a 24-hour
 -- clock (`18:30`) rather than a 12-hour one (`6:30 AM`)
 -- @treturn string The formatted time
 -- @usage Print the current in-game time as a 12-hour clock.
 --
---     textutils.formatTime(os.time())
+--     textutils.formatTime(kernel.time())
 -- @usage Print the local time as a 24-hour clock.
 --
---     textutils.formatTime(os.time("local"), true)
+--     textutils.formatTime(kernel.time("local"), true)
 function lib.formatTime(nTime, bTwentyFourHour)
     expect(1, nTime, "number")
     expect(2, bTwentyFourHour, "boolean", "nil")
@@ -99,7 +99,7 @@ local function makePagedScroll(_term, _nFreeLines)
                 local _, h = _term.getSize()
                 _term.setCursorPos(1, h)
                 _term.write("Press any key to continue")
-                os.pullEvent("key")
+                kernel.pullEvent("key")
                 _term.clearLine()
                 _term.setCursorPos(1, h)
             else

@@ -64,14 +64,14 @@ local hostnames = {}
 local prune_received_timer
 
 local function id_as_channel(id)
-    return (id or os.getComputerID()) % MAX_ID_CHANNELS
+    return (id or kernel.getComputerID()) % MAX_ID_CHANNELS
 end
 
 --[[- Opens a modem with the given [`peripheral`] name, allowing it to send and
 receive messages over rednet.
 
 This will open the modem on two channels: one which has the same
-[ID][`os.getComputerID`] as the computer, and another on
+[ID][`kernel.getComputerID`] as the computer, and another on
 [the broadcast channel][`CHANNEL_BROADCAST`].
 
 @tparam string modem The name of the modem to open.
@@ -180,23 +180,23 @@ local function send(recipient, message, protocol)
     -- We could do other things to guarantee uniqueness, but we really don't need to
     -- Store it to ensure we don't get our own messages back
     local message_id = math.random(1, 2147483647)
-    received_messages[message_id] = os.clock() + 9.5
-    if not prune_received_timer then prune_received_timer = os.startTimer(10) end
+    received_messages[message_id] = kernel.clock() + 9.5
+    if not prune_received_timer then prune_received_timer = kernel.startTimer(10) end
 
     -- Create the message
     local reply_channel = id_as_channel()
     local message_wrapper = {
         nMessageID = message_id,
         nRecipient = recipient,
-        nSender = os.getComputerID(),
+        nSender = kernel.getComputerID(),
         message = message,
         sProtocol = protocol,
     }
 
     local sent = false
-    if recipient == os.getComputerID() then
+    if recipient == kernel.getComputerID() then
         -- Loopback to ourselves
-        os.queueEvent("rednet_message", os.getComputerID(), message, protocol)
+        kernel.queueEvent("rednet_message", kernel.getComputerID(), message, protocol)
         sent = true
     else
         -- Send on all open modems, to the target and to repeaters
@@ -285,7 +285,7 @@ local function receive(protocol_filter, timeout)
     local timer = nil
     local event_filter = nil
     if timeout then
-        timer = os.startTimer(timeout)
+        timer = kernel.startTimer(timeout)
         event_filter = nil
     else
         event_filter = "rednet_message"
@@ -293,7 +293,7 @@ local function receive(protocol_filter, timeout)
 
     -- Wait for events
     while true do
-        local event, p1, p2, p3 = os.pullEvent(event_filter)
+        local event, p1, p2, p3 = kernel.pullEvent(event_filter)
         if event == "rednet_message" then
             -- Return the first matching rednet_message
             local sender_id, message, protocol = p1, p2, p3
@@ -397,9 +397,9 @@ local function lookup(protocol, hostname)
     -- Check localhost first
     if hostnames[protocol] then
         if hostname == nil then
-            table.insert(results, os.getComputerID())
+            table.insert(results, kernel.getComputerID())
         elseif hostname == "localhost" or hostname == hostnames[protocol] then
-            return os.getComputerID()
+            return kernel.getComputerID()
         end
     end
 
@@ -418,11 +418,11 @@ local function lookup(protocol, hostname)
     }, "dns")
 
     -- Start a timer
-    local timer = os.startTimer(2)
+    local timer = kernel.startTimer(2)
 
     -- Wait for events
     while true do
-        local event, p1, p2, p3 = os.pullEvent()
+        local event, p1, p2, p3 = kernel.pullEvent()
         if event == "rednet_message" then
             -- Got a rednet message, check if it's the response to our request
             local sender_id, message, message_protocol = p1, p2, p3
@@ -460,7 +460,7 @@ local function run()
     started = true
 
     while true do
-        local event, p1, p2, p3, p4 = os.pullEventRaw()
+        local event, p1, p2, p3, p4 = kernel.pullEventRaw()
         if event == "modem_message" then
             -- Got a modem message, process it and add it to the rednet event queue
             local modem, channel, reply_channel, message = p1, p2, p3, p4
@@ -468,12 +468,12 @@ local function run()
                 if type(message) == "table" and type(message.nMessageID) == "number"
                     and message.nMessageID == message.nMessageID and not received_messages[message.nMessageID]
                     and (type(message.nSender) == "nil" or (type(message.nSender) == "number" and message.nSender == message.nSender))
-                    and ((message.nRecipient and message.nRecipient == os.getComputerID()) or channel == CHANNEL_BROADCAST)
+                    and ((message.nRecipient and message.nRecipient == kernel.getComputerID()) or channel == CHANNEL_BROADCAST)
                     and isOpen(modem)
                 then
-                    received_messages[message.nMessageID] = os.clock() + 9.5
-                    if not prune_received_timer then prune_received_timer = os.startTimer(10) end
-                    os.queueEvent("rednet_message", message.nSender or reply_channel, message.message, message.sProtocol)
+                    received_messages[message.nMessageID] = kernel.clock() + 9.5
+                    if not prune_received_timer then prune_received_timer = kernel.startTimer(10) end
+                    kernel.queueEvent("rednet_message", message.nSender or reply_channel, message.message, message.sProtocol)
                 end
             end
 
@@ -494,12 +494,12 @@ local function run()
         elseif event == "timer" and p1 == prune_received_timer then
             -- Got a timer event, use it to prune the set of received messages
             prune_received_timer = nil
-            local now, has_more = os.clock(), nil
+            local now, has_more = kernel.clock(), nil
             for message_id, deadline in pairs(received_messages) do
                 if deadline <= now then received_messages[message_id] = nil
                 else has_more = true end
             end
-            prune_received_timer = has_more and os.startTimer(10)
+            prune_received_timer = has_more and kernel.startTimer(10)
         end
     end
 end

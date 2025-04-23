@@ -47,7 +47,7 @@ local function runUntilLimit(_routines, _limit)
                 end
             end
         end
-        eventData = table.pack(os.pullEventRaw())
+        eventData = table.pack(kernel.pullEventRaw())
     end
 end
 

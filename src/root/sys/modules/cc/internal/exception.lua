@@ -84,7 +84,7 @@ local function try(func, ...)
     local result = table.pack(coroutine.resume(co, ...))
 
     while coroutine.status(co) ~= "dead" do
-        local event = table.pack(os.pullEventRaw(result[2]))
+        local event = table.pack(kernel.pullEventRaw(result[2]))
         if result[2] == nil or event[1] == result[2] or event[1] == "terminate" then
             result = table.pack(coroutine.resume(co, table.unpack(event, 1, event.n)))
         end
