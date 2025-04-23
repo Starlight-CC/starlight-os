@@ -43,12 +43,19 @@ while not exit do
         print("exit               - Exit to bootloader")
         term.setTextColor(colors.orange)
     elseif args[1] == "set" then
-        if tonumber(args[3]) ~= nil then
+        if tonumber(args[3]) == nil then
+            registry.set(args[2],tonumber(args[3]))
+        elseif args[3] == "true" then
+            registry.set(args[2],true)
+        elseif args[3] == "false" then
+            registry.set(args[2],false)
+        else
             registry.set(args[2],args[3])
+        end
     elseif args[1] == "get" then
         local value = registry.get(args[2])
         if type(value) == "table" then
-            print(textutils.serialize(value))
+            textutils.pagedPrint(textutils.serialize(value))
         else
             print(value)
         end

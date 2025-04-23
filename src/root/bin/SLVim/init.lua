@@ -1,7 +1,7 @@
 -- Get file to edit
 local tArgs = { ... }
 if #tArgs == 0 then
-    local programName = arg[0] or fs.getName(shell.getRunningProgram())
+    local programName = "SLVim"
     print("Usage: " .. programName .. " <path>")
     return
 end
@@ -16,7 +16,7 @@ end
 
 -- Create .lua files by default
 if not fs.exists(sPath) and not string.find(sPath, "%.") then
-    local sExtension = settings.get("edit.default_extension")
+    local sExtension = settings.get("SLVim.default_extension")
     if sExtension ~= "" and type(sExtension) == "string" then
         sPath = sPath .. "." .. sExtension
     end

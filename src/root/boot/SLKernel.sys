@@ -49,8 +49,10 @@ function loadfile(filename, mode, env)
     return func, err
 end
 
-function dofile(_sFile,_args)
-
+function dofile(_sFile,_args,_tEnv)
+    if _tEnv == nil then
+        _tEnv = _G
+    end
     local fnFile, e = loadfile(_sFile, nil, _G)
     if fnFile then
         return fnFile(_args)
@@ -78,7 +80,7 @@ local function loadAPIs(_sFolder)
 end
 
 local make_package = dofile("/sys/modules/sys/require.lua").make
-require=make_package(_G,"/")
+_G.require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
 
 kernel.version = function()
