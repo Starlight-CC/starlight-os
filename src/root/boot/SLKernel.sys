@@ -66,7 +66,7 @@ local function loadAPI(_sPath)
             _G[i]=v
         end
     else
-        _G[name]=list
+        _G[tostring(name)]=list
     end
 end
 
