@@ -1,6 +1,19 @@
-kernel={}
-kernel.CraftOSVer = os.version
-_G.os.version = nil
+kernel=_G.os
+_G.os = nil
+kernel.CraftOSVersion = kernel.version
+
+function kernel.pullEventRaw(sFilter)
+    return coroutine.yield(sFilter)
+end
+
+function kernel.pullEvent(sFilter)
+    local eventData = table.pack(kernel.pullEventRaw(sFilter))
+    if eventData[1] == "terminate" then
+        error("Terminated", 0)
+    end
+    return table.unpack(eventData, 1, eventData.n)
+end
+
 local function isin(q,t,m)
     if m == nil then
         local m = 1
@@ -20,6 +33,7 @@ local function isin(q,t,m)
     end
     return false
 end
+
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
     if type(mode) == "table" and env == nil then
@@ -33,6 +47,7 @@ function loadfile(filename, mode, env)
     file.close()
     return func, err
 end
+
 function dofile(_sFile,_args)
 
     local fnFile, e = loadfile(_sFile, nil, _G)
@@ -42,6 +57,7 @@ function dofile(_sFile,_args)
         error(e, 2)
     end
 end
+
 local function loadAPI(_sPath)
     local list,name=dofile(_sPath)
     if name=="global" then
@@ -52,18 +68,22 @@ local function loadAPI(_sPath)
         _G[name]=list
     end
 end
+
 local function loadAPIs(_sFolder)
     local targets=fs.list(_sFolder)
     for i in targets do
         loadAPI(_sFolder..i)
     end
 end
+
 local make_package = dofile("/sys/modules/sys/require.lua").make
 require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
+
 kernel.version = function()
     return registry.get("kernel.version")
 end
+
 function kernel.run(_tEnv, _sPath, ...)
     local tEnv = _tEnv
     setmetatable(tEnv, { __index = _G })
@@ -91,4 +111,5 @@ function kernel.run(_tEnv, _sPath, ...)
     end
     return false
 end
+
 kernel.run({},"/Test.lua")
