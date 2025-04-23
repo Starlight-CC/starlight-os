@@ -5,7 +5,7 @@ if #tArgs == 0 then
     print("Usage: " .. programName .. " <path>")
     return
 end
-
+local textutils = dofile("/lib/cc/textutils.la")
 -- Error checking
 local sPath = shell.resolve(tArgs[1])
 local bReadOnly = fs.isReadOnly(sPath)
