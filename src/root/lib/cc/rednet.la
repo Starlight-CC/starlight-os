@@ -50,15 +50,15 @@ bare-bones but flexible interface.
 local expect = dofile("sys/modules/cc/expect.lua").expect
 local lib = {}
 --- The channel used by the Rednet API to [`broadcast`] messages.
-lib.CHANNEL_BROADCAST = 65535
-
+local CHANNEL_BROADCAST = 65535
+lib.CHANNEL_BROADCAST = CHANNEL_BROADCAST
 --- The channel used by the Rednet API to repeat messages.
-lib.CHANNEL_REPEAT = 65533
-
+local CHANNEL_REPEAT = 65533
+lib.CHANNEL_REPEAT = CHANNEL_REPEAT
 --- The number of channels rednet reserves for computer IDs. Computers with IDs
 -- greater or equal to this limit wrap around to 0.
-lib.MAX_ID_CHANNELS = 65500
-
+local MAX_ID_CHANNELS = 65500
+lib.MAX_ID_CHANNELS = MAX_ID_CHANNELS
 local received_messages = {}
 local hostnames = {}
 local prune_received_timer
@@ -88,7 +88,7 @@ rednet messages using it.
 @see rednet.close
 @see rednet.isOpen
 ]]
-function lib.open(modem)
+local function open(modem)
     expect(1, modem, "string")
     if peripheral.getType(modem) ~= "modem" then
         error("No such modem: " .. modem, 2)
@@ -96,7 +96,7 @@ function lib.open(modem)
     peripheral.call(modem, "open", id_as_channel())
     peripheral.call(modem, "open", CHANNEL_BROADCAST)
 end
-
+lib.open = opem
 --- Close a modem with the given [`peripheral`] name, meaning it can no longer
 -- send and receive rednet messages.
 --
@@ -104,7 +104,7 @@ end
 -- open modems will be closed.
 -- @throws If there is no such modem with the given name
 -- @see rednet.open
-function lib.close(modem)
+local function close(modem)
     expect(1, modem, "string", "nil")
     if modem then
         -- Close a specific modem
@@ -122,7 +122,7 @@ function lib.close(modem)
         end
     end
 end
-
+lib.close = close
 --- Determine if rednet is currently open.
 --
 -- @tparam[opt] string modem Which modem to check. If not given, all connected
@@ -130,7 +130,7 @@ end
 -- @treturn boolean If the given modem is open.
 -- @since 1.31
 -- @see rednet.open
-function lib.isOpen(modem)
+local function isOpen(modem)
     expect(1, modem, "string", "nil")
     if modem then
         -- Check if a specific modem is open
@@ -147,7 +147,7 @@ function lib.isOpen(modem)
     end
     return false
 end
-
+lib.isOpen = isOpen
 --[[- Allows a computer or turtle with an attached modem to send a message
 intended for a computer with a specific ID. At least one such modem must first
 be [opened][`rednet.open`] before sending is possible.
@@ -173,7 +173,7 @@ actually _received_.
 
     rednet.send(2, "Hello from rednet!")
 ]]
-function lib.send(recipient, message, protocol)
+local function send(recipient, message, protocol)
     expect(1, recipient, "number")
     expect(3, protocol, "string", "nil")
     -- Generate a (probably) unique message ID
@@ -215,7 +215,7 @@ function lib.send(recipient, message, protocol)
 
     return sent
 end
-
+lib.send = send
 --[[- Broadcasts a string message over the predefined [`CHANNEL_BROADCAST`]
 channel. The message will be received by every device listening to rednet.
 
@@ -230,11 +230,11 @@ particular protocol.
 
     rednet.broadcast("Hello, world!")
 ]]
-function lib.broadcast(message, protocol)
+local function broadcast(message, protocol)
     expect(2, protocol, "string", "nil")
     send(CHANNEL_BROADCAST, message, protocol)
 end
-
+lib.broadcast = broadcast
 --[[- Wait for a rednet message to be received, or until `nTimeout` seconds have
 elapsed.
 
@@ -273,7 +273,7 @@ received.
 
     print(message)
 ]]
-function lib.receive(protocol_filter, timeout)
+local function receive(protocol_filter, timeout)
     -- The parameters used to be ( nTimeout ), detect this case for backwards compatibility
     if type(protocol_filter) == "number" and timeout == nil then
         protocol_filter, timeout = nil, protocol_filter
@@ -308,7 +308,7 @@ function lib.receive(protocol_filter, timeout)
         end
     end
 end
-
+lib.receive = receive
 --[[- Register the system as "hosting" the desired protocol under the specified
 name. If a rednet [lookup][`rednet.lookup`] is performed for that protocol (and
 maybe name) on the same network, the registered system will automatically
@@ -328,7 +328,7 @@ before doing so (eg while offline or part of a different network).
 @see rednet.lookup
 @since 1.6
 ]]
-function lib.host(protocol, hostname)
+local function host(protocol, hostname)
     expect(1, protocol, "string")
     expect(2, hostname, "string")
     if hostname == "localhost" then
@@ -341,17 +341,17 @@ function lib.host(protocol, hostname)
         hostnames[protocol] = hostname
     end
 end
-
+lib.host = host
 --- Stop [hosting][`rednet.host`] a specific protocol, meaning it will no longer
 -- respond to [`rednet.lookup`] requests.
 --
 -- @tparam string protocol The protocol to unregister your self from.
 -- @since 1.6
-function lib.unhost(protocol)
+local function unhost(protocol)
     expect(1, protocol, "string")
     hostnames[protocol] = nil
 end
-
+lib.unhost = unhost
 --[[- Search the local rednet network for systems [hosting][`rednet.host`] the
 desired protocol and returns any computer IDs that respond as "registered"
 against it.
@@ -384,7 +384,7 @@ or [`nil`] if none exists.
     end
 
 ]]
-function lib.lookup(protocol, hostname)
+local function lookup(protocol, hostname)
     expect(1, protocol, "string")
     expect(2, hostname, "string", "nil")
 
@@ -445,7 +445,7 @@ function lib.lookup(protocol, hostname)
     end
     return nil
 end
-
+lib.lookup = lookup
 local started = false
 
 --- Listen for modem messages and converts them into rednet messages, which may
@@ -453,7 +453,7 @@ local started = false
 --
 -- This is automatically started in the background on computer startup, and
 -- should not be called manually.
-function lib.run()
+local function run()
     if started then
         error("rednet is already running", 2)
     end
@@ -503,4 +503,5 @@ function lib.run()
         end
     end
 end
+lib.run = run
 return lib
