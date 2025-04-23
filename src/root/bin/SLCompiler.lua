@@ -157,6 +157,7 @@ term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(colors.white)
 print("This will delete EVERYTHING on / are you sure you want to install")
+print("Disks will be not cleared")
 print("(Y/N)")
 while true do
     local _,k,_ = os.pullEvent("key")
