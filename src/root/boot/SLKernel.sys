@@ -115,4 +115,4 @@ function kernel.run(_tEnv, _sPath, ...)
     return false
 end
 
-kernel.run({},"/Test.lua")
+kernel.run({},"/sys/debug/boot/lua.lua")
