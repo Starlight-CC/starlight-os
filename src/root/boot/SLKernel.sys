@@ -1,14 +1,12 @@
 --"https://youtu.be/232rDvsYzVM?feature=shared"
-kernel=_G.os
-_G.os = nil
-kernel.CraftOSVersion = kernel.version
+os.CraftOSVersion = os.version
 
-function kernel.pullEventRaw(sFilter)
+function os.pullEventRaw(sFilter)
     return coroutine.yield(sFilter)
 end
 
-function kernel.pullEvent(sFilter)
-    local eventData = table.pack(kernel.pullEventRaw(sFilter))
+function os.pullEvent(sFilter)
+    local eventData = table.pack(os.pullEventRaw(sFilter))
     if eventData[1] == "terminate" then
         error("Terminated", 0)
     end
@@ -83,11 +81,11 @@ local make_package = dofile("/sys/modules/sys/require.lua").make
 _G.require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
 
-kernel.version = function()
+os.version = function()
     return registry.get("kernel.version")
 end
 
-function kernel.run(_tEnv, _sPath, ...)
+function os.run(_tEnv, _sPath, ...)
     local tEnv = _tEnv
     setmetatable(tEnv, { __index = _G })
 
@@ -115,4 +113,4 @@ function kernel.run(_tEnv, _sPath, ...)
     return false
 end
 
-kernel.run({},"/sys/debug/boot/lua.lua")
+os.run({},"/sys/debug/boot/lua.lua")

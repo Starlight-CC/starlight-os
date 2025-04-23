@@ -6,7 +6,7 @@ if http then
         local ok, err = nativeHTTPRequest( _url, _post, _headers, _binary )
         if ok then
             while true do
-                local event, param1, param2, param3 = kernel.pullEvent()
+                local event, param1, param2, param3 = os.pullEvent()
                 if event == "http_success" and param1 == _url then
                     return param2
                 elseif event == "http_failure" and param1 == _url then
@@ -58,7 +58,7 @@ if http then
         end
         local ok, err = nativeHTTPRequest( _url, _post, _headers, _binary )
         if not ok then
-            kernel.queueEvent( "http_failure", _url, err )
+            os.queueEvent( "http_failure", _url, err )
         end
         return ok, err
     end
@@ -70,7 +70,7 @@ if http then
         if not ok then return ok, err end
 
         while true do
-            local event, url, ok, err = kernel.pullEvent( "http_check" )
+            local event, url, ok, err = os.pullEvent( "http_check" )
             if url == _url then return ok, err end
         end
     end

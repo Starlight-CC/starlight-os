@@ -1,3 +1,2 @@
 --Copyright (C) 2025  Starlight-CC
-pcall(kernel[shutdown])
-pcall(os.shutdown)
+os.shutdown()

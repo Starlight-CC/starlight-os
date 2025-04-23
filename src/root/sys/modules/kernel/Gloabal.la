@@ -1,9 +1,9 @@
 local lib={}
 
 function lib.sleep( nTime )
-    local timer = kernel.startTimer( nTime or 0 )
+    local timer = os.startTimer( nTime or 0 )
     repeat
-        local sEvent, param = kernel.pullEvent( "timer" )
+        local sEvent, param = os.pullEvent( "timer" )
     until param == timer
 end
 
@@ -206,7 +206,7 @@ function lib.read( _sReplaceChar, _tHistory, _fnComplete, _sDefault )
         end
     end
     while true do
-        local sEvent, param = kernel.pullEvent()
+        local sEvent, param = os.pullEvent()
         if sEvent == "char" then
             -- Typed key
             clear()
