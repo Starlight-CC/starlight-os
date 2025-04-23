@@ -72,8 +72,8 @@ end
 
 local function loadAPIs(_sFolder)
     local targets=fs.list(_sFolder)
-    for i in targets do
-        loadAPI(_sFolder..i)
+    for i,v in ipairs(targets) do
+        loadAPI(_sFolder..v3)
     end
 end
 

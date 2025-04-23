@@ -8,7 +8,7 @@
 -- @since 1.95.0
 -- @see textutils For additional string related utilities.
 
-local expect = require("cc.expect")
+local expect = dofile("/sys/modules/cc/expect.lua")
 local expect, range = expect.expect, expect.range
 
 --[[- Wraps a block of text, so that each line fits within the given width.
