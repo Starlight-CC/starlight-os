@@ -11,7 +11,9 @@ end
 
 local pretty = dofile("/sys/modules/cc/expect.lua")
 local exception = dofile("/sys/modules/cc/internal/exception.lua")
-local registry = dofile("/sys/modules/kernel/registry.la")
+if registry == nil then
+    local registry = dofile("/sys/modules/kernel/registry.la")
+end
 
 local running = true
 local tCommandHistory = {}
