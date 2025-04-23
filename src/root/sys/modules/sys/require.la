@@ -1,5 +1,6 @@
-local expect = require and require("cc.expect") or dofile("rom/modules/main/cc/expect.lua")
+local expect = dofile("/sys/modules/cc/expect.lua")
 local expect = expect.expect
+local registry = dofile("/sys/modules/kernel/registry.la")
 
 local function preload(package)
     return function(name)
@@ -114,7 +115,7 @@ local function make_package(env, dir)
         end
     end
 
-    package.path = settings.get("shell.package_path") or "?;?.lua;?/init.lua;/sys/modules/?;/sys/modules/?.lua;/sys/modules/?/init.lua"
+    package.path = registry.get("shell.package_path") or "?;?.lua;?/init.lua;/sys/modules/?;/sys/modules/?.lua;/sys/modules/?/init.lua"
     --support la format
     package.path = package.path..";?;?.la;?/init.la;/sys/modules/?;/sys/modules/?.la;/sys/modules/?/init.la"
     if turtle then

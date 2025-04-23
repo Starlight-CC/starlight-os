@@ -77,7 +77,7 @@ local function loadAPIs(_sFolder)
     end
 end
 
-local make_package = dofile("/sys/modules/sys/require.lua").make
+local make_package = dofile("/sys/modules/sys/require.la").make
 _G.require=make_package(_G,"/")
 loadAPIs("/sys/modules/kernel/")
 
