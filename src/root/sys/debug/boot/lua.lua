@@ -14,6 +14,7 @@ local exception = dofile("/sys/modules/cc/internal/exception.lua")
 if registry == nil then
     local registry = dofile("/sys/modules/kernel/registry.la")
 end
+local textutils = dofile("/lib/cc/textutils.la")
 
 local running = true
 local tCommandHistory = {}
