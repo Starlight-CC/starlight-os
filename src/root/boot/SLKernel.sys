@@ -78,7 +78,8 @@ local function loadAPIs(_sFolder)
 end
 
 local make_package = dofile("/sys/modules/sys/require.la").make
-_G.require=make_package(_G,"/")
+require=make_package(_G,"/")
+_G.require = require
 loadAPIs("/sys/modules/kernel/")
 
 os.version = function()

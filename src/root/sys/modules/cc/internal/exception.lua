@@ -12,8 +12,8 @@ be removed or changed at any time.
 @local
 ]]
 
-local expect = require "cc.expect".expect
-local error_printer = require "cc.internal.error_printer"
+local expect = dofile("/sys/modules/cc/expect.lua").expect
+local error_printer = dofile("/sys/modules/cc/internal/error_printer.lua")
 
 local function find_frame(thread, file, line)
     -- Scan the first 16 frames for something interesting.

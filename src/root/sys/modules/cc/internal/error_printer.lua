@@ -16,10 +16,10 @@ terminal.
 @local
 ]]
 
-local pretty = require "cc.pretty"
-local expect = require "cc.expect"
+local pretty = dofile("/sys/modules/cc/pretty.lua")
+local expect = dofile("/sys/modules/cc/expect.lua")
 local expect, field = expect.expect, expect.field
-local wrap = require "cc.strings".wrap
+local wrap = dofile("/sys/modules/cc/strings.lua").wrap
 
 --- Write a message to the screen.
 -- @tparam cc.pretty.Doc|string msg The message to write.
