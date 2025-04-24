@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local tArgs = {...}
 local wpm = dofile("/sys/modules/sys/wpm.la")
 if tArgs[1] == "host" then

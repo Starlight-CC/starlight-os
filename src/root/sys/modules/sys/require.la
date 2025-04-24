@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local expect = dofile("/sys/modules/cc/expect.lua")
 local expect = expect.expect
 local Kregistry = dofile("/sys/modules/kernel/registry.la")

@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 term.clear()
 term.setTextColor(colors.white)
 term.setBackgroundColor(colors.black)

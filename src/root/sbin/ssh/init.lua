@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local tArgs = {...}
 local shellC = "/rom/programs/shell.lua"
 local tFlags = {

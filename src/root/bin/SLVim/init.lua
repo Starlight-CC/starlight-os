@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 -- Get file to edit
 local tArgs = { ... }
 if #tArgs == 0 then

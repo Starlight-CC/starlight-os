@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local debugMode = false
 local CURRENT_VERSION = "1"
 local THIS_COMPUTER_ID = os.getComputerID()

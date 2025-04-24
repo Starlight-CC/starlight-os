@@ -1,4 +1,4 @@
---"https://youtu.be/232rDvsYzVM?feature=shared"
+--Copyright (C) 2025  Starlight-CC
 os.CraftOSVersion = os.version
 
 function os.pullEventRaw(sFilter)

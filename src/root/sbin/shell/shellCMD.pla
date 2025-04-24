@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local lib = {}
 lib.exec = {}
 function lib.find(c)

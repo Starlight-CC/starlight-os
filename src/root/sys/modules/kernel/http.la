@@ -1,3 +1,4 @@
+--Copyright (C) 2025  Starlight-CC
 local tArgs={...}
 if http then
     local lib={}
