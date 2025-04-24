@@ -43,7 +43,7 @@ while not exit do
         print("exit               - Exit to bootloader")
         term.setTextColor(colors.orange)
     elseif args[1] == "set" then
-        if tonumber(args[3]) == nil then
+        if tonumber(args[3]) ~= nil then
             registry.set(args[2],tonumber(args[3]))
         elseif args[3] == "true" then
             registry.set(args[2],true)
