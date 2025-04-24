@@ -113,5 +113,5 @@ function os.run(_tEnv, _sPath, ...)
     end
     return false
 end
-
+thread.
 os.run({},"/sys/debug/boot/lua.lua")
