@@ -6,10 +6,11 @@ if #tArgs > 0 then
     return
 end
 
-local pretty = dofile("/sys/modules/cc/expect.lua")
+local pretty = dofile("/sys/modules/cc/pretty.lua")
 local exception = dofile("/sys/modules/cc/internal/exception.lua")
+local registry = registry
 if registry == nil then
-    local registry = dofile("/sys/modules/kernel/registry.la")
+    registry = dofile("/sys/modules/kernel/registry.la")
 end
 local textutils = dofile("/lib/cc/textutils.la")
 
