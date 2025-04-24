@@ -116,7 +116,7 @@ local function make_package(env, dir)
         end
     end
 
-    package.path = Kregistry.get("require.package_path") or "?;?.lua;?/init.lua;/sys/modules/?;/sys/modules/?.lua;/sys/modules/?/init.lua"
+    package.path =  "?;?.lua;?/init.lua;/sys/modules/?;/sys/modules/?.lua;/sys/modules/?/init.lua"
     --support la format
     package.path = package.path..";?;?.la;?/init.la;/sys/modules/?;/sys/modules/?.la;/sys/modules/?/init.la"
     if turtle then
