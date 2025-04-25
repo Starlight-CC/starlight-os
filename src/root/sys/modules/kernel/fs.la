@@ -16,6 +16,11 @@ local function isin(query,table,iorv)
 end
 function lib.list(dir)
     local tmp = fsOld.list(dir)
-    for 
+    local ret = {}
+    for _,v in ipairs(tmp) do
+        if v ~= "rom" then
+            ret[#ret+1]=v
+        else
+            
 end
 return lib,"fs"
