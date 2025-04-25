@@ -1,0 +1,21 @@
+local lib = {}
+local fsOld=fs
+local function isin(query,table,iorv)
+    for i,v in pairs(table) do
+        if iorv then
+            if i == query then
+                return true
+            end
+        else
+            if v == query then
+                return true
+            end
+        end
+    end
+    return false
+end
+function lib.list(dir)
+    local tmp = fsOld.list(dir)
+    for 
+end
+return lib,"fs"
