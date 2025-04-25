@@ -1,5 +1,6 @@
 local lib = {}
 local fsOld=fs
+local expect = require("cc.expect")
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
         if iorv then
@@ -14,13 +15,29 @@ local function isin(query,table,iorv)
     end
     return false
 end
+function lib.combine(...)
+    local args = {...}
+    for i,v in ipairs(args) do
+        expect(i,v,"string")
+    end
+    if string.sub(args[1],1,1) ~= "/" then
+        args[1]="/"..args[1]
+    end
+    local ret = ""
+    for i,v in ipairs(args) do
+        if string.sub(args[1],1,1) ~= "/" then
+            args[1]=args[1].."/"
+        end
+        ret = ret..
+end
 function lib.list(dir)
+    expect(1,dir,"string")
     local tmp = fsOld.list(dir)
     local ret = {}
     for _,v in ipairs(tmp) do
         if v ~= "rom" then
             ret[#ret+1]=v
         else
-            
+            if fs.isReadOnly(dir)
 end
 return lib,"fs"
