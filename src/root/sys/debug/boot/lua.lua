@@ -113,4 +113,6 @@ while running do
         if parser.parse_repl(input) then printError(err) end
     end
 end
-shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")
+if shell then
+    shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")
+end
