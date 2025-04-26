@@ -1,4 +1,4 @@
-local lib = {}
+local lib = fs
 local fsOld=fs
 local expect = require("cc.expect")
 local function isin(query,table,iorv)
