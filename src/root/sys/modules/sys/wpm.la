@@ -5,7 +5,7 @@ local THIS_COMPUTER_ID = os.getComputerID()
 
 local currentProtocol = "wpp@default"
 local prefetchCache = {}
-local rednet = dofile("sys/modules/lib/cc/rednet.la")
+local rednet = dofile("sys/modules/lib/rednet.la")
 local function splitString (inputstr, sep)
     if sep == nil then
         sep = "%s"
