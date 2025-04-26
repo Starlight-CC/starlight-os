@@ -1,6 +1,6 @@
 --Copyright (C) 2025  Starlight-CC
 os.CraftOSVersion = os.version
-local fsHandshakeToken = math.rand(1,4294967295)
+local fsHandshakeToken = math.random(1,4294967295)
 function os.pullEventRaw(sFilter)
     return coroutine.yield(sFilter)
 end
@@ -80,6 +80,8 @@ local function loadAPIs(_sFolder,...)
     local targets=fs.list(_sFolder)
     for i,v in ipairs(targets) do
         loadAPI(_sFolder..v)
+    end
+    for i,v in ipairs(targets) do
         fs.lock(_sFolder..v)
     end
 end
