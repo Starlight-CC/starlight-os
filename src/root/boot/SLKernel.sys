@@ -79,7 +79,11 @@ end
 local function loadAPIs(_sFolder,...)
     local targets=fs.list(_sFolder)
     for i,v in ipairs(targets) do
-        loadAPI(_sFolder..v)
+        if v == "fs.la" then
+            loadAPI(_sFolder..v,fsHandshakeToken)
+        else
+            loadAPI(_sFolder..v)
+        end
     end
     for i,v in ipairs(targets) do
         fs.lock(_sFolder..v)
@@ -90,6 +94,19 @@ local make_package = dofile("/sys/modules/sys/require.la").make
 require=make_package(_G,"/")
 _G.require = require
 loadAPIs("/sys/modules/kernel/")
+local function lockMod(dir)
+    for i,v in ipairs(fs.list(dir)) do
+        if fs.isDir(v) then
+            lockMod(dir..v.."/")
+        else
+            fs.lock(fs.combine(dir,v))
+        end
+    end
+end
+lockMod("/sys/modules/")
+fs.lock("/boot/PXBoot.sys")
+fs.lock("/boot/SLKernel.sys")
+fs.lock("/startup.lua")
 
 os.version = function()
     return registry.get("kernel.version")

@@ -1,6 +1,6 @@
 --Copyright (C) 2025  Starlight-CC
 local lib = {}
-local textutils = dofile("/lib/cc/textutils.la")
+local textutils = dofile("/sys/modules/lib/cc/textutils.la")
 local file = fs.open("/ect/registry.conf","r")
 local registry = load("return {"..file.readAll().."}")()
 file.close()

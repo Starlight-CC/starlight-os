@@ -2,6 +2,7 @@ local handshake = ...
 local lib = {}
 local fsOld=fs
 local lockTokens = {}
+local tostring = tostring
 local expect = require("cc.expect")
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
@@ -51,7 +52,7 @@ lib.list = function(dir)
     return ret
 end
 lib.isLocked = function(dir)
-    if isin(fs.combine(dir),lockTokens,true) then
+    if isin(lib.combine(dir),lockTokens,true) then
         return true
     else
         return false
@@ -61,8 +62,8 @@ lib.unlock = function(dir,token)
     if not lib.isLocked(dir) then
         error("File is not locked")
     else
-        if token == lockTokens[tostring(fs.combine(dir))] then
-            lockTokens[tostring(fs.combine(dir))]=nil
+        if token == lockTokens[tostring(lib.combine(dir))] then
+            lockTokens[tostring(lib.combine(dir))]=nil
             return true
         else
             return false
@@ -101,9 +102,9 @@ lib.lock = function(dir)
     if lib.isLocked(dir) then
         error("File is locked")
     else
-        if fsOld.exists(fs.combine(dir)) then
+        if fsOld.exists(lib.combine(dir)) then
             local token = math.random(0,4294967295)
-            lockTokens[tostring(fs.combine(dir))]=token
+            lockTokens[tostring(lib.combine(dir))]=token
             return token
         else
             error("File does not exist")
@@ -111,9 +112,9 @@ lib.lock = function(dir)
     end
 end
 lib.forceUnlock = function(dir,masterKey)
-    if handshake == masterkey then
+    if handshake == masterKey then
         local ret = lockTokens[tostring(dir)]
-        lockTokens[tostring(fs.combine(dir))]=nil
+        lockTokens[tostring(lib.combine(dir))]=nil
         return ret
     else
         return false
