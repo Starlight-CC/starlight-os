@@ -1,5 +1,6 @@
-local lib = fs
+local lib = {}
 local fsOld=fs
+local lockTokens = {}
 local expect = require("cc.expect")
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
@@ -15,7 +16,7 @@ local function isin(query,table,iorv)
     end
     return false
 end
-function lib.combine(...)
+lib.combine = function(...)
     local args = {...}
     for i,v in ipairs(args) do
         expect(i,v,"string")
@@ -33,17 +34,37 @@ function lib.combine(...)
     ret = string.sub(ret,1,#ret-1)
     return ret
 end
---[[
-function lib.list(dir)
+lib.list = function(dir)
     expect(1,dir,"string")
     local tmp = fsOld.list(dir)
     local ret = {}
     for _,v in ipairs(tmp) do
-        if v ~= "rom" then
+        if lib.combine(dir,v) ~= "/rom" then
             ret[#ret+1]=v
         else
-            if fs.isReadOnly(dir)
-
+            if not fsOld.isReadOnly(lib.combine(dir,v)) then
+                ret[#ret+1]=v
+            end
+        end
+    end
+    return ret
 end
-]]
+lib.open = function(dir,mode)
+    if fsOld.isReadOnly(dir) then
+        error("File does not exist")
+    elseif isin(dir,lockTokens,true) then
+        error("File is locked")
+    else
+        return fsOld.open(dir,mode)
+    end
+end
+lib.delete = function(dir)
+    if fsOld.isReadOnly(dir) then
+        error("File does not exist")
+    elseif isin(dir,lockTokens,true) then
+        error("File is locked")
+    else
+        return fsOld.delete(dir,mode)
+    end
+end
 return lib,"fs"
