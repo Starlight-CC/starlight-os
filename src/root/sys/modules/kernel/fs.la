@@ -72,6 +72,8 @@ end
 lib.open = function(dir,mode,_token)
     if fsOld.isReadOnly(dir) then
         error("File does not exist")
+    elseif fsOld.isDir(dir) then
+        error("Given file is dir")
     elseif lib.isLocked(dir) then
         if _token then
             if lib.unlock(dir,_token) then

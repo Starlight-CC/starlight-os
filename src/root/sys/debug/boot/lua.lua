@@ -44,74 +44,80 @@ print("Call exit() to exit to bootloader.")
 term.setTextColour(colours.white)
 
 local chunk_idx, chunk_map = 1, {}
-while running do
-    if term.isColour() then
-        term.setTextColour( colours.green )
-    end
-    write("lua:$")
-    term.setTextColour( colours.white )
-
-    local input = read(nil, tCommandHistory, function(sLine)
-        if registry.get("lua.autocomplete") then
-            local nStartPos = string.find(sLine, "[a-zA-Z0-9_%.:]+$")
-            if nStartPos then
-                sLine = string.sub(sLine, nStartPos)
-            end
-            if #sLine > 0 then
-                return textutils.complete(sLine, tEnv)
-            end
-        end
-        return nil
-    end)
-    if input:match("%S") and tCommandHistory[#tCommandHistory] ~= input then
-        table.insert(tCommandHistory, input)
-    end
-    if registry.get("lua.warn_against_use_of_local") and input:match("^%s*local%s+") then
+local function main()
+    while running do
         if term.isColour() then
-            term.setTextColour(colours.yellow)
+            term.setTextColour( colours.green )
         end
-       print("To access local variables in later inputs, remove the local keyword.")
-       term.setTextColour(colours.white)
-    end
+        write("lua:$")
+        term.setTextColour( colours.white )
 
-    local name, offset = "=lua[" .. chunk_idx .. "]", 0
-
-    local func, err = load(input, name, "t", tEnv)
-    if load("return " .. input) then
-        -- We wrap the expression with a call to _echo(...), which prevents tail
-        -- calls (and thus confusing errors). Note we check this is a valid
-        -- expression separately, to avoid accepting inputs like `)--` (which are
-        -- parsed as `_echo()--)`.
-        func = load("return _echo(" .. input .. "\n)", name, "t", tEnv)
-        offset = 13
-    end
-
-    if func then
-        chunk_map[name] = { contents = input, offset = offset }
-        chunk_idx = chunk_idx + 1
-
-        local results = table.pack(exception.try(func))
-        if results[1] then
-            for i = 2, results.n do
-                local value = results[i]
-                local ok, serialised = pcall(pretty.pretty, value, {
-                    function_args = registry.get("lua.function_args"),
-                    function_source = registry.get("lua.function_source"),
-                })
-                if ok then
-                    pretty.print(serialised)
-                else
-                    print(tostring(value))
+        local input = read(nil, tCommandHistory, function(sLine)
+            if registry.get("lua.autocomplete") then
+                local nStartPos = string.find(sLine, "[a-zA-Z0-9_%.:]+$")
+                if nStartPos then
+                    sLine = string.sub(sLine, nStartPos)
+                end
+                if #sLine > 0 then
+                    return textutils.complete(sLine, tEnv)
                 end
             end
-        else
-            printError(results[2])
-            dofile("/sys/modules/cc/internal/exception.lua").report(results[2], results[3], chunk_map)
+            return nil
+        end)
+        if input:match("%S") and tCommandHistory[#tCommandHistory] ~= input then
+            table.insert(tCommandHistory, input)
         end
-    else
-        local parser = dofile("sys/modules/cc/internal/syntax/init.lua")
-        if parser.parse_repl(input) then printError(err) end
+        if registry.get("lua.warn_against_use_of_local") and input:match("^%s*local%s+") then
+            if term.isColour() then
+                term.setTextColour(colours.yellow)
+            end
+        print("To access local variables in later inputs, remove the local keyword.")
+        term.setTextColour(colours.white)
+        end
+
+        local name, offset = "=lua[" .. chunk_idx .. "]", 0
+
+        local func, err = load(input, name, "t", tEnv)
+        if load("return " .. input) then
+            -- We wrap the expression with a call to _echo(...), which prevents tail
+            -- calls (and thus confusing errors). Note we check this is a valid
+            -- expression separately, to avoid accepting inputs like `)--` (which are
+            -- parsed as `_echo()--)`.
+            func = load("return _echo(" .. input .. "\n)", name, "t", tEnv)
+            offset = 13
+        end
+
+        if func then
+            chunk_map[name] = { contents = input, offset = offset }
+            chunk_idx = chunk_idx + 1
+
+            local results = table.pack(exception.try(func))
+            if results[1] then
+                for i = 2, results.n do
+                    local value = results[i]
+                    local ok, serialised = pcall(pretty.pretty, value, {
+                        function_args = registry.get("lua.function_args"),
+                        function_source = registry.get("lua.function_source"),
+                    })
+                    if ok then
+                        pretty.print(serialised)
+                    else
+                        print(tostring(value))
+                    end
+                end
+            else
+                printError(results[2])
+                dofile("/sys/modules/cc/internal/exception.lua").report(results[2], results[3], chunk_map)
+            end
+        else
+            local parser = dofile("sys/modules/cc/internal/syntax/init.lua")
+            if parser.parse_repl(input) then printError(err) end
+        end
     end
+end
+while running do
+    pcall(main)
+    printError("Lua ERR recovering...")
 end
 if shell then
     shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")

@@ -12,11 +12,11 @@ be removed or changed at any time.
 @local
 ]]
 
-local expect = require "cc.expect".expect
+local expect = dofile("/sys/modules/cc/expect.lua").expect
 
-local lex_one = require "cc.internal.syntax.lexer".lex_one
-local parser = require "cc.internal.syntax.parser"
-local error_printer = require "cc.internal.error_printer"
+local lex_one = dofile("/sys/modules/cc/internal/syntax/lexer.lua").lex_one
+local parser = dofile("/sys/modules/cc/internal/syntax/parser.lua")
+local error_printer = dofile("/sys/modules/cc/internal/error_printer.lua")
 
 local error_sentinel = {}
 

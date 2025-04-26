@@ -16,9 +16,9 @@ then be displayed to the user via @{cc.internal.error_printer}.
 @local
 ]]
 
-local pretty = require "cc.pretty"
-local expect = require "cc.expect".expect
-local tokens = require "cc.internal.syntax.parser".tokens
+local pretty = dofile("/sys/modules/cc/pretty.lua")
+local expect = dofile("/sys/modules/cc/expect.lua").expect
+local tokens = dofile("/sys/modules/cc/internal/syntax/parser.lua").tokens
 
 local function annotate(start_pos, end_pos, msg)
     if msg == nil and (type(end_pos) == "string" or type(end_pos) == "table" or type(end_pos) == "nil") then

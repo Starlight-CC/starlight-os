@@ -59,7 +59,7 @@ out.close()
 ```
 ]]
 
-local expect = require "cc.expect".expect
+local expect = dofile("/sys/modules/cc/expect.lua").expect
 
 local char, byte, floor, band, rshift = string.char, string.byte, math.floor, bit32.band, bit32.arshift
 

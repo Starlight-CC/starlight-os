@@ -7,7 +7,7 @@
 --
 -- @module cc.http.gist
 
-local expect = require and require("cc.expect").expect or dofile("/rom/modules/main/cc/expect.lua").expect
+local expect = dofile("/sys/modules/cc/expect.lua").expect
 
 if not http then
     if _G.config ~= nil then error("Gist requires http API\nSet http_enable to true in the CraftOS-PC configuration")

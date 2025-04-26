@@ -28,8 +28,8 @@ are some design choices worth drawing attention to:
 @local
 ]]
 
-local errors = require "cc.internal.syntax.errors"
-local tokens = require "cc.internal.syntax.parser".tokens
+local errors = dofile("/sys/modules/cc/internal/syntax/errors.lua")
+local tokens = dofile("/sys/modules/cc/internal/syntax/parser.lua").tokens
 local sub, find = string.sub, string.find
 
 local keywords = {

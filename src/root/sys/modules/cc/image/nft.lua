@@ -16,7 +16,7 @@
 --     local image = assert(nft.load("data/example.nft"))
 --     nft.draw(image, term.getCursorPos())
 
-local expect = require "cc.expect".expect
+local expect = dofile("/sys/modules/cc/expect.lua").expect
 
 --- Parse an nft image from a string.
 --
