@@ -1,6 +1,6 @@
 --Copyright (C) 2025  Starlight-CC
 os.CraftOSVersion = os.version
-
+local fsHandshakeToken = math.rand(1,4294967295)
 function os.pullEventRaw(sFilter)
     return coroutine.yield(sFilter)
 end
@@ -32,14 +32,20 @@ local function isin(q,t,m)
     end
     return false
 end
-
+fs.isLocked = function() return false end
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
-
+    local token = 0
+    if fs.isLocked(filename) then
+        token = fs.forceUnlock(filename,fsHandshakeToken)
+    end
     local file = fs.open(filename, "r")
+    if token ~= 0 then
+        fs.lock(filename,token)
+    end
     if not file then return nil, "File not found" end
 
     local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)
@@ -59,8 +65,8 @@ function dofile(_sFile,_args,_tEnv)
     end
 end
 
-local function loadAPI(_sPath)
-    local list,name=dofile(_sPath)
+local function loadAPI(_sPath,...)
+    local list,name=dofile(_sPath,...)
     if name=="global" then
         for i,v in pairs(list) do
             _G[i]=v
@@ -70,10 +76,11 @@ local function loadAPI(_sPath)
     end
 end
 
-local function loadAPIs(_sFolder)
+local function loadAPIs(_sFolder,...)
     local targets=fs.list(_sFolder)
     for i,v in ipairs(targets) do
         loadAPI(_sFolder..v)
+        fs.lock(_sFolder..v)
     end
 end
 

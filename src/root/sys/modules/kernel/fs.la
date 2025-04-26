@@ -1,3 +1,4 @@
+local handshake = ...
 local lib = {}
 local fsOld=fs
 local lockTokens = {}
@@ -49,11 +50,38 @@ lib.list = function(dir)
     end
     return ret
 end
-lib.open = function(dir,mode)
+lib.isLocked = function(dir)
+    if isin(dir,lockTokens,true) then
+        return true
+    else
+        return false
+    end
+end
+lib.unlock = function(dir,token)
+    if not lib.isLocked(dir) then
+        error("File is not locked")
+    else
+        if token == lockTokens[tostring(dir)] then
+            lockTokens[tostring(dir)]=nil
+            return true
+        else
+            return false
+        end
+    end
+end
+lib.open = function(dir,mode,_token)
     if fsOld.isReadOnly(dir) then
         error("File does not exist")
-    elseif isin(dir,lockTokens,true) then
-        error("File is locked")
+    elseif lib.isLocked(dir) then
+        if _token then
+            if lib.unlock(dir,_token) then
+                return fsOld.open(dir,mode)
+            else
+                error("Unlock failed")
+            end
+        else
+            error("File is locked")
+        end
     else
         return fsOld.open(dir,mode)
     end
@@ -61,10 +89,32 @@ end
 lib.delete = function(dir)
     if fsOld.isReadOnly(dir) then
         error("File does not exist")
-    elseif isin(dir,lockTokens,true) then
+    elseif lib.isLocked(dir) then
         error("File is locked")
     else
         return fsOld.delete(dir,mode)
     end
 end
+lib.lock = function(dir)
+    if lib.isLocked(dir) then
+        error("File is locked")
+    else
+        if fsOld.exists(dir) then
+            local token = msth.random(0,4294967295)
+            lockTokens[tostring(dir)]=token
+            return token
+        else
+            error("File does not exist")
+        end
+    end
+end
+lib.forceUnlock = function(dir,masterKey)
+    if handshake == masterkey then
+        local ret = lockTokens[tostring(dir)]
+        lockTokens[tostring(dir)]=nil
+        return ret
+    else
+        return false
+    end
+end 
 return lib,"fs"
