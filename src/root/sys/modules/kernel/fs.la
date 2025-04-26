@@ -30,6 +30,7 @@ function lib.combine(...)
         end
         ret = ret..args[i]
     end
+    ret = string.sub(ret,1,#ret-1)
     return ret
 end
 --[[
