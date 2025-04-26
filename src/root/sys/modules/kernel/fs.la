@@ -25,11 +25,14 @@ function lib.combine(...)
     end
     local ret = ""
     for i,v in ipairs(args) do
-        if string.sub(args[1],1,1) ~= "/" then
-            args[1]=args[1].."/"
+        if string.sub(args[i],#args[i],#args[i]) ~= "/" then
+            args[i]=args[i].."/"
         end
-        ret = ret..
+        ret = ret..args[i]
+    end
+    return ret
 end
+--[[
 function lib.list(dir)
     expect(1,dir,"string")
     local tmp = fsOld.list(dir)
@@ -39,5 +42,7 @@ function lib.list(dir)
             ret[#ret+1]=v
         else
             if fs.isReadOnly(dir)
+
 end
+]]
 return lib,"fs"
