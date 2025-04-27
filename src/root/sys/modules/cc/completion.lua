@@ -10,7 +10,7 @@
 -- @{shell.setCompletionFunction}.
 -- @since 1.85.0
 
-local expect = require "cc.expect".expect
+local expect = dofile("/sys/modules/cc/expect.lua").expect
 
 local function choice_impl(text, choices, add_space)
     local results = {}

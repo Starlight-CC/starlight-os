@@ -29,8 +29,8 @@ choice of options, followed by a directory, and then multiple files.
     read(nil, nil, shell.complete, "example ")
 ]]
 
-local expect = require "cc.expect".expect
-local completion = require "cc.completion"
+local expect = local expect = dofile("/sys/modules/cc/expect.lua").expect
+local completion = local expect = dofile("/sys/modules/cc/completion.lua")
 
 --- Complete the name of a file relative to the current working directory.
 --
