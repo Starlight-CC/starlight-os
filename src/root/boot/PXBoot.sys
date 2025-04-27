@@ -163,6 +163,9 @@ end
 
 function cmds.craftos(t)
     bootcfg.fn = function()
+        local make_package = dofile("/sys/modules/sys/require.la").make
+        require=make_package(_G,"/")
+        _G.require = require
         os.run({},"/sys/Protect.sys")
         term.setTextColor(colors.yellow)
         print(os.version())
