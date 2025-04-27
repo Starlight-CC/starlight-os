@@ -2,7 +2,7 @@ _G.fs = dofile("/sys/modules/kernel/fs.la")
 _G.debug = dofile("/sys/modules/kernel/debug.la")
 local function lockMod(dir)
     for i,v in ipairs(fs.list(dir)) do
-        if fs.isDir(v) then
+        if fs.isDir(dir..v) then
             lockMod(dir..v.."/")
         else
             fs.lock(fs.combine(dir,v))

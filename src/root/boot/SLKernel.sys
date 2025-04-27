@@ -95,7 +95,7 @@ _G.require = require
 loadAPIs("/sys/modules/kernel/")
 local function lockMod(dir)
     for i,v in ipairs(fs.list(dir)) do
-        if fsOld.isDir(v) then
+        if fsOld.isDir(dir..v) then
             lockMod(dir..v.."/")
         else
             fs.lock(fs.combine(dir,v))
