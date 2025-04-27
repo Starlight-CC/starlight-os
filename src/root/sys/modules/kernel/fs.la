@@ -4,6 +4,7 @@ local fsOld=fs
 local lockTokens = {}
 local tostring = tostring
 local rawequal = rawequal
+local expect = dofile("/sys/modules/cc/expect.lua")
 
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
