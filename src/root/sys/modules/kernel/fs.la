@@ -6,6 +6,7 @@ local tostring = tostring
 local rawequal = rawequal
 local expect = dofile("/sys/modules/cc/expect.lua")
 
+lib.getName = fsOld.getName
 lib.isDir = fsOld.isDir
 lib.exists = function(dir)
     if fsOld.isReadOnly(dir) then
