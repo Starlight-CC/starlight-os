@@ -1,6 +1,6 @@
 local handshake = ...
 local debugOld = debug
-local lib = {}}
+local lib = {}
 lib.traceback = debugOld.traceback
 -- WIP
 return lib,"debug"
