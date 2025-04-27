@@ -1,4 +1,15 @@
-_G.fs = dofile("/sys/modules/kernel/fs.la")
+_G.dofile = function(_sFile,_args,_tEnv)
+    if _tEnv == nil then
+        _tEnv = _G
+    end
+    local fnFile, e = loadfile(_sFile, nil, _G)
+    if fnFile then
+        return fnFile(_args)
+    else
+        error(e, 2)
+    end
+end
+_G.fs = dofile("/sys/modules/kernel/fs.la",0)
 _G.debug = dofile("/sys/modules/kernel/debug.la")
 local function lockMod(dir)
     for i,v in ipairs(fs.list(dir)) do

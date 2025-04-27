@@ -3,7 +3,8 @@ local lib = {}
 local fsOld=fs
 local lockTokens = {}
 local tostring = tostring
-local expect = require("cc.expect")
+local rawequal = rawequal
+
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
         if iorv then
@@ -58,8 +59,9 @@ lib.isLocked = function(dir)
         return false
     end
 end
+local isLocked = lib.isLocked
 lib.unlock = function(dir,token)
-    if not lib.isLocked(dir) then
+    if not isLocked(dir) then
         error("File is not locked")
     else
         if rawequal(token,lockTokens[tostring(lib.combine(dir))]) then
@@ -75,7 +77,7 @@ lib.open = function(dir,mode,_token)
         error("File does not exist")
     elseif fsOld.isDir(dir) then
         error("Given file is dir")
-    elseif lib.isLocked(dir) then
+    elseif isLocked(dir) then
         if _token then
             if lib.unlock(dir,_token) then
                 return fsOld.open(dir,mode)
@@ -92,14 +94,14 @@ end
 lib.delete = function(dir)
     if fsOld.isReadOnly(dir) then
         error("File does not exist")
-    elseif lib.isLocked(dir) then
+    elseif isLocked(dir) then
         error("File is locked")
     else
         return fsOld.delete(dir,mode)
     end
 end
 lib.lock = function(dir)
-    if lib.isLocked(dir) then
+    if isLocked(dir) then
         error("File is locked")
     else
         if fsOld.exists(lib.combine(dir)) then
