@@ -6,6 +6,14 @@ local tostring = tostring
 local rawequal = rawequal
 local expect = dofile("/sys/modules/cc/expect.lua")
 
+lib.isDir = fsOld.isDir
+lib.exists = function(dir)
+    if fsOld.isReadOnly(dir) then
+        error("File does not exist")
+    else 
+        fsOld.exists(dir)
+    end
+end
 local function isin(query,table,iorv)
     for i,v in pairs(table) do
         if iorv then
