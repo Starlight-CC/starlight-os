@@ -1,0 +1,16 @@
+_G.fs = dofile("/sys/modules/kernel/fs.la")
+_G.debug = dofile("/sys/modules/kernel/debug.la")
+local function lockMod(dir)
+    for i,v in ipairs(fs.list(dir)) do
+        if fs.isDir(v) then
+            lockMod(dir..v.."/")
+        else
+            fs.lock(fs.combine(dir,v))
+        end
+    end
+end
+lockMod("/sys/modules/")
+fs.lock("/boot/PXBoot.sys")
+fs.lock("/boot/SLKernel.sys")
+fs.lock("/startup.lua")
+fs.lock("/sys/Protect.sys")

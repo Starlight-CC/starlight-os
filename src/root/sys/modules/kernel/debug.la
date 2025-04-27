@@ -1,0 +1,6 @@
+local handshake = ...
+local debugOld = debug
+local lib = {}}
+lib.traceback = debugOld.traceback
+-- WIP
+return lib,"debug"

@@ -1,6 +1,7 @@
 --Copyright (C) 2025  Starlight-CC
 os.CraftOSVersion = os.version
-local fsHandshakeToken = math.random(1,4294967295)
+local fsHandshakeToken = {}
+
 function os.pullEventRaw(sFilter)
     return coroutine.yield(sFilter)
 end
@@ -85,9 +86,6 @@ local function loadAPIs(_sFolder,...)
             loadAPI(_sFolder..v)
         end
     end
-    for i,v in ipairs(targets) do
-        fs.lock(_sFolder..v)
-    end
 end
 
 local make_package = dofile("/sys/modules/sys/require.la").make
@@ -107,6 +105,7 @@ lockMod("/sys/modules/")
 fs.lock("/boot/PXBoot.sys")
 fs.lock("/boot/SLKernel.sys")
 fs.lock("/startup.lua")
+fs.lock("/sys/Protect.sys")
 
 os.version = function()
     return registry.get("kernel.version")

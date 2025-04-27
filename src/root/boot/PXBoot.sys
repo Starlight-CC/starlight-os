@@ -163,6 +163,7 @@ end
 
 function cmds.craftos(t)
     bootcfg.fn = function()
+        os.run("/sys/Protect.sys")
         term.setTextColor(colors.yellow)
         print(os.version())
         term.setTextColor(colors.white)
