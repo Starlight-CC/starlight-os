@@ -40,15 +40,15 @@ local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
 
 function err(s)
-    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    term.blit("[ ERR ] ","88eee888","bbbbbbbb")
     print(s)
 end
 function info(s)
-    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
+    term.blit("[ INFO ] ","881111888","bbbbbbbbb")
     print(s)
 end
 function ok(s)
-    term.blit("[ OK ] ","7755777","bbbbbbb")
+    term.blit("[ OK ] ","8855888","bbbbbbb")
     print(s)
 end
 
