@@ -3,9 +3,6 @@ local fsOld = fs
 os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
 
-os.queueEvent = function(...)
-    local args = {...}
-    if args[1] == "ipc" then
 local fsHandshakeToken = {}
 
 function os.pullEventRaw(sFilter)
