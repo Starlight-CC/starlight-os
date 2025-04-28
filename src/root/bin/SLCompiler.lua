@@ -1,7 +1,7 @@
 --Copyright (C) 2025  Starlight-CC
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
-term.setPaletteColor(colors.blue,0x0000ff)
+term.setPaletteColor(colors.blue,0x000000)
 local pullEvent = os.pullEvent
 
 local oldRQ = require
@@ -20,15 +20,15 @@ local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
 
 function err(s)
-    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    term.blit("[ ERR ] ","88eee888","bbbbbbbb")
     print(s)
 end
 function info(s)
-    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
+    term.blit("[ INFO ] ","881111888","bbbbbbbbb")
     print(s)
 end
 function ok(s)
-    term.blit("[ OK ] ","7755777","bbbbbbb")
+    term.blit("[ OK ] ","8855888","bbbbbbb")
     print(s)
 end
 
@@ -91,7 +91,7 @@ local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Sta
 fh.write([[_G.require = require
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
-term.setPaletteColor(colors.blue,0x0000ff)
+term.setPaletteColor(colors.blue,0x000000)
 local pullEvent = os.pullEvent
 local copyR = [=[]]..Copyright..[[]=]
     
@@ -105,15 +105,15 @@ local PrimeUI = load(PrimeUIE)()
 
 FS = textutils.unserialize([=[]]..textutils.serialize(out)..[[]=])
 function err(s)
-    term.blit("[ ERR ] ","77eee777","bbbbbbbb")
+    term.blit("[ ERR ] ","88eee888","bbbbbbbb")
     print(s)
 end
 function info(s)
-    term.blit("[ INFO ] ","771111777","bbbbbbbbb")
+    term.blit("[ INFO ] ","881111888","bbbbbbbbb")
     print(s)
 end
 function ok(s)
-    term.blit("[ OK ] ","7755777","bbbbbbb")
+    term.blit("[ OK ] ","8855888","bbbbbbb")
     print(s)
 end
 PrimeUI.clear()
@@ -137,7 +137,6 @@ term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(colors.white)
 print("This will delete EVERYTHING on / are you sure you want to install")
-print("Disks will be not cleared")
 print("(Y/N)")
 while true do
     local _,k,_ = os.pullEvent("key")
