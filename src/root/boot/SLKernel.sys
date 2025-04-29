@@ -2,6 +2,7 @@
 local fsOld = fs
 os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
+local status = "Load"
 
 local fsHandshakeToken = {}
 
@@ -37,8 +38,12 @@ local function isin(q,t,m)
     return false
 end
 fs.isLocked = function() return false end
+local Yidx = 0
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
+    Yidx=Yidx+1
+    term.setCursorPos(1,Yidx)
+    term.write(filename)
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
@@ -140,12 +145,6 @@ function os.run(_tEnv, _sPath, ...)
     end
     return false
 end
-local _GLocal = _G
-thread.splitAny(function()
-    os.run({},"/sys/debug/boot/lua.lua")
-end,function()
-    while true do
-        _G = _GLocal
-    end
-end)
+
+os.run({},"/sys/debug/boot/lua.lua")
 os.reboot()
