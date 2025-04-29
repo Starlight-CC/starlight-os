@@ -88,7 +88,7 @@ local function loadAPI(_sPath,...)
         _G[tostring(name)]=list
         internal[tostring(name)]=kern
     end
-    log("loaded "..tostring(name).."at")
+    log("loaded "..tostring(name).."at ")
 end
 
 local function loadAPIs(_sFolder,...)
