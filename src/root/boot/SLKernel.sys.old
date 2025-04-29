@@ -18,17 +18,17 @@ function os.pullEvent(sFilter)
     return table.unpack(eventData, 1, eventData.n)
 end
 
-local function isin(query,table,mode)
-    if mode == nil then
-        local mode = 1
+local function isin(q,t,m)
+    if m == nil then
+        local m = 1
     end
-    for i,v in pairs(table) do
-        if mode == 1 then
-            if i == query then
+    for i,v in pairs(t) do
+        if m == 1 then
+            if i == q then
                 return true
             end
-        elseif mode == 2 then
-            if v == query then
+        elseif m == 2 then
+            if v == q then
                 return true
             end
         else
@@ -37,7 +37,6 @@ local function isin(query,table,mode)
     end
     return false
 end
-
 fs.isLocked = function() return false end
 local Yidx = 0
 function loadfile(filename, mode, env)
@@ -48,8 +47,14 @@ function loadfile(filename, mode, env)
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
-    local file = fsOld.open(filename, "r")
-
+    local token = 0
+    if fs.isLocked(filename) then
+        token = fs.forceUnlock(filename,fsHandshakeToken)
+    end
+    local file = fs.open(filename, "r")
+    if token ~= 0 then
+        fs.lock(filename,token)
+    end
     if not file then return nil, "File not found" end
 
     local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)

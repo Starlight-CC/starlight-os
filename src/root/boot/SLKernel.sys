@@ -2,6 +2,7 @@
 local fsOld = fs
 os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
+local internal = {}
 local status = "Load"
 
 local fsHandshakeToken = {}
@@ -18,17 +19,17 @@ function os.pullEvent(sFilter)
     return table.unpack(eventData, 1, eventData.n)
 end
 
-local function isin(q,t,m)
-    if m == nil then
-        local m = 1
+local function isin(query,table,mode)
+    if mode == nil then
+        local mode = 1
     end
-    for i,v in pairs(t) do
-        if m == 1 then
-            if i == q then
+    for i,v in pairs(table) do
+        if mode == 1 then
+            if i == query then
                 return true
             end
-        elseif m == 2 then
-            if v == q then
+        elseif mode == 2 then
+            if v == query then
                 return true
             end
         else
@@ -37,24 +38,22 @@ local function isin(q,t,m)
     end
     return false
 end
+
 fs.isLocked = function() return false end
 local Yidx = 0
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
-    Yidx=Yidx+1
-    term.setCursorPos(1,Yidx)
-    term.write(filename)
+    if status = "Load" then
+        Yidx=Yidx+1
+        term.setCursorPos(1,Yidx)
+        term.blit("[ LOAD ] ","881111888","fffffffff")
+        term.write(filename)
+    end
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
-    local token = 0
-    if fs.isLocked(filename) then
-        token = fs.forceUnlock(filename,fsHandshakeToken)
-    end
-    local file = fs.open(filename, "r")
-    if token ~= 0 then
-        fs.lock(filename,token)
-    end
+    local file = fsOld.open(filename, "r")
+
     if not file then return nil, "File not found" end
 
     local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)
@@ -75,13 +74,14 @@ function dofile(_sFile,_args,_tEnv)
 end
 
 local function loadAPI(_sPath,...)
-    local list,name=dofile(_sPath,...)
+    local list,name,kern=dofile(_sPath,...)
     if name=="global" then
         for i,v in pairs(list) do
             _G[i]=v
         end
     else
         _G[tostring(name)]=list
+        internal[tostring(name)]=kern
     end
 end
 
