@@ -1,1 +1,3 @@
-local lib 
+local lib = log
+
+return lib, "log"

@@ -13,7 +13,8 @@ if registry == nil then
     registry = dofile("/sys/modules/kernel/registry.la")
 end
 local textutils = dofile("/lib/cc/textutils.la")
-
+term.clear()
+term.setCursorPos(1,1)
 local running = true
 local tCommandHistory = {}
 local tEnv = {

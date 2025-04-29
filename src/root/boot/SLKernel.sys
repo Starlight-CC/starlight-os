@@ -2,6 +2,11 @@
 local fsOld = fs
 os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
+log = setmetatable({logs=""}, {
+    __tostring = function() return log.logs end,
+    __call = function(...) log.logs = log.logs..tostring(...).."\n" end,
+})
+
 local internal = {}
 local status = "Load"
 
@@ -43,7 +48,7 @@ fs.isLocked = function() return false end
 local Yidx = 0
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
-    if status = "Load" then
+    if status == "Load" then
         Yidx=Yidx+1
         term.setCursorPos(1,Yidx)
         term.blit("[ LOAD ] ","881111888","fffffffff")
@@ -145,6 +150,6 @@ function os.run(_tEnv, _sPath, ...)
     end
     return false
 end
-
+status="Run"
 os.run({},"/sys/debug/boot/lua.lua")
 os.reboot()
