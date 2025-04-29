@@ -77,7 +77,6 @@ local function unbios(path, ...)
         term.setTextColor(1)
         term.setCursorPos(1, 1)
         term.setCursorBlink(true)
-        term.clear()
         local fn
         if type(path) == "function" then
             fn = path
