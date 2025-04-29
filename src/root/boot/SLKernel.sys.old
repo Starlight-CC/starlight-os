@@ -108,7 +108,6 @@ lockMod("/sys/modules/")
 fs.lock("/boot/PXBoot.sys")
 fs.lock("/boot/SLKernel.sys")
 fs.lock("/startup.lua")
-fs.lock("/sys/Protect.sys")
 
 os.version = function()
     return registry.get("kernel.version")

@@ -17,3 +17,129 @@ function os.pullEvent(sFilter)
     return table.unpack(eventData, 1, eventData.n)
 end
 
+local function isin(q,t,m)
+    if m == nil then
+        local m = 1
+    end
+    for i,v in pairs(t) do
+        if m == 1 then
+            if i == q then
+                return true
+            end
+        elseif m == 2 then
+            if v == q then
+                return true
+            end
+        else
+            error("invalid mode")
+        end
+    end
+    return false
+end
+fs.isLocked = function() return false end
+function loadfile(filename, mode, env)
+    -- Support the previous `loadfile(filename, env)` form instead.
+    if type(mode) == "table" and env == nil then
+        mode, env = nil, mode
+    end
+    local token = 0
+    if fs.isLocked(filename) then
+        token = fs.forceUnlock(filename,fsHandshakeToken)
+    end
+    local file = fs.open(filename, "r")
+    if token ~= 0 then
+        fs.lock(filename,token)
+    end
+    if not file then return nil, "File not found" end
+
+    local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)
+    file.close()
+    return func, err
+end
+
+function dofile(_sFile,_args,_tEnv)
+    if _tEnv == nil then
+        _tEnv = _G
+    end
+    local fnFile, e = loadfile(_sFile, nil, _G)
+    if fnFile then
+        return fnFile(_args)
+    else
+        error(e, 2)
+    end
+end
+
+local function loadAPI(_sPath,...)
+    local list,name=dofile(_sPath,...)
+    if name=="global" then
+        for i,v in pairs(list) do
+            _G[i]=v
+        end
+    else
+        _G[tostring(name)]=list
+    end
+end
+
+local function loadAPIs(_sFolder,...)
+    local targets=fs.list(_sFolder)
+    for i,v in ipairs(targets) do
+        if v == "fs.la" then
+            loadAPI(_sFolder..v,fsHandshakeToken)
+        else
+            loadAPI(_sFolder..v)
+        end
+    end
+end
+
+local make_package = dofile("/sys/modules/sys/require.la").make
+require=make_package(_G,"/")
+_G.require = require
+loadAPIs("/sys/modules/kernel/")
+local function lockMod(dir)
+    for i,v in ipairs(fs.list(dir)) do
+        if fsOld.isDir(dir..v) then
+            lockMod(dir..v.."/")
+        else
+            fs.lock(fs.combine(dir,v))
+        end
+    end
+end
+lockMod("/sys/modules/")
+fs.lock("/boot/PXBoot.sys")
+fs.lock("/boot/SLKernel.sys")
+fs.lock("/startup.lua")
+
+os.version = function()
+    return registry.get("kernel.version")
+end
+
+function os.run(_tEnv, _sPath, ...)
+    local tEnv = _tEnv
+    setmetatable(tEnv, { __index = _G })
+
+    if registry.get("kernel.strict_globals", false) then
+        tEnv._ENV = tEnv
+        getmetatable(tEnv).__newindex = function(_, name)
+            error("Attempt to create global " .. tostring(name), 2)
+        end
+    end
+
+    local fnFile, err = loadfile(_sPath, nil, tEnv)
+    if fnFile then
+        local ok, err = pcall(fnFile, ...)
+        if not ok then
+            if err and err ~= "" then
+                printError(err)
+            end
+            return false
+        end
+        return true
+    end
+    if err and err ~= "" then
+        printError(err)
+    end
+    return false
+end
+
+os.run({},"/sys/debug/boot/lua.lua")
+os.reboot()
