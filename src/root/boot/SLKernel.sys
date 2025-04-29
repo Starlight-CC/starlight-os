@@ -140,6 +140,12 @@ function os.run(_tEnv, _sPath, ...)
     end
     return false
 end
-
-os.run({},"/sys/debug/boot/lua.lua")
+local _GLocal = _G
+thread.splitAny(function()
+    os.run({},"/sys/debug/boot/lua.lua")
+end,function()
+    while true do
+        _G = _GLocal
+    end
+end)
 os.reboot()
