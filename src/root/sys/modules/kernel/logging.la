@@ -1,6 +1,5 @@
 local logs = log.logs
 local handshake = ...
-local stdout = false
 if fs.getLocked then
     fsOld = fs.getFS(handshake)
 else
@@ -8,14 +7,14 @@ else
 end
 local filename = ""
 local idx = 0
-while fs.exists(filename) do
+while fsOld.exists(filename) do
     idx = idx+1
     filename="stdoutLog("..tostring(idx)..").log"
 end
-
-lib = {
+local header = ""
+local lib = {
     log = function(content)
-        logs=logs..head..tostring(content).."\n"
+        logs=logs.."["..tostring(os.clock()).."]["..header.."]: "..tostring(content).."\n"
     end,
     logs = function()
         return logs
@@ -25,12 +24,13 @@ lib = {
         file.write(logs)
         file.close()
     end,
-    sendStdout = function(state)
-        stdout = state
+    setHead = function(head)
+        header = tostring(head)
     end
 }
 lib = setmetatable(lib,{
     __tostring = function() return lib.logs() end,
     __call = function(content) lib.log(content) end,
 })
+
 return lib, "log"

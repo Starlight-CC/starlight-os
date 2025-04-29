@@ -11,9 +11,9 @@ lib.isDir = fsOld.isDir
 
 lib.exists = function(dir)
     if fsOld.isReadOnly(dir) then
-        error("File does not exist")
+        return false
     else 
-        fsOld.exists(dir)
+        return fsOld.exists(dir)
     end
 end
 local function isin(query,table,iorv)
@@ -53,12 +53,8 @@ lib.list = function(dir)
     local tmp = fsOld.list(dir)
     local ret = {}
     for _,v in ipairs(tmp) do
-        if lib.combine(dir,v) ~= "/rom" then
+        if lib.exists(lib.combine(dir,v)) then
             ret[#ret+1]=v
-        else
-            if not fsOld.isReadOnly(lib.combine(dir,v)) then
-                ret[#ret+1]=v
-            end
         end
     end
     return ret
@@ -84,19 +80,19 @@ lib.unlock = function(dir,token)
     end
 end
 lib.open = function(dir,mode,_token)
-    if fsOld.isReadOnly(dir) then
-        error("File does not exist")
+    if lib.exists(dir) then
+        return nil, "File does not exist"
     elseif fsOld.isDir(dir) then
-        error("Given file is dir")
+        error("Cannot open dir")
     elseif isLocked(dir) then
         if _token then
             if lib.unlock(dir,_token) then
                 return fsOld.open(dir,mode)
             else
-                error("Unlock failed")
+                return nil, "Unlock fail"
             end
         else
-            error("File is locked")
+            return nil, "File is locked"
         end
     else
         return fsOld.open(dir,mode)

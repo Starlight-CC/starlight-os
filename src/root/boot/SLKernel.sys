@@ -4,10 +4,9 @@ os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
 log = setmetatable({logs=""}, {
     __tostring = function() return log.logs end,
-    __call = function(...) log.logs = log.logs.."[SLKernel]: "..tostring(...).."\n" end,
+    __call = function(...) log.logs = log.logs.."["..tostring(os.clock()).."][SLKernel]: "..tostring(...).."\n" end,
 })
 
-local internal = {}
 local status = "Load"
 
 local HandshakeToken = {}
@@ -44,25 +43,35 @@ local function isin(query,table,mode)
     return false
 end
 
-fs.isLocked = function() return false end
 local Yidx = 0
 function loadfile(filename, mode, env)
     -- Support the previous `loadfile(filename, env)` form instead.
     if status == "Load" then
-        Yidx=Yidx+1
-        term.setCursorPos(1,Yidx)
-        term.blit("[ LOAD ] ","881111888","fffffffff")
-        term.write(filename)
+        local _,h = term.getSize()
+        if Yidx < h then
+            Yidx=Yidx+1
+            term.setCursorPos(1,Yidx)
+            term.blit("[ LOAD ] ","881111888","fffffffff")
+            term.write(filename)
+        else
+            term.scroll()
+            term.setCursorPos(1,h)
+            term.blit("[ LOAD ] ","881111888","fffffffff")
+            term.write(filename)
+        end
     end
     if type(mode) == "table" and env == nil then
         mode, env = nil, mode
     end
     local file = fsOld.open(filename, "r")
 
-    if not file then return nil, "File not found" end
+    if not file then 
+        return nil, "File not found" 
+    end
 
-    local func, err = load(file.readAll(), "@/" .. fs.combine(filename), mode, env)
+    local func, err = load(file.readAll(), "@/"..fs.combine(filename), mode, env)
     file.close()
+    if err then log("File loaded with err: ") end
     return func, err
 end
 
@@ -79,16 +88,15 @@ function dofile(_sFile,_args,_tEnv)
 end
 
 local function loadAPI(_sPath,...)
-    local list,name,kern=dofile(_sPath,...)
+    local list,name=dofile(_sPath,...)
     if name=="global" then
         for i,v in pairs(list) do
             _G[i]=v
         end
     else
         _G[tostring(name)]=list
-        internal[tostring(name)]=kern
     end
-    log("loaded "..tostring(name).."at ")
+    log("Loaded "..tostring(name))
 end
 
 local function loadAPIs(_sFolder,...)
@@ -108,6 +116,8 @@ local make_package = dofile("/sys/modules/sys/require.la").make
 require=make_package(_G,"/")
 _G.require = require
 loadAPIs("/sys/modules/kernel/")
+log("All APIs loaded")
+log.save()
 local function lockMod(dir)
     for i,v in ipairs(fs.list(dir)) do
         if fsOld.isDir(dir..v) then
@@ -121,6 +131,7 @@ lockMod("/sys/modules/")
 fs.lock("/boot/PXBoot.sys")
 fs.lock("/boot/SLKernel.sys")
 fs.lock("/startup.lua")
+log("All essential files locked")
 
 os.version = function()
     return registry.get("kernel.version")
@@ -153,6 +164,8 @@ function os.run(_tEnv, _sPath, ...)
     end
     return false
 end
+log("SLKernel loaded switching to \"Run\"")
 status="Run"
+log.save()
 os.run({},"/sys/debug/boot/lua.lua")
 os.reboot()
