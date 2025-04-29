@@ -4,13 +4,13 @@ os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
 log = setmetatable({logs=""}, {
     __tostring = function() return log.logs end,
-    __call = function(...) log.logs = log.logs..tostring(...).."\n" end,
+    __call = function(...) log.logs = log.logs.."[SLKernel]: "..tostring(...).."\n" end,
 })
 
 local internal = {}
 local status = "Load"
 
-local fsHandshakeToken = {}
+local HandshakeToken = {}
 
 function os.pullEventRaw(sFilter)
     return coroutine.yield(sFilter)
@@ -88,13 +88,16 @@ local function loadAPI(_sPath,...)
         _G[tostring(name)]=list
         internal[tostring(name)]=kern
     end
+    log("loaded "..tostring(name).."at")
 end
 
 local function loadAPIs(_sFolder,...)
     local targets=fs.list(_sFolder)
     for i,v in ipairs(targets) do
         if v == "fs.la" then
-            loadAPI(_sFolder..v,fsHandshakeToken)
+            loadAPI(_sFolder..v,HandshakeToken)
+        elseif v == "logging.la" then
+            loadAPI(_sFolder..v,HandshakeToken)
         else
             loadAPI(_sFolder..v)
         end

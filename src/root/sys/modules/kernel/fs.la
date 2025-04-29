@@ -140,4 +140,11 @@ lib.getLocked = function()
     end
     return ret
 end
+lib.getFS = function(masterKey)
+    if rawequal(handshake,masterKey) then
+        return fsOld
+    else
+        return false
+    end
+end
 return lib,"fs"
