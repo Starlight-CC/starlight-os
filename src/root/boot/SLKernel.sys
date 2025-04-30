@@ -1,9 +1,14 @@
 --Copyright (C) 2025  Starlight-CC
-local vEnv = {}
-local function addToVEnv(name,value)
-    vEnv[tostring(name)]=value
+local _VG = _G
+local keptAPIs = {assert = true, collectgarbage = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, colors = true, colours = true, keys = true}
+local t = {}
+for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
+for _,k in ipairs(t) do _VG[k] = nil end
+t = nil
+local function PANIC(...)
+    term.setCursorPos(1,1)
+    term.write("KERNEL PANIC")
+    term.write(...)
+    os.pullEvent()
 end
-addToVEnv("setmetatable",setmetatable)
-addToVEnv("getmetatable",getmetatable)
-addToVEnv("tostring",tostring)
-addToVEnv("tonumber",tonumber)
+local vEnv = setmetatable({},{__index=_VG}) -- Vurtual ENV

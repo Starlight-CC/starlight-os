@@ -65,7 +65,6 @@ function lib.write( sText )
             end
         end
     end
-    
     return nLinesPrinted
 end
 
