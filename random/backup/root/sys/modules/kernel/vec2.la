@@ -1,0 +1,74 @@
+--Copyright (C) 2025  Starlight-CC
+local lib={}
+local vec = {
+    add=function(self,o)
+        return new(
+            self.x+o.x,
+            self.y+o.y
+        )
+    end,
+    sub=function(self,o)
+        return new(
+            self.x-o.x,
+            self.y-o.y
+        )
+    end,
+    mul=function(self,m)
+        return new(
+            self.x*m,
+            self.y*m
+        )
+    end,
+    div=function(self,m)
+        return new(
+            self.x/m,
+            self.y/m
+        )
+    end,
+    unm=function(self)
+        return new(
+            -self.x,
+            -self.y
+        )
+    end,
+    dot=function(self,o)
+        return self.x*o.x+self.y*o.y
+    end,
+    length=function(self)
+        return math.sqrt(self.x*self.x+self.y*self.y)
+    end,
+    normalize=function(self)
+        return self:mul(1/self:length())
+    end,
+    round=function(self,tolerance)
+        tolerance=tolerance or 1.0
+        return new(
+            math.floor((self.x+tolerance*0.5)/tolerance)*tolerance,
+            math.floor((self.y+tolerance*0.5)/tolerance)*tolerance
+        )
+    end,
+    tostring=function(self)
+        return self.x..","..self.y
+    end,
+    equals=function(self,other)
+        return self.x==other.x and self.y==other.y
+    end,
+}
+local vx = {
+    __index = vec,
+    __add = vec.add,
+    __sub = vec.sub,
+    __mul = vec.mul,
+    __div = vec.div,
+    __unm = vec.unm,
+    __tostring = vec.tostring,
+    __eq = vec.equals,
+}
+local function new(x,y)
+    return setmetatable({
+        x = tonumber(x) or 0,
+        y = tonumber(y) or 0,
+    }, vx)
+end
+lib.new=new
+return lib,"vec2"

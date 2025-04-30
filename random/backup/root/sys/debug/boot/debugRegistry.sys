@@ -1,0 +1,82 @@
+--Copyright (C) 2025  Starlight-CC
+term.clear()
+term.setTextColor(colors.white)
+term.setBackgroundColor(colors.black)
+print("Registry editor")
+_G.require = require
+local registry = dofile("/sys/modules/kernel/registry.la")
+local history = {}
+local function tokenise(...) -- convert arg string to table
+    local line = table.concat({ ... }, " ")
+    local words = {}
+    local quoted = false
+    for match in string.gmatch(line .. "\"", "(.-)\"") do
+        if quoted then
+            table.insert(words, match)
+        else
+            for m in string.gmatch(match, "[^ \t]+") do
+                table.insert(words, m)
+            end
+        end
+        quoted = not quoted
+    end
+    return words
+end
+local exit = false
+term.setTextColor(colors.orange)
+while not exit do
+    write("> ")
+    term.setTextColor(colors.white)
+    local input = read(nil,history)
+    term.setTextColor(colors.orange)
+    if input ~= "" then
+        history[#history+1]=input
+    end
+    local args = tokenise(input)
+    if args[1] == "help" then
+        term.setTextColor(colors.green)
+        print("help               - Show this")
+        print("set [name] [value] - Set a registry value")
+        print("get [name]         - Get a registry value")
+        print("void [name]        - Delete a registry")
+        print("list               - List registry")
+        print("save               - Save registry to disk")
+        print("exit               - Exit to bootloader")
+        term.setTextColor(colors.orange)
+    elseif args[1] == "set" then
+        if tonumber(args[3]) ~= nil then
+            registry.set(args[2],tonumber(args[3]))
+        elseif args[3] == "true" then
+            registry.set(args[2],true)
+        elseif args[3] == "false" then
+            registry.set(args[2],false)
+        else
+            registry.set(args[2],args[3])
+        end
+    elseif args[1] == "get" then
+        local value = registry.get(args[2])
+        if type(value) == "table" then
+            textutils.pagedPrint(textutils.serialize(value))
+        else
+            print(value)
+        end
+    elseif args[1] == "void" then
+        registry.void(args[2])
+    elseif args[1] == "save" then
+        registry.save()
+    elseif args[1] == "exit" then
+        exit = true
+    elseif args[1] == "list" then
+        local list = registry.list()
+        local stdout = ""
+        for i,v in ipairs(list) do
+            if i == #list then
+                stdout = stdout..v
+            else
+                stdout = stdout..v.."\n"
+            end
+        end
+        textutils.pagedPrint(stdout)
+    end
+end
+shell.run("/boot/PXBoot.sys /ect/PXBoot/debugconfig.conf")

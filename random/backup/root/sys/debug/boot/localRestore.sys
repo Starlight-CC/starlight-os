@@ -1,0 +1,2 @@
+--Copyright (C) 2025  Starlight-CC
+shell.run("/boot/restore.vi")

@@ -1,0 +1,146 @@
+local handshake = ...
+local lib = {}
+local fsOld=fs
+local lockTokens = {}
+local tostring = tostring
+local rawequal = rawequal
+local expect = dofile("/sys/modules/cc/expect.lua")
+
+lib.getName = fsOld.getName
+lib.isDir = fsOld.isDir
+
+lib.exists = function(dir)
+    if fsOld.isReadOnly(dir) then
+        return false
+    else 
+        return fsOld.exists(dir)
+    end
+end
+local function isin(query,table,iorv)
+    for i,v in pairs(table) do
+        if iorv then
+            if i == query then
+                return true
+            end
+        else
+            if v == query then
+                return true
+            end
+        end
+    end
+    return false
+end
+lib.combine = function(...)
+    local args = {...}
+    for i,v in ipairs(args) do
+        expect(i,v,"string")
+    end
+    if string.sub(args[1],1,1) ~= "/" then
+        args[1]="/"..args[1]
+    end
+    local ret = ""
+    for i,v in ipairs(args) do
+        if string.sub(args[i],#args[i],#args[i]) ~= "/" then
+            args[i]=args[i].."/"
+        end
+        ret = ret..args[i]
+    end
+    ret = string.sub(ret,1,#ret-1)
+    return ret
+end
+lib.list = function(dir)
+    expect(1,dir,"string")
+    local tmp = fsOld.list(dir)
+    local ret = {}
+    for _,v in ipairs(tmp) do
+        if lib.exists(lib.combine(dir,v)) then
+            ret[#ret+1]=v
+        end
+    end
+    return ret
+end
+lib.isLocked = function(dir)
+    if isin(lib.combine(dir),lockTokens,true) then
+        return true
+    else
+        return false
+    end
+end
+local isLocked = lib.isLocked
+lib.unlock = function(dir,token)
+    if not isLocked(dir) then
+        error("File is not locked")
+    else
+        if rawequal(token,lockTokens[tostring(lib.combine(dir))]) then
+            lockTokens[tostring(lib.combine(dir))]=nil
+            return true
+        else
+            return false
+        end
+    end
+end
+lib.open = function(dir,mode,_token)
+    if lib.exists(dir) then
+        return nil, "File does not exist"
+    elseif fsOld.isDir(dir) then
+        error("Cannot open dir")
+    elseif isLocked(dir) then
+        if _token then
+            if lib.unlock(dir,_token) then
+                return fsOld.open(dir,mode)
+            else
+                return nil, "Unlock fail"
+            end
+        else
+            return nil, "File is locked"
+        end
+    else
+        return fsOld.open(dir,mode)
+    end
+end
+lib.delete = function(dir)
+    if fsOld.isReadOnly(dir) then
+        error("File does not exist")
+    elseif isLocked(dir) then
+        error("File is locked")
+    else
+        return fsOld.delete(dir,mode)
+    end
+end
+lib.lock = function(dir)
+    if isLocked(dir) then
+        error("File is locked")
+    else
+        if fsOld.exists(lib.combine(dir)) then
+            local token = {}
+            lockTokens[tostring(lib.combine(dir))]=token
+            return token
+        else
+            error("File does not exist")
+        end
+    end
+end
+lib.forceUnlock = function(dir,masterKey)
+    if rawequal(handshake,masterKey) then
+        local ret = lockTokens[tostring(dir)]
+        lockTokens[tostring(lib.combine(dir))]=nil
+        return ret
+    else
+        return false
+    end
+end
+lib.getLocked = function()
+    local ret = {}
+    for i,v in pairs(lockTokens) do
+        ret[#ret+1]=i
+    end
+    return ret
+end
+lib.getFS = function(masterKey)
+    if rawequal(handshake,masterKey) then
+        return fsOld
+    else
+        return false
+    end
+end
+return lib,"fs"

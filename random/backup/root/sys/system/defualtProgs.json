@@ -1,0 +1,18 @@
+{
+    ".spr":"/sys/system/exec/spr.sys",
+    ".sprx":"/sys/system/exec/sprx.sys",
+    ".la":"/sys/system/exec/librarys/la.sys",
+    ".pla":"/sys/system/exec/librarys/pla.sys",
+    ".sff":"/bin/Fontview",
+    ".sys":[
+        "/bin/SLVim",
+        "/bin/lua"
+    ],
+    ".lua":[
+        "/bin/SLVim",
+        "lua"
+    ],
+    ".txt":[
+        "/bin/SLVim"
+    ]
+}
