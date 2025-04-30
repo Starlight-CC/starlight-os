@@ -1,0 +1,9 @@
+--Copyright (C) 2025  Starlight-CC
+local vEnv = {}
+local function addToVEnv(name,value)
+    vEnv[tostring(name)]=value
+end
+addToVEnv("setmetatable",setmetatable)
+addToVEnv("getmetatable",getmetatable)
+addToVEnv("tostring",tostring)
+addToVEnv("tonumber",tonumber)

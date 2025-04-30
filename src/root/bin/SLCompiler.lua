@@ -1,4 +1,7 @@
 --Copyright (C) 2025  Starlight-CC
+if _arch then
+    error("Run with craftOS")
+end
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x000000)
