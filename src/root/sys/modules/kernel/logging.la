@@ -9,9 +9,9 @@ local filename = ""
 local idx = 0
 while fsOld.exists(filename) do
     idx = idx+1
-    filename="stdoutLog("..tostring(idx)..").log"
+    filename="/var/stdoutLog("..tostring(idx)..").log"
 end
-local header = ""
+local header = "SLKernel"
 local lib = {
     log = function(content)
         logs=logs.."["..tostring(os.clock()).."]["..header.."]: "..tostring(content).."\n"

@@ -2,6 +2,10 @@
 local fsOld = fs
 os.CraftOSVersion = os.version
 os.queueEventRaw = os.queueEvent
+log = setmetatable({logs=""}, {
+    __tostring = function() return log.logs end,
+    __call = function(...) log.logs = log.logs.."["..tostring(os.clock()).."][SLKernel]: "..tostring(...).."\n" end,
+})
 local oldError = error
 error = function(...)
     log.save()
@@ -10,11 +14,6 @@ error = function(...)
     oldError(...)
 end
 os.panic = error
-log = setmetatable({logs=""}, {
-    __tostring = function() return log.logs end,
-    __call = function(...) log.logs = log.logs.."["..tostring(os.clock()).."][SLKernel]: "..tostring(...).."\n" end,
-})
-
 local status = "Load"
 
 local HandshakeToken = {}
