@@ -12,3 +12,4 @@ local function PANIC(...)
     os.pullEvent()
 end
 local vEnv = setmetatable({},{__index=_VG}) -- Vurtual ENV
+local function registerDriver()
