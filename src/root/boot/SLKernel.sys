@@ -8,9 +8,10 @@ log = setmetatable({logs=""}, {
 })
 local oldError = error
 error = function(...)
-    log.save()
-    print(log)
-    print("KERNEL PANIC")
+    pcall(log.save)
+    term.write(log)
+    term.write("KERNEL PANIC")
+    os.pullEvent()
     oldError(...)
 end
 os.panic = error
