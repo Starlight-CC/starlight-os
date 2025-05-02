@@ -7,7 +7,7 @@ for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
 local driverRuntimes = {}
-local _VG.syscalls = {}
+local _VG.syscall = {}
 local function requireGlobal(_namespace)
     return _G[_namespace]
 end
@@ -15,7 +15,7 @@ local function editENV(_namespace,_data)
     _VG[tostring(_namespace)]=_data
 end
 local function addSyscall(_namespace,_data)
-    _VG.syscalls[tostring(_namespace)]=_data
+    _VG.syscall[tostring(_namespace)]=_data
 end
 local function addRunTask(_namespace,_function)
     driverRuntimes[tostring(_namespace)]=_function
