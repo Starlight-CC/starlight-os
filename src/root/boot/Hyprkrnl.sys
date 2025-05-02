@@ -49,8 +49,7 @@ local VDEnv = setmetatable({
     editENV,
     addSyscall,
     addRunTask,
-    PANIC,
-    stop = os.pullEvent
+    PANIC
 },{
     __index=function(tbl, key)
     local v = _VG[key]
