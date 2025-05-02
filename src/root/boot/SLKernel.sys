@@ -5,14 +5,53 @@ local t = {}
 for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
+local driverRuntimes = {}
+local function editENV(_namespace,_data)
+    _VG[tostring(_namespace)]=_data
+end
+local function addRunTask(_namespace,_function)
+    driverRuntimes[tostring(_namespace)]=_function
+end
 local function PANIC(...)
-    term.setCursorPos(1,1)
-    term.write("KERNEL PANIC")
-    term.write(...)
+    local w,h = term.getSize()
+    term.setBackgroundColor(colors.green)
+    term.clear()
+    term.setCursorPos(1,h-3)
+    term.setBackgroundColor(colors.black)
+    term.write(string.rep(" ",w))
+    term.setCursorPos(5,5)
+    term.setBackgroundColor(colors.green)
+    term.setTextColor(colors.black)
+    term.write(":[")
+    term.setCursorPos(5,6)
+    term.write("Uh oh this is bad")
+    term.setCursorPos(2,h-1)
+    term.write("ERROR CODE: Driver failed to load")
+    os.pullEvent()
+    os.pullEvent()
     os.pullEvent()
 end
-local VPEnv = setmetatable({},{__index=_VG}) -- Vurtual Program ENV
-local VDEnv = setmetatable({},{__index=_VG}) -- Vurtual Driver ENV
+-- Vurtual Driver ENV
+local VDEnv = setmetatable({},{
+    __index=function(tbl, key)
+    local v = _VG[key]
+    if v ~= nil and type(v)=="table" then
+        return setmetatable({}, {__index=v})
+    end
+    return v
+end
+})
+--Vurtual Program ENV
+local VPEnv = setmetatable({},{
+    __index=function(tbl, key)
+    local v = _VG[key]
+    if v ~= nil and type(v)=="table" then
+        return setmetatable({}, {__index=v})
+    end
+    return v
+end
+})
+
 --[[there's a few ways id say
 either throw all functions you ever need in the kernel in local variables, as you did with getraw i think
 
