@@ -12,7 +12,10 @@ end
 local function addRunTask(_namespace,_function)
     driverRuntimes[tostring(_namespace)]=_function
 end
-local function PANIC(...)
+local function PANIC(ERR,CustomPhrase)
+    if CustomPhrase == nil then
+        CustomPhrase = "Uh oh"
+    end
     local w,h = term.getSize()
     term.setBackgroundColor(colors.green)
     term.clear()
@@ -22,11 +25,11 @@ local function PANIC(...)
     term.setCursorPos(5,5)
     term.setBackgroundColor(colors.green)
     term.setTextColor(colors.black)
-    term.write(":[")
-    term.setCursorPos(5,6)
-    term.write("Uh oh this is bad")
+    term.write("T_T")
+    term.setCursorPos(5,7)
+    term.write(tostring(CustomPhrase))
     term.setCursorPos(2,h-1)
-    term.write("ERROR CODE: Driver failed to load")
+    term.write("ERROR CODE: "..tostring(ERR))
     os.pullEvent()
     os.pullEvent()
     os.pullEvent()
