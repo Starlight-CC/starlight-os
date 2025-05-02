@@ -1,4 +1,5 @@
 --Copyright (C) 2025  Starlight-CC
+--Hyprkrnl
 local _VG = _G
 local keptAPIs = {assert = true, collectgarbage = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, colors = true, colours = true, keys = true}
 local t = {}
@@ -25,7 +26,7 @@ local function PANIC(ERR,CustomPhrase)
     term.setCursorPos(5,5)
     term.setBackgroundColor(colors.green)
     term.setTextColor(colors.black)
-    term.write("T_T")
+    term.write("T_T") -- Hyprkrnl rn
     term.setCursorPos(5,7)
     term.write(tostring(CustomPhrase))
     term.setCursorPos(2,h-1)
@@ -59,25 +60,3 @@ local VPEnv = setmetatable({},{
     return v
 end
 })
-
---[[there's a few ways id say
-either throw all functions you ever need in the kernel in local variables, as you did with getraw i think
-
-orrrr give the lua code thats executing its own _ENV
-quick intro to _ENV:
-_ENV contains all those gloval variables, and each load() call gets an _ENV. _G is how you access _ENV. So what you can do is. in the load function, pass the following for _ENV: load(code,name,mode,setmetatable({},{["__index"]=_G, ["__getmetatable"]=false})) 
-not sure about the argument order. but you get the idea
-actually, crap, that only works for the immediate globals
-__getmetatable being false should prevent access to the metatable iirc
-
-i think ideally that metatable should return a proxy object for anything you access
-so __index should be the following func:
-function(tbl, key)
-   local v = _G[key]
-   if v ~= nil and type(v)=="table" then
-      return setmetatable({}, sameMagicAsHere but with v instead of _G)
-   end
-   return v
-end
-that should work for nested stuff
-basically it should now be read-only, and if you add something it gets added to the proxy object instead]]
