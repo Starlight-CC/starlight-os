@@ -33,9 +33,14 @@ local function PANIC(ERR,CustomPhrase)
     os.pullEvent()
     os.pullEvent()
     os.pullEvent()
+    os.reboot()
 end
 -- Vurtual Driver ENV
-local VDEnv = setmetatable({},{
+local VDEnv = setmetatable({
+    editENV,
+    addRunTask,
+    PANIC
+},{
     __index=function(tbl, key)
     local v = _VG[key]
     if v ~= nil and type(v)=="table" then
