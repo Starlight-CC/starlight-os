@@ -7,6 +7,9 @@ for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
 local driverRuntimes = {}
+local function requireGlobal(_namespace)
+    return _G[_namespace]
+end
 local function editENV(_namespace,_data)
     _VG[tostring(_namespace)]=_data
 end
@@ -38,6 +41,7 @@ local function PANIC(ERR,CustomPhrase)
 end
 -- Vurtual Driver ENV
 local VDEnv = setmetatable({
+    requireGlobal,
     editENV,
     addRunTask,
     PANIC
