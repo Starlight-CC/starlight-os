@@ -17,55 +17,32 @@ end
 local function addSyscall(_namespace,_data)
     _VG.syscall[tostring(_namespace)]=_data
 end
-local function addRunTask(_namespace,_function)
+local function addTask(_namespace,_function)
     driverRuntimes[tostring(_namespace)]=_function
 end
-local function PANIC(ERR,CustomPhrase)
-    if CustomPhrase == nil then
-        CustomPhrase = "Uh oh - Hyprkrnl"
-    end
-    local w,h = term.getSize()
-    term.setBackgroundColor(colors.green)
+local function PANIC(ERR)
     term.clear()
-    term.setCursorPos(1,h-3)
-    term.setBackgroundColor(colors.black)
-    term.write(string.rep(" ",w))
-    term.setCursorPos(5,5)
-    term.setBackgroundColor(colors.green)
-    term.setTextColor(colors.black)
-    term.write("T_T") -- Hyprkrnl rn
-    term.setCursorPos(5,7)
-    term.write(tostring(CustomPhrase))
-    term.setCursorPos(2,h-1)
-    term.write("ERR: "..tostring(ERR))
-    os.pullEvent()
-    os.pullEvent()
-    os.pullEvent()
-    os.reboot()
+    term.setCursorPos(1,1)
+    term.write(ERR)
+end
+--Vurtual ENV
+local function createVurtualENV(dummyEnv,Env)
+    local VPEnv = setmetatable(dummyEnv,{
+        __index=function(tbl, key)
+        local v = Env[key]
+        if v ~= nil and type(v)=="table" then
+            return setmetatable({}, {__index=v})
+        end
+        return v
+    end
+    })
+    return VPEnv
 end
 -- Vurtual Driver ENV
-local VDEnv = setmetatable({
+local VDEnv = createVurtualENV({
     requireGlobal,
     editENV,
     addSyscall,
-    addRunTask,
+    addTask,
     PANIC
-},{
-    __index=function(tbl, key)
-    local v = _VG[key]
-    if v ~= nil and type(v)=="table" then
-        return setmetatable({}, {__index=v})
-    end
-    return v
-end
-})
---Vurtual Program ENV
-local VPEnv = setmetatable({},{
-    __index=function(tbl, key)
-    local v = _VG[key]
-    if v ~= nil and type(v)=="table" then
-        return setmetatable({}, {__index=v})
-    end
-    return v
-end
-})
+},_VG)

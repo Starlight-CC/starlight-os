@@ -4,5 +4,5 @@ local args = {...}
 local file = args[1]
 local path = args[2]
 local interprter = args[3]
-dofile(interprter,file)
-syscall.fs.delete(path)
+dofile(interprter,nil,file,path)
+fs.delete(path)
