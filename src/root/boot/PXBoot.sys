@@ -493,6 +493,6 @@ while not Exit do
             runShell()
             drawScreen()
         end
-    elseif ev[1] == "terminate" then break
+    elseif ev[1] == "terminate" then
     end
 end
