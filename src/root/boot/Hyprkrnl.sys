@@ -6,25 +6,9 @@ local t = {}
 for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
-local driverRuntimes = {}
-local _VG.syscall = {}
-local function requireGlobal(_namespace)
-    return _G[_namespace]
-end
-local function editENV(_namespace,_data)
-    _VG[tostring(_namespace)]=_data
-end
-local function addSyscall(_namespace,_data)
-    _VG.syscall[tostring(_namespace)]=_data
-end
-local function addTask(_namespace,_function)
-    driverRuntimes[tostring(_namespace)]=_function
-end
-local function PANIC(ERR)
-    term.clear()
-    term.setCursorPos(1,1)
-    term.write(ERR)
-end
+local kernel = {}
+kernel.hypervisor={}
+kernel.hypervisor.stack={}
 --Vurtual ENV
 local function createVurtualENV(dummyEnv,Env)
     local VPEnv = setmetatable(dummyEnv,{
@@ -38,11 +22,6 @@ local function createVurtualENV(dummyEnv,Env)
     })
     return VPEnv
 end
--- Vurtual Driver ENV
-local VDEnv = createVurtualENV({
-    requireGlobal,
-    editENV,
-    addSyscall,
-    addTask,
-    PANIC
-},_VG)
+
+function kernel.hypervisor.addProcess(thread,name)
+    
