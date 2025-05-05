@@ -198,7 +198,7 @@ function cmds.insmod(t)
     assert(loadfile(path, nil, setmetatable({entries = entries, bootcfg = bootcfg, cmds = cmds, userGlobals = userGlobals, unbios = unbios}, {__index = _ENV})))(t.args, path)
 end
 
-local function boot(entry)
+local function boot(entry,newBootArgs)
     term.setBackgroundColor(colors.black)
     term.setTextColor(colors.white)
     term.clear()
