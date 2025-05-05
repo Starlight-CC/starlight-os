@@ -223,6 +223,7 @@ local function boot(entry)
         os.pullEventRaw("key")
         return false
     end
+    if newBootArgs then bootcfg.args=newBootArgs end
     bootcfg.fn(table.unpack(bootcfg.args))
     return true
 end
@@ -374,7 +375,7 @@ repeat
 until true
 
 local function runShell()
-
+    boot(entries[selection],{cli=true})
 end
 
 if #entries == 0 then return runShell() end
@@ -492,6 +493,8 @@ while not Exit do
         elseif ev[2] == keys.c then
             runShell()
             drawScreen()
+        elseif ev[2] == keys.e then
+            os.reboot()
         end
     elseif ev[1] == "terminate" then
     end
