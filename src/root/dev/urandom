@@ -1,4 +1,0 @@
-local random = function()
-    return kernel.pseudorandom(), random
-end
-return random

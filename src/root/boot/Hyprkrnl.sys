@@ -9,7 +9,7 @@ t = nil
 local kernel = {}
 kernel.hypervisor={}
 kernel.hypervisor.stack={}
-local currentProcess = {name="Kernel",path="/boot/Hyprkrnl.sys",thread="Main"}
+local currentProcess = {name="Kernel",path="/boot/Hyprkrnl.sys",thread=0}
 --Vurtual ENV
 local function createVurtualENV(dummyEnv,Env)
     local VPEnv = setmetatable(dummyEnv,{
@@ -25,3 +25,6 @@ local function createVurtualENV(dummyEnv,Env)
 end
 
 function kernel.hypervisor.addProcess(thread,name)
+    kernel.hypervisor.stack[#kernel.hypervisor.stack+1]={name=name,thread=thread}
+end
+
