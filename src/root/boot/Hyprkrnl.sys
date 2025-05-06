@@ -28,7 +28,8 @@ local PIDidx = 1
 function kernel.hypervisor.addProcess(func,name)
     local info = debug.getinfo(func)
     local thread = coroutine.create(func)
-    hypervisor.stack[tostring(PIDidx)]={name=name,path=info.short_src,thread=thread,env=debug.getfenv(func)}
+    local env = debug.getfenv(func)
+    hypervisor.stack[tostring(PIDidx)]={name=name,path=info.short_src,thread=thread,env=env,root=env.me.cwd()}
     PIDidx = PIDidx + 1
 end
 
