@@ -7,8 +7,9 @@ for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
 local kernel = {}
-kernel.hypervisor={}
-kernel.hypervisor.stack={}
+kernel.hypervisor = {}
+local hypervisor={}
+hypervisor.stack={}
 local currentProcess = {name="Kernel",path="/boot/Hyprkrnl.sys",thread=0}
 --Vurtual ENV
 local function createVurtualENV(dummyEnv,Env)
@@ -24,9 +25,10 @@ local function createVurtualENV(dummyEnv,Env)
     return VPEnv
 end
 local PIDidx = 1
-kernel.process={}
-function kernel.hypervisor.addProcess(thread,name)
-    kernel.hypervisor.stack[tostring(PIDidx)]={name=name,path=kernel.Process.path,thread=thread}
+function kernel.hypervisor.addProcess(func,name)
+    local info = debug.getinfo(func)
+    local thread = coroutine.create(func)
+    hypervisor.stack[tostring(PIDidx)]={name=name,path=info.short_src,thread=thread,env=debug.getfenv(func)}
     PIDidx = PIDidx + 1
 end
 
