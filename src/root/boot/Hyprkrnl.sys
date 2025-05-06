@@ -1,12 +1,13 @@
 --Copyright (C) 2025  Starlight-CC
 --Hyprkrnl
 local _VG = _G
-local keptAPIs = {assert = true, collectgarbage = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, colors = true, colours = true, keys = true}
+local keptAPIs = {assert = true, collectgarbage = true, gcinfo = true, getfenv = true, getmetatable = true, ipairs = true, load = true, loadstring = true, math = true, newproxy = true, next = true, pairs = true, pcall = true, rawequal = true, rawget = true, rawlen = true, rawset = true, select = true, setfenv = true, setmetatable = true, string = true, table = true, tonumber = true, tostring = true, type = true, unpack = true, xpcall = true, colors = true, colours = true, keys = true, error = true}
 local t = {}
 for k in pairs(_VG) do if not keptAPIs[k] then table.insert(t, k) end end
 for _,k in ipairs(t) do _VG[k] = nil end
 t = nil
-local kernel = {}
+local kernel = os
+kernel.queueEventRaw = kernel.queueEvent
 kernel.hypervisor = {}
 local hypervisor={}
 hypervisor.stack={}
@@ -24,12 +25,56 @@ local function createVurtualENV(dummyEnv,Env)
     })
     return VPEnv
 end
+
+function kernel.pullEventRaw(_sFilter)
+    return coroutine.yield(_sFilter)
+end
+
+function kernel.pullEvent(_sFilter)
+    local eventData = table.pack(kernel.pullEventRaw(_sFilter))
+    if eventData[1] == "terminate" then
+        error("Terminated", 0)
+    end
+    return table.unpack(eventData, 1, eventData.n)
+end
+
+function kernel.queueEvent(...)
+    kernel.queueEventRaw(...)
+    return ...
+end
+
+local function loadfile(path,_mode,_env,_namespace)
+    if not type(_env) == "table" then
+        _env = createVurtualENV({},_VG)
+    else
+        _env = createVurtualENV(_env,_VG)
+    end
+    if not _namespace then
+        _namespace = "@"..path
+    end
+    if type(_mode) == "table" and _env == nil then
+        _mode, _env = nil, _mode
+    end
+    local file = fs.open(path, "r")
+
+local function dofile(path,_env,...)
 local PIDidx = 1
 function kernel.hypervisor.addProcess(func,name)
     local info = debug.getinfo(func)
     local thread = coroutine.create(func)
     local env = debug.getfenv(func)
-    hypervisor.stack[tostring(PIDidx)]={name=name,path=info.short_src,thread=thread,env=env,root=env.me.cwd()}
+    hypervisor.stack[tostring(PIDidx)]={
+        name=name,
+        path=info.short_src,
+        thread=thread,
+        environ=env,
+        owner=env.me.myExec(),
+        root=env.me.myRoot(),
+        status="suspended",
+        tasks={}
+    }
     PIDidx = PIDidx + 1
 end
+
+
 
