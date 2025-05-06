@@ -23,8 +23,10 @@ local function createVurtualENV(dummyEnv,Env)
     })
     return VPEnv
 end
-
+local PIDidx = 1
+kernel.process={}
 function kernel.hypervisor.addProcess(thread,name)
-    kernel.hypervisor.stack[#kernel.hypervisor.stack+1]={name=name,thread=thread}
+    kernel.hypervisor.stack[tostring(PIDidx)]={name=name,path=kernel.Process.path,thread=thread}
+    PIDidx = PIDidx + 1
 end
 
