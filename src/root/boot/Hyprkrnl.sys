@@ -50,14 +50,31 @@ local function loadfile(path,_mode,_env,_namespace)
         _env = createVurtualENV(_env,_VG)
     end
     if not _namespace then
-        _namespace = "@"..path
+        _namespace = "@/"..fs.combine(path)
     end
     if type(_mode) == "table" and _env == nil then
         _mode, _env = nil, _mode
     end
     local file = fs.open(path, "r")
+    if not file then
+        return nil, "File not found"
+    end
+    local func, err = load(file.readAll(),_namespace,_mode,_env)
+    return func, err
+end
 
 local function dofile(path,_env,...)
+    if _tEnv == nil then
+        _tEnv = _G
+    end
+    local fnFile, e = loadfile(_sFile, nil, _G)
+    if fnFile then
+        return fnFile(...)
+    else
+        error(e, 2)
+    end
+end
+
 local PIDidx = 1
 function kernel.hypervisor.addProcess(func,name)
     local info = debug.getinfo(func)
@@ -76,5 +93,8 @@ function kernel.hypervisor.addProcess(func,name)
     PIDidx = PIDidx + 1
 end
 
+function hypervisor.kill(processID)
+    hypervisor.stack[tostring(processID)]=nil
+end
 
 
