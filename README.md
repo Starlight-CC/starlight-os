@@ -3,4 +3,4 @@ An OS for CC: Tweaked based on Unix/Linux
 
 ---
 
-### [Documentation](https://github.com/Starlight-CC/Starlight-OS/tree/main/docs)
+This is the website for Starlight-OS
