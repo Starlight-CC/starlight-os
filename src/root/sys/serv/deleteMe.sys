@@ -1,8 +1,0 @@
---Copyright (C) 2025  Starlight-CC
---Example shebang: #!$serv.deleteMe {my interprter}
-local args = {...}
-local file = args[1]
-local path = args[2]
-local interprter = args[3]
-dofile(interprter,nil,file,path)
-fs.delete(path)
