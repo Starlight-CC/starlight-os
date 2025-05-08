@@ -1,7 +1,0 @@
-local handshake = ...
-local debugOld = debug
-local lib = {}
-lib.traceback = debugOld.traceback
-lib.getinfo = debugOld.getinfo
--- WIP
-return lib,"debug"
