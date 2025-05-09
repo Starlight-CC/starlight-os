@@ -10,11 +10,11 @@ pgk_env.require = dofile("rom/modules/main/cc/require.lua").make(pgk_env, "rom/m
 local require = pgk_env.require
 _G.require = require
 local VER = "src"
-local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/legal/TOSPrint.txt").readAll()
-local API = "https://api.github.com/repos/Starlight-CC/Starlight-OS/contents/"
-local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/json.la").readAll())()
-local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
-local libDef = load(http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
+local Copyright = http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/legal/TOSPrint.txt").readAll()
+local API = "https://api.github.com/repos/Starlight-CC/starlight-os/contents/"
+local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/json.la").readAll())()
+local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
+local libDef = load(http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/libDeflate.la").readAll())()
 local expect = require("cc.expect")
 local expect, field = expect.expect, expect.field
 local wrap = require("cc.strings").wrap
@@ -86,8 +86,8 @@ end
 term.clear()
 local out = getFolder(API,VER.."/root/")
 fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
-local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
-local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/Starlight-OS/refs/heads/main/tools/SLC/libDeflate.la").readAll()
+local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
+local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/libDeflate.la").readAll()
 fh.write([[_G.require = require
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
