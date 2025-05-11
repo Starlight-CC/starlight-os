@@ -16,3 +16,5 @@ The starlight vurtual image can be installed using this command (HTTP needed):
 ```
 wget run https://starlight-os.madefor.cc/install.lua
 ```
+
+WIP DOES NOT WORK
