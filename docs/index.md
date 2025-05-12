@@ -11,7 +11,7 @@ title: Home
 **This site is a work-in-progress.** All information listed here is *pre-release* info, and may be subject to change at any time.
 
 ## Install
-The starlight vurtual image can be installed using this command (HTTP needed):
+The starlight virtual image can be installed using this command (HTTP needed):
 
 ```
 wget run https://starlight-os.madefor.cc/install.lua

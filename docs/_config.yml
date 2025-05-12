@@ -21,7 +21,7 @@
 title: Starlight-OS
 email: astronandyt@gmail.co
 description: >-
-  A operating system based on unix/linux
+  A operating system based on unix/linux for CC:Tweaked
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github-username: "Starlight-CC"
