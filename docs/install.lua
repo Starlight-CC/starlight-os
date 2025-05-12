@@ -17,4 +17,17 @@ for i,v in ipairs(versions) do
     if string.sub(filename,11,11) == "H" then
         is_hotfix = true
     end
+    data[i]={
+        filename=filename,
+        compile=compile,
+        version=version,
+        time=time,
+        is_hotfix=is_hotfix
+    }
+end
+local display = {}
+for i,v in ipairs(data) do
+    display[tostring(v.version)]=v
+end
+PrimeUI.clear()
 
