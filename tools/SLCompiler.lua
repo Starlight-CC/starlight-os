@@ -1,4 +1,9 @@
 --Copyright (C) 2025  Starlight-CC
+-- Settings
+local config={
+    version="1.0.0"
+}
+--
 term.setPaletteColor(colors.red,0xff0000)
 term.setPaletteColor(colors.green,0x00ff00)
 term.setPaletteColor(colors.blue,0x000000)
@@ -85,7 +90,7 @@ end
 
 term.clear()
 local out = getFolder(API,VER.."/root/")
-fh = fs.open("/StarlightV".."1.0.0"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
+fh = fs.open("/StarlightV"..config.version.."|"..os.date("!.%m-%d-%Y.%H-%M")..".vi","w")
 local PrimeUIE = http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/PrimeUI.la").readAll()
 local LibDeflateE = http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/libDeflate.la").readAll()
 fh.write([[_G.require = require
