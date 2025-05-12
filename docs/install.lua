@@ -1,8 +1,10 @@
+_G.require = require
 local json = load(http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/json.la").readAll())()
 local PrimeUI = load(http.get("https://raw.githubusercontent.com/Starlight-CC/starlight-os/refs/heads/main/tools/SLC/PrimeUI.la").readAll())()
 local versions = json.decode(http.get("https://api.github.com/repos/Starlight-CC/starlight-os/contents/versions/").readAll())
 local data = {}
 for i,v in ipairs(versions) do
+    if v.name == ".ignore" then else
     local filename = v.name
     local compile = string.sub(filename,11,#filename-3)
     local idx = 1
@@ -25,9 +27,11 @@ for i,v in ipairs(versions) do
         is_hotfix=is_hotfix
     }
 end
+end
 local display = {}
 for i,v in ipairs(data) do
     display[tostring(v.version)]=v
 end
 PrimeUI.clear()
+
 
