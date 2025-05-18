@@ -32,3 +32,5 @@ plugins:
 remote_theme: just-the-docs/just-the-docs
 #theme: "just-the-docs"
 logo: "/assets/images/logo.png"
+sass:
+  quiet_deps: true
