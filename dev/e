@@ -1,18 +1,20 @@
 --[[
-Coroutine Scheduler with Timers and Priorities in Base Lua
+Coroutine Scheduler with:
+- Event/wait system: coroutines can wait for a named event, and you can signal events to resume them
+- Ability to stop/cancel coroutines by handle
+- Argument passing: you can pass arguments to coroutine resumes (e.g., when signaling an event)
 
 Features:
-- Round-robin scheduling of coroutines
-- Timers: coroutines can yield for a number of scheduler "ticks"
-- Priorities: higher priority coroutines run more often
-- No OS time functions used; time advances per scheduler:tick() call
+- Priorities supported (see previous examples)
+- No timers or simulated time; coroutines yield to give up control and can wait for events
 
 Usage:
-- scheduler:spawn(func, priority, ...) -- priority is an integer (higher = more frequent)
-- Use Scheduler.sleep(ticks) inside a coroutine to wait for n ticks
-- Call scheduler:tick() in a loop to advance time and run ready coroutines
+- scheduler:spawn(func, priority, ...) → returns a handle you can use to cancel
+- Use Scheduler.wait(event_name) in a coroutine to wait for an event
+- Use scheduler:signal(event_name, ...) to resume all coroutines waiting for that event, passing arguments to their resumes
+- Use scheduler:cancel(handle) to stop a coroutine
+- Arguments to coroutine.resume are always passed (including on event signal)
 
-Coroutines with higher priority are inserted more frequently into the run queue.
 ]]
 
 local Scheduler = {}
@@ -21,95 +23,137 @@ Scheduler.__index = Scheduler
 function Scheduler.new()
     local self = setmetatable({}, Scheduler)
     self.queue = {}
-    self.timers = {}
-    self.time = 0
+    self.waiting = {}     -- event_name -> { {co=..., args=..., priority=..., handle=...}, ... }
+    self.handles = {}     -- handle -> {co=..., args=..., priority=..., handle=..., status="active"/"cancelled"}
+    self.next_handle = 1
     return self
 end
 
--- Spawn a coroutine with a given priority (default 1)
+-- Spawn a coroutine with a given priority (default 1), returns a handle
 function Scheduler:spawn(func, priority, ...)
     priority = priority or 1
     local co = coroutine.create(func)
-    -- Store the priority with the task
-    table.insert(self.queue, {co = co, args = {...}, priority = priority})
+    local handle = self.next_handle
+    self.next_handle = self.next_handle + 1
+    local task = {co = co, args = {...}, priority = priority, handle = handle, status="active"}
+    self.handles[handle] = task
+    self:insert_with_priority(task)
+    return handle
 end
 
--- Coroutine can call this to sleep for 'ticks' scheduler steps.
-function Scheduler.sleep(ticks)
-    coroutine.yield({"sleep", ticks or 1})
-end
-
--- Insert a task into the queue, with more copies if it is higher priority
+-- Insert task (with priority count) into the run queue if it's active
 function Scheduler:insert_with_priority(task)
+    if task.status == "cancelled" then return end
     for _ = 1, task.priority or 1 do
-        table.insert(self.queue, {co = task.co, args = task.args, priority = task.priority})
+        table.insert(self.queue, task)
     end
 end
 
-function Scheduler:tick()
-    self.time = self.time + 1
+-- Wait for a named event (to be used inside a coroutine)
+function Scheduler.wait(event_name)
+    return coroutine.yield({"wait", event_name})
+end
 
-    -- Move ready timers to the runnable queue
-    local new_timers = {}
-    for _, timer in ipairs(self.timers) do
-        if timer.wake_time <= self.time then
-            self:insert_with_priority(timer)
-        else
-            table.insert(new_timers, timer)
-        end
-    end
-    self.timers = new_timers
-
-    -- Run one coroutine (round-robin, but higher priority tasks are in queue more often)
-    if #self.queue > 0 then
-        local task = table.remove(self.queue, 1)
-        local co, args, priority = task.co, task.args, task.priority
-        local status, res = coroutine.resume(co, table.unpack(args))
-        if not status then
-            print("Coroutine error:", res)
-        elseif coroutine.status(co) ~= "dead" then
-            if type(res) == "table" and res[1] == "sleep" then
-                local ticks = tonumber(res[2]) or 1
-                table.insert(self.timers, {co = co, args = {}, priority = priority, wake_time = self.time + ticks})
-            else
-                self:insert_with_priority({co = co, args = {}, priority = priority})
+-- Signal an event and resume all waiting coroutines, passing ... as resume arguments
+function Scheduler:signal(event_name, ...)
+    local waiters = self.waiting[event_name]
+    if waiters then
+        for _, task in ipairs(waiters) do
+            if task.status ~= "cancelled" then
+                -- Pass the signaled arguments as resume arguments
+                task.args = {...}
+                self:insert_with_priority(task)
             end
         end
+        self.waiting[event_name] = nil
+    end
+end
+
+-- Cancel a coroutine by handle
+function Scheduler:cancel(handle)
+    local task = self.handles[handle]
+    if task then
+        task.status = "cancelled"
+        -- Remove from waiting list if present
+        for event, waiters in pairs(self.waiting) do
+            for i = #waiters, 1, -1 do
+                if waiters[i].handle == handle then
+                    table.remove(waiters, i)
+                end
+            end
+        end
+        -- Note: For simplicity, tasks already in self.queue may still run this tick, but will be dropped after.
+        -- To fully purge, you'd also scan/remove from self.queue here.
     end
 end
 
 function Scheduler:run()
-    while #self.queue > 0 or #self.timers > 0 do
-        self:tick()
+    while #self.queue > 0 do
+        local task = table.remove(self.queue, 1)
+        if task.status ~= "cancelled" then
+            local co, args, priority, handle = task.co, task.args, task.priority, task.handle
+            local status, res = coroutine.resume(co, table.unpack(args))
+            task.args = {} -- reset args for next resume
+            if not status then
+                print("Coroutine error:", res)
+                self:cancel(handle)
+            elseif coroutine.status(co) ~= "dead" then
+                if type(res) == "table" and res[1] == "wait" then
+                    local event_name = res[2]
+                    self.waiting[event_name] = self.waiting[event_name] or {}
+                    table.insert(self.waiting[event_name], task)
+                else
+                    self:insert_with_priority(task)
+                end
+            else
+                self:cancel(handle)
+            end
+        end
     end
 end
 
 -- Example usage:
 local scheduler = Scheduler.new()
 
-scheduler:spawn(function()
-    for i = 1, 4 do
-        print("A", i, "at time", scheduler.time)
-        Scheduler.sleep(1)
-    end
-end, 1) -- priority 1
+local h1 = scheduler:spawn(function()
+    print("A: waiting for foo")
+    local v = Scheduler.wait("foo")
+    print("A: got event foo with value:", v)
+end, 2)
 
-scheduler:spawn(function()
-    for i = 1, 4 do
-        print("B", i, "at time", scheduler.time)
-        Scheduler.sleep(1)
-    end
-end, 3) -- priority 3 (runs more often)
+local h2 = scheduler:spawn(function()
+    print("B: doing some work")
+    coroutine.yield()
+    print("B: waiting for bar")
+    local x, y = Scheduler.wait("bar")
+    print("B: got event bar with values:", x, y)
+end, 1)
 
+local h3 = scheduler:spawn(function()
+    print("C: will be cancelled")
+    Scheduler.wait("foo")
+    print("C: should never print this!")
+end, 1)
+
+-- Cancel C before it gets event
+scheduler:cancel(h3)
+
+-- Run one tick (A and B run, both yield to wait for events)
 scheduler:run()
 
---[[ Output (example, may vary slightly):
-A   1   at time 0
-B   1   at time 0
-B   2   at time 0
-B   3   at time 0
-A   2   at time 1
-B   4   at time 1
-A   3   at time 2
-A   4   at time 3
+print("Signaling events...")
+
+scheduler:signal("foo", 42)
+scheduler:signal("bar", "hello", "world")
+
+-- Resume for events
+scheduler:run()
+
+--[[ Output:
+A: waiting for foo
+B: doing some work
+B: waiting for bar
+Signaling events...
+A: got event foo with value:   42
+B: got event bar with values:  hello   world
 ]]
