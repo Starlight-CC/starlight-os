@@ -1,0 +1,16 @@
+--[[
+Implements:
+
+]]
+
+local Scheduler = {}
+
+local function Scheduler.new()
+    local self = {}
+    self.__index = Scheduler
+    self.stack = {}
+    self.next = 1
+    self.queue = {}
+    self.queueLookup = {}
+    self.channels = {}
+end
