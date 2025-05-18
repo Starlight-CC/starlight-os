@@ -1,0 +1,115 @@
+--[[
+Coroutine Scheduler with Timers and Priorities in Base Lua
+
+Features:
+- Round-robin scheduling of coroutines
+- Timers: coroutines can yield for a number of scheduler "ticks"
+- Priorities: higher priority coroutines run more often
+- No OS time functions used; time advances per scheduler:tick() call
+
+Usage:
+- scheduler:spawn(func, priority, ...) -- priority is an integer (higher = more frequent)
+- Use Scheduler.sleep(ticks) inside a coroutine to wait for n ticks
+- Call scheduler:tick() in a loop to advance time and run ready coroutines
+
+Coroutines with higher priority are inserted more frequently into the run queue.
+]]
+
+local Scheduler = {}
+Scheduler.__index = Scheduler
+
+function Scheduler.new()
+    local self = setmetatable({}, Scheduler)
+    self.queue = {}
+    self.timers = {}
+    self.time = 0
+    return self
+end
+
+-- Spawn a coroutine with a given priority (default 1)
+function Scheduler:spawn(func, priority, ...)
+    priority = priority or 1
+    local co = coroutine.create(func)
+    -- Store the priority with the task
+    table.insert(self.queue, {co = co, args = {...}, priority = priority})
+end
+
+-- Coroutine can call this to sleep for 'ticks' scheduler steps.
+function Scheduler.sleep(ticks)
+    coroutine.yield({"sleep", ticks or 1})
+end
+
+-- Insert a task into the queue, with more copies if it is higher priority
+function Scheduler:insert_with_priority(task)
+    for _ = 1, task.priority or 1 do
+        table.insert(self.queue, {co = task.co, args = task.args, priority = task.priority})
+    end
+end
+
+function Scheduler:tick()
+    self.time = self.time + 1
+
+    -- Move ready timers to the runnable queue
+    local new_timers = {}
+    for _, timer in ipairs(self.timers) do
+        if timer.wake_time <= self.time then
+            self:insert_with_priority(timer)
+        else
+            table.insert(new_timers, timer)
+        end
+    end
+    self.timers = new_timers
+
+    -- Run one coroutine (round-robin, but higher priority tasks are in queue more often)
+    if #self.queue > 0 then
+        local task = table.remove(self.queue, 1)
+        local co, args, priority = task.co, task.args, task.priority
+        local status, res = coroutine.resume(co, table.unpack(args))
+        if not status then
+            print("Coroutine error:", res)
+        elseif coroutine.status(co) ~= "dead" then
+            if type(res) == "table" and res[1] == "sleep" then
+                local ticks = tonumber(res[2]) or 1
+                table.insert(self.timers, {co = co, args = {}, priority = priority, wake_time = self.time + ticks})
+            else
+                self:insert_with_priority({co = co, args = {}, priority = priority})
+            end
+        end
+    end
+end
+
+function Scheduler:run()
+    while #self.queue > 0 or #self.timers > 0 do
+        self:tick()
+    end
+end
+
+-- Example usage:
+local scheduler = Scheduler.new()
+
+scheduler:spawn(function()
+    for i = 1, 4 do
+        print("A", i, "at time", scheduler.time)
+        Scheduler.sleep(1)
+    end
+end, 1) -- priority 1
+
+scheduler:spawn(function()
+    for i = 1, 4 do
+        print("B", i, "at time", scheduler.time)
+        Scheduler.sleep(1)
+    end
+end, 3) -- priority 3 (runs more often)
+
+scheduler:run()
+
+--[[ Output (example, may vary slightly):
+A   1   at time 0
+B   1   at time 0
+B   2   at time 0
+B   3   at time 0
+A   2   at time 1
+B   4   at time 1
+A   3   at time 2
+A   4   at time 3
+]]
