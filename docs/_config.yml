@@ -30,6 +30,5 @@ github-username: "Starlight-CC"
 plugins:
   - jekyll-remote-theme
 remote_theme: just-the-docs/just-the-docs
-color_scheme: _scss/custom
 #theme: "just-the-docs"
 logo: "/assets/images/logo.png"
