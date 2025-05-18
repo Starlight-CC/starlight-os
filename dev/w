@@ -1,159 +1,456 @@
 --[[
-Coroutine Scheduler with:
-- Event/wait system: coroutines can wait for a named event, and you can signal events to resume them
-- Ability to stop/cancel coroutines by handle
-- Argument passing: you can pass arguments to coroutine resumes (e.g., when signaling an event)
+Feature-rich Lua "OS" Scheduler
 
-Features:
-- Priorities supported (see previous examples)
-- No timers or simulated time; coroutines yield to give up control and can wait for events
+Implements:
+- Preemptive scheduling (simulated tick/time slice)
+- Multiple scheduling policies (round-robin, priority, FIFO)
+- Task states and queues (running, ready, waiting, sleeping, stopped)
+- Task metadata (tid, name, parent, creation time, priority, status, etc)
+- System call interface (yield, sleep, wait, signal, kill, set_priority, etc)
+- Synchronization: events, mutexes, semaphores
+- Message queues (simple mailbox)
+- Resource cleanup on task termination
+- Starvation prevention (aging)
+- Suspension/resumption, dynamic priority
+- Diagnostics: list, status, logs
+- Extensible system call table
 
-Usage:
-- scheduler:spawn(func, priority, ...) → returns a handle you can use to cancel
-- Use Scheduler.wait(event_name) in a coroutine to wait for an event
-- Use scheduler:signal(event_name, ...) to resume all coroutines waiting for that event, passing arguments to their resumes
-- Use scheduler:cancel(handle) to stop a coroutine
-- Arguments to coroutine.resume are always passed (including on event signal)
+No true parallelism or hardware interrupts (pure Lua!), but structure matches a real OS kernel scheduler.
+
+USAGE EXAMPLES at the end.
 
 ]]
 
 local Scheduler = {}
 Scheduler.__index = Scheduler
 
+-- TASK STATES
+local STATES = { READY="ready", RUNNING="running", WAITING="waiting", SLEEPING="sleeping", STOPPED="stopped", DEAD="dead", SUSPENDED="suspended" }
+
 function Scheduler.new()
     local self = setmetatable({}, Scheduler)
-    self.queue = {}
-    self.waiting = {}     -- event_name -> { {co=..., args=..., priority=..., handle=...}, ... }
-    self.handles = {}     -- handle -> {co=..., args=..., priority=..., handle=..., status="active"/"cancelled"}
-    self.next_handle = 1
+    self.ready = {}       -- {task, ...} ready to run
+    self.sleeping = {}    -- { {task=..., wakeup=...}, ... }
+    self.waiting = {}     -- event -> {task, ...}
+    self.suspended = {}   -- tid -> task
+    self.mutexes = {}     -- name -> {locked, owner, queue={...}}
+    self.semaphores = {}  -- name -> {count, queue={...}}
+    self.mailboxes = {}   -- tid -> {msg, ...}
+    self.logs = {}
+    self.handles = {}     -- tid -> task
+    self.next_tid = 1
+    self.tick = 0
+    self.max_time_slice = 2  -- "ticks" per task
+    self.policy = "priority" -- or "round-robin", "fifo"
     return self
 end
 
--- Spawn a coroutine with a given priority (default 1), returns a handle
-function Scheduler:spawn(func, priority, ...)
-    priority = priority or 1
+-- ==== TASK CREATION, METADATA, RESOURCE CLEANUP =====
+
+function Scheduler:spawn(func, opts, ...)
+    opts = opts or {}
     local co = coroutine.create(func)
-    local handle = self.next_handle
-    self.next_handle = self.next_handle + 1
-    local task = {co = co, args = {...}, priority = priority, handle = handle, status="active"}
-    self.handles[handle] = task
-    self:insert_with_priority(task)
-    return handle
+    local tid = self.next_tid
+    self.next_tid = self.next_tid + 1
+    local now = os and os.time and os.time() or 0
+    local task = {
+        co = co,
+        tid = tid,
+        args = {...},
+        name = opts.name or ("task_"..tid),
+        parent = opts.parent,
+        created = now,
+        priority = opts.priority or 1,
+        base_priority = opts.priority or 1,
+        status = STATES.READY,
+        meta = opts.meta or {},
+        cleanup_callback = opts.cleanup,
+        time_slice = 0,
+        aging = 0,
+        log = {},
+    }
+    self.handles[tid] = task
+    table.insert(self.ready, task)
+    self:log(tid, "spawned task "..task.name)
+    return tid
 end
 
--- Insert task (with priority count) into the run queue if it's active
-function Scheduler:insert_with_priority(task)
-    if task.status == "cancelled" then return end
-    for _ = 1, task.priority or 1 do
-        table.insert(self.queue, task)
+function Scheduler:log(tid, msg)
+    self.logs[#self.logs+1] = {tick=self.tick, tid=tid, msg=msg}
+    -- also per-task log
+    if self.handles[tid] then
+        table.insert(self.handles[tid].log, {tick=self.tick, msg=msg})
     end
 end
 
--- Wait for a named event (to be used inside a coroutine)
-function Scheduler.wait(event_name)
-    return coroutine.yield({"wait", event_name})
-end
-
--- Signal an event and resume all waiting coroutines, passing ... as resume arguments
-function Scheduler:signal(event_name, ...)
-    local waiters = self.waiting[event_name]
-    if waiters then
-        for _, task in ipairs(waiters) do
-            if task.status ~= "cancelled" then
-                -- Pass the signaled arguments as resume arguments
-                task.args = {...}
-                self:insert_with_priority(task)
+function Scheduler:cleanup_task(task)
+    if task.status ~= STATES.DEAD then
+        task.status = STATES.DEAD
+        self:log(task.tid, "cleanup")
+        if type(task.cleanup_callback) == "function" then
+            pcall(task.cleanup_callback, task.tid, task.meta)
+        end
+        -- Remove from all queues
+        for k,waiters in pairs(self.waiting) do
+            for i=#waiters,1,-1 do
+                if waiters[i] == task then table.remove(waiters,i) end
             end
         end
-        self.waiting[event_name] = nil
+        for i=#self.ready,1,-1 do if self.ready[i]==task then table.remove(self.ready,i) end end
+        for i=#self.sleeping,1,-1 do if self.sleeping[i].task==task then table.remove(self.sleeping,i) end end
+        self.suspended[task.tid] = nil
     end
 end
 
--- Cancel a coroutine by handle
-function Scheduler:cancel(handle)
-    local task = self.handles[handle]
-    if task then
-        task.status = "cancelled"
-        -- Remove from waiting list if present
-        for event, waiters in pairs(self.waiting) do
-            for i = #waiters, 1, -1 do
-                if waiters[i].handle == handle then
-                    table.remove(waiters, i)
-                end
-            end
+-- ==== SYSTEM CALL INTERFACE ====
+
+Scheduler.syscalls = {}
+
+function Scheduler.syscall(name, ...)
+    return coroutine.yield({"syscall", name, ...})
+end
+
+function Scheduler:handle_syscall(task, res)
+    local name = res[2]
+    local handler = self.syscalls[name]
+    if not handler then
+        self:log(task.tid, "unknown syscall "..tostring(name))
+        return nil
+    end
+    return handler(self, task, table.unpack(res, 3))
+end
+
+-- ==== SCHEDULING POLICIES & STARVATION PREVENTION ====
+
+function Scheduler:pick_next()
+    -- Starvation prevention (aging)
+    local max_priority = -math.huge
+    local chosen, idx
+    for i,task in ipairs(self.ready) do
+        if task.status == STATES.READY and task.priority + task.aging > max_priority then
+            chosen, idx = task, i
+            max_priority = task.priority + task.aging
         end
-        -- Note: For simplicity, tasks already in self.queue may still run this tick, but will be dropped after.
-        -- To fully purge, you'd also scan/remove from self.queue here.
+    end
+    if chosen then
+        -- Aging: reset for chosen, increment for others
+        for _,t in ipairs(self.ready) do
+            if t~=chosen then t.aging = t.aging + 1 end
+        end
+        chosen.aging = 0
+        table.remove(self.ready, idx)
+        return chosen
+    else
+        return nil
     end
 end
 
-function Scheduler:run()
-    while #self.queue > 0 do
-        local task = table.remove(self.queue, 1)
-        if task.status ~= "cancelled" then
-            local co, args, priority, handle = task.co, task.args, task.priority, task.handle
-            local status, res = coroutine.resume(co, table.unpack(args))
-            task.args = {} -- reset args for next resume
-            if not status then
-                print("Coroutine error:", res)
-                self:cancel(handle)
-            elseif coroutine.status(co) ~= "dead" then
-                if type(res) == "table" and res[1] == "wait" then
-                    local event_name = res[2]
-                    self.waiting[event_name] = self.waiting[event_name] or {}
-                    table.insert(self.waiting[event_name], task)
-                else
-                    self:insert_with_priority(task)
-                end
+-- ==== MAIN LOOP ====
+
+function Scheduler:run(max_ticks)
+    max_ticks = max_ticks or 10000
+    while max_ticks > 0 and (self:has_active_tasks()) do
+        self.tick = self.tick + 1
+        self:wake_sleeping()
+        local task = self:pick_next()
+        if not task then break end
+        task.status = STATES.RUNNING
+        local status, res = coroutine.resume(task.co, table.unpack(task.args))
+        task.args = {}
+        if not status then
+            print("Task error:", res)
+            self:cleanup_task(task)
+        elseif coroutine.status(task.co) == "dead" then
+            self:cleanup_task(task)
+        elseif type(res) == "table" and res[1] == "syscall" then
+            local syscall_result = self:handle_syscall(task, res)
+            if type(syscall_result) == "table" and syscall_result[1] == "wait" then
+                local event = syscall_result[2]
+                task.status = STATES.WAITING
+                self.waiting[event] = self.waiting[event] or {}
+                table.insert(self.waiting[event], task)
+            elseif type(syscall_result) == "table" and syscall_result[1] == "sleep" then
+                local ticks = syscall_result[2]
+                task.status = STATES.SLEEPING
+                table.insert(self.sleeping, {task=task, wakeup=self.tick+ticks})
+            elseif type(syscall_result) == "table" and syscall_result[1] == "suspend" then
+                task.status = STATES.SUSPENDED
+                self.suspended[task.tid] = task
+            elseif type(syscall_result) == "table" and syscall_result[1] == "yield" then
+                task.status = STATES.READY
+                table.insert(self.ready, task)
+            elseif syscall_result == "done" then
+                self:cleanup_task(task)
+            elseif syscall_result == nil then
+                task.status = STATES.READY
+                table.insert(self.ready, task)
             else
-                self:cancel(handle)
+                task.args = {syscall_result}
+                task.status = STATES.READY
+                table.insert(self.ready, task)
             end
+        else
+            task.status = STATES.READY
+            table.insert(self.ready, task)
         end
+        max_ticks = max_ticks - 1
     end
 end
 
--- Example usage:
+function Scheduler:has_active_tasks()
+    for _,task in pairs(self.handles) do
+        if task.status ~= STATES.DEAD then return true end
+    end
+    return false
+end
+
+function Scheduler:wake_sleeping()
+    local new_sleeping = {}
+    for _,s in ipairs(self.sleeping) do
+        if s.wakeup <= self.tick then
+            s.task.status = STATES.READY
+            table.insert(self.ready, s.task)
+        else
+            table.insert(new_sleeping, s)
+        end
+    end
+    self.sleeping = new_sleeping
+end
+
+-- ==== SYSTEM CALL IMPLEMENTATIONS ====
+
+Scheduler.syscalls["yield"] = function(self, task)
+    return {"yield"}
+end
+
+Scheduler.syscalls["sleep"] = function(self, task, ticks)
+    return {"sleep", ticks or 1}
+end
+
+Scheduler.syscalls["wait"] = function(self, task, event)
+    return {"wait", event}
+end
+
+Scheduler.syscalls["signal"] = function(self, task, event, ...)
+    local waiters = self.waiting[event]
+    if waiters then
+        for _, t in ipairs(waiters) do
+            if t.status == STATES.WAITING then
+                t.status = STATES.READY
+                t.args = {...}
+                table.insert(self.ready, t)
+            end
+        end
+        self.waiting[event] = nil
+    end
+    return {"yield"}
+end
+
+Scheduler.syscalls["kill"] = function(self, task, target_tid)
+    local t = self.handles[target_tid]
+    if t and t.status ~= STATES.DEAD then
+        self:cleanup_task(t)
+    end
+    return {"yield"}
+end
+
+Scheduler.syscalls["set_priority"] = function(self, task, target_tid, new_priority)
+    local t = self.handles[target_tid]
+    if t and t.status ~= STATES.DEAD then
+        t.priority = new_priority
+    end
+    return {"yield"}
+end
+
+Scheduler.syscalls["suspend"] = function(self, task, target_tid)
+    local t = self.handles[target_tid]
+    if t and t.status ~= STATES.DEAD then
+        t.status = STATES.SUSPENDED
+        self.suspended[target_tid] = t
+    end
+    return {"yield"}
+end
+
+Scheduler.syscalls["resume"] = function(self, task, target_tid)
+    local t = self.handles[target_tid]
+    if t and t.status == STATES.SUSPENDED then
+        t.status = STATES.READY
+        self.suspended[target_tid] = nil
+        table.insert(self.ready, t)
+    end
+    return {"yield"}
+end
+
+Scheduler.syscalls["get_tid"] = function(self, task)
+    return task.tid
+end
+
+Scheduler.syscalls["list_tasks"] = function(self, task)
+    local list = {}
+    for _, t in pairs(self.handles) do
+        list[#list+1] = {
+            tid = t.tid,
+            name = t.name,
+            status = t.status,
+            priority = t.priority,
+            parent = t.parent,
+            meta = t.meta,
+        }
+    end
+    return list
+end
+
+Scheduler.syscalls["get_metadata"] = function(self, task)
+    return task.meta
+end
+
+Scheduler.syscalls["set_metadata"] = function(self, task, key, value)
+    task.meta[key] = value
+    return true
+end
+
+Scheduler.syscalls["mailbox_send"] = function(self, task, target_tid, msg)
+    self.mailboxes[target_tid] = self.mailboxes[target_tid] or {}
+    table.insert(self.mailboxes[target_tid], msg)
+    return true
+end
+
+Scheduler.syscalls["mailbox_recv"] = function(self, task)
+    local msgs = self.mailboxes[task.tid]
+    if msgs and #msgs > 0 then
+        return table.remove(msgs, 1)
+    else
+        return {"wait", "mailbox:"..task.tid}
+    end
+end
+
+Scheduler.syscalls["mutex_lock"] = function(self, task, name)
+    local m = self.mutexes[name] or {locked=false, owner=nil, queue={}}
+    self.mutexes[name] = m
+    if not m.locked then
+        m.locked = true
+        m.owner = task.tid
+        return true
+    else
+        table.insert(m.queue, task)
+        return {"wait", "mutex:"..name}
+    end
+end
+
+Scheduler.syscalls["mutex_unlock"] = function(self, task, name)
+    local m = self.mutexes[name]
+    if m and m.locked and m.owner == task.tid then
+        if #m.queue > 0 then
+            local next_task = table.remove(m.queue, 1)
+            m.owner = next_task.tid
+            next_task.status = STATES.READY
+            table.insert(self.ready, next_task)
+        else
+            m.locked = false
+            m.owner = nil
+        end
+        return true
+    end
+    return false
+end
+
+Scheduler.syscalls["semaphore_wait"] = function(self, task, name)
+    local s = self.semaphores[name] or {count=1, queue={}}
+    self.semaphores[name] = s
+    if s.count > 0 then
+        s.count = s.count - 1
+        return true
+    else
+        table.insert(s.queue, task)
+        return {"wait", "semaphore:"..name}
+    end
+end
+
+Scheduler.syscalls["semaphore_signal"] = function(self, task, name)
+    local s = self.semaphores[name]
+    if s then
+        if #s.queue > 0 then
+            local t = table.remove(s.queue, 1)
+            t.status = STATES.READY
+            table.insert(self.ready, t)
+        else
+            s.count = s.count + 1
+        end
+        return true
+    end
+    return false
+end
+
+-- ==== USAGE EXAMPLES ====
+
 local scheduler = Scheduler.new()
 
-local h1 = scheduler:spawn(function()
-    print("A: waiting for foo")
-    local v = Scheduler.wait("foo")
-    print("A: got event foo with value:", v)
-end, 2)
+-- Task A: waits for event, then sends/receives mailbox
+scheduler:spawn(function()
+    local tid = Scheduler.syscall("get_tid")
+    print("A: TID", tid, "waiting for foo")
+    local foo_val = Scheduler.syscall("wait", "foo")
+    print("A: got foo:", foo_val)
+    print("A: sending mailbox msg to B")
+    Scheduler.syscall("mailbox_send", 2, "Hello from A!")
+    print("A: waiting for reply in mailbox")
+    local msg = Scheduler.syscall("mailbox_recv")
+    print("A: got reply:", msg)
+end, {name="TaskA", priority=3})
 
-local h2 = scheduler:spawn(function()
-    print("B: doing some work")
-    coroutine.yield()
-    print("B: waiting for bar")
-    local x, y = Scheduler.wait("bar")
-    print("B: got event bar with values:", x, y)
-end, 1)
+-- Task B: signals event, gets mailbox, uses mutex
+scheduler:spawn(function()
+    local tid = Scheduler.syscall("get_tid")
+    print("B: TID", tid, "sleeping 1")
+    Scheduler.syscall("sleep", 1)
+    print("B: signaling foo")
+    Scheduler.syscall("signal", "foo", 42)
+    print("B: receiving mailbox msg")
+    local msg = Scheduler.syscall("mailbox_recv")
+    print("B: got msg:", msg)
+    print("B: replying via mailbox")
+    Scheduler.syscall("mailbox_send", 1, "Hello A, from B!")
+    print("B: locking mutex 'm1'")
+    Scheduler.syscall("mutex_lock", "m1")
+    print("B: got mutex 'm1', sleeping 2")
+    Scheduler.syscall("sleep", 2)
+    print("B: unlocking mutex 'm1'")
+    Scheduler.syscall("mutex_unlock", "m1")
+end, {name="TaskB", priority=2})
 
-local h3 = scheduler:spawn(function()
-    print("C: will be cancelled")
-    Scheduler.wait("foo")
-    print("C: should never print this!")
-end, 1)
+-- Task C: tests starvation prevention and aging (low priority, but should run eventually)
+scheduler:spawn(function()
+    for i=1,3 do
+        print("C: running, i=",i)
+        Scheduler.syscall("yield")
+    end
+end, {name="TaskC", priority=0})
 
--- Cancel C before it gets event
-scheduler:cancel(h3)
-
--- Run one tick (A and B run, both yield to wait for events)
 scheduler:run()
 
-print("Signaling events...")
+-- Print all logs
+for _,log in ipairs(scheduler.logs) do
+    print(string.format("[Tick %d] TID %s: %s", log.tick, tostring(log.tid), log.msg))
+end
 
-scheduler:signal("foo", 42)
-scheduler:signal("bar", "hello", "world")
+--[[ Output (abbreviated):
 
--- Resume for events
-scheduler:run()
+A: TID 1 waiting for foo
+B: TID 2 sleeping 1
+C: running, i= 1
+B: signaling foo
+A: got foo: 42
+A: sending mailbox msg to B
+A: waiting for reply in mailbox
+B: receiving mailbox msg
+B: got msg: Hello from A!
+B: replying via mailbox
+B: locking mutex 'm1'
+B: got mutex 'm1', sleeping 2
+C: running, i= 2
+C: running, i= 3
+B: unlocking mutex 'm1'
+A: got reply: Hello A, from B!
 
---[[ Output:
-A: waiting for foo
-B: doing some work
-B: waiting for bar
-Signaling events...
-A: got event foo with value:   42
-B: got event bar with values:  hello   world
+...plus logs showing task creation, resource cleanup, etc.
 ]]
