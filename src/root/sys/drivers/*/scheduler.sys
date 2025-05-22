@@ -13,4 +13,5 @@ local function Scheduler.new()
     self.queue = {}
     self.queueLookup = {}
     self.channels = {}
+    return self
 end
