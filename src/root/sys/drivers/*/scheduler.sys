@@ -5,13 +5,21 @@ Implements:
 
 local Scheduler = {}
 
-local function Scheduler.new()
+function Scheduler.new()
     local self = {}
-    self.__index = Scheduler
+    function self.new()
+        return Scheduler.new()
+    end
+    function self.queue(func,priority)
+        return Scheduler.queue(self,func,priority)
+    end
+    function self.open(channel)
+        return 
     self.stack = {}
     self.next = 1
     self.queue = {}
-    self.queueLookup = {}
     self.channels = {}
     return self
 end
+
+function Scheduler
