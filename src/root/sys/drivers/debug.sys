@@ -1,0 +1,5 @@
+-- filter the debug lib
+local export = {}
+export.getinfo = debug.getinfo
+export.traceback = debug.traceback
+return export

@@ -2,12 +2,14 @@ local Scheduler = {}
 Scheduler.stack = {}
 Scheduler.next = 1
 Scheduler.time = 0
-Scheduler.queue = {}
 Scheduler.channels = {}
 
 function Scheduler.queue(func,name,priority)
     local id = Scheduler.next
     Scheduler.next = Scheduler.next + 1
+    if priority == nil then
+        priority = 5
+    end
     if name == nil then
         name = tostring(id)
     end
@@ -33,8 +35,15 @@ function Scheduler.queue(func,name,priority)
     if co == nil then
         error(err)
     end
-    
-
+    Scheduler.stack[tostring(id)]={
+        thread=co,
+        name=name,
+        id=id,
+        status="created",
+        priority=priority,
+        handles={}
+    }
+    return ret
 end
 
 function Scheduler

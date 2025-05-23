@@ -24,7 +24,7 @@ custom environment.
     print(r, r2)
 ]]
 
-local expect = require and require("cc.expect") or dofile("rom/modules/main/cc/expect.lua")
+local expect = require and require("cc.expect") or dofile("sys/modules/cc/expect.lua")
 local expect = expect.expect
 
 local function preload(package)
