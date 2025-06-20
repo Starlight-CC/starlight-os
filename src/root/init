@@ -1,4 +1,5 @@
 --Copyright (C) 2025  Starlight-CC
+local Targs={...}
 local function run(path,namespace,args)
     local file = fs.open(path,"r")
     local func = loadstring(file.readAll(),"="..namespace)
@@ -11,7 +12,7 @@ local function printCentered(h,string)
     term.setCursorPos((w/2)-(#string/2),h)
     term.write(string)
 end
-printCentered(h-2,"Press ctrl+1 to enter boot menu")
+printCentered(h-2,"Press ctrl+1 to enter BIOS menu")
 term.setTextColor(0x200)
 local id = os.startTimer(3)
 printCentered(h/2,"S")
@@ -66,7 +67,7 @@ while true do
     end
 end
 if result == true then
-    shell.run("/boot/hyprkrnl.sys")
+    run("/boot/hyprkrnl.sys","kernel",Targs[1])
 else
-    shell.run("/boot/BIOS.sys")
+    run("/boot/BIOS.sys","BIOS",Targs[1])
 end

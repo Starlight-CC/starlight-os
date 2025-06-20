@@ -66,19 +66,19 @@ local function unbios(path, ...)
             if file == nil then
                 term.setCursorBlink(false)
                 term.setTextColor(16384)
-                term.write("Could not find kernel. Boot cannot continue.")
+                term.write("Could not find init. Boot cannot continue.")
                 term.setCursorPos(1, 2)
                 term.write("Press any key to continue")
                 coroutine.yield("key")
                 os.shutdown()
             end
             local err
-            fn, err = loadstring(file.readAll(), "=kernel")
+            fn, err = loadstring(file.readAll(), "=init")
             file.close()
             if fn == nil then
                 term.setCursorBlink(false)
                 term.setTextColor(16384)
-                term.write("Could not load kernel. PXBoot cannot continue.")
+                term.write("Could not load init. Boot cannot continue.")
                 term.setCursorPos(1, 2)
                 term.write(err)
                 term.setCursorPos(1, 3)
@@ -130,3 +130,4 @@ local function unbios(path, ...)
     end
     coroutine.yield()
 end
+unbios("init",{craftos=true})

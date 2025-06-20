@@ -173,7 +173,7 @@ local function deleteFiles(directory, exceptions)
 end
 local exceptions = {
     ["rom"] = true,
-    ["boot/vi"] = true,
+    ["disk"] = true,
     ["home"] = true
 }
 local function installFs(l)
