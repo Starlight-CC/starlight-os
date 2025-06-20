@@ -1,5 +1,0 @@
-local term = requireGlobal("term")
-if term == nil then
-    PANIC("Could not access internal \"term\"","term.sys has stopped responding")
-end
-editENV("term",term)
