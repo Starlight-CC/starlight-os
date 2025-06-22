@@ -66,8 +66,13 @@ while true do
         break
     end
 end
+local file = fs.open("/ect/boot/bootargs.dat","r")
+local bootargs = load("return "..file.readAll())
+file.close()
+local bootargs = pcall(bootargs)
+bootargs["launchargs"]=Targs
 if result == true then
-    run("/boot/hyprkrnl.sys","kernel",Targs[1])
+    run("/boot/hyprkrnl.sys","kernel",bootargs)
 else
-    run("/boot/BIOS.sys","BIOS",Targs[1])
+    run("/boot/BIOS.sys","BIOS",bootargs)
 end
