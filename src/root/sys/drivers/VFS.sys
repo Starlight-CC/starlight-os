@@ -1,0 +1,37 @@
+local OLDFS = fs
+fs={}
+local VFS = {}
+local opened = {}
+local function translate(dir)
+    local tdir = ""
+    if string.sub(dir,1,1) == "/" then tdir = dir
+    else tdir = "/"..dir end
+    if VFS[tdir] then
+        tdir = VFS[tdir]
+    end
+end
+local function open(dir,mode)
+    if mode == "x" then
+        return OLDFS.open(dir,"r")
+    elseif mode == false then
+        return false
+    else
+        return OLDFS.open(dir,"r")
+    end
+end
+local function perm(dir,mode)
+    dir = translate(dir)
+function fs.open(dir,mode)
+    if not perm(dir,mode) then error("Noperms") end
+    if mode == "x" then
+        local handle = open(translate(dir),mode)
+        local func = load(handle.readAll())
+        handle.close()
+        return func
+    elseif wh[mode] then
+        local handle = open(translate(dir),mode)
+    elseif rh[mode] then
+        local handle = open(translate(dir),mode)
+    else error("Invalid mode")
+    end
+end
