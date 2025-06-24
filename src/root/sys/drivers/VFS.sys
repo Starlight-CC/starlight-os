@@ -1,7 +1,7 @@
+local args={...}
 local OLDFS = fs
 fs={}
 local VFS = {}
-local opened = {}
 local function translate(dir)
     local tdir = ""
     if string.sub(dir,1,1) == "/" then tdir = dir
@@ -13,8 +13,6 @@ end
 local function open(dir,mode)
     if mode == "x" then
         return OLDFS.open(dir,"r")
-    elseif mode == false then
-        return false
     else
         return OLDFS.open(dir,"r")
     end
@@ -23,15 +21,84 @@ local function perm(dir,mode)
     dir = translate(dir)
 function fs.open(dir,mode)
     if not perm(dir,mode) then error("Noperms") end
-    if mode == "x" then
+    if mode == "x" then 
         local handle = open(translate(dir),mode)
         local func = load(handle.readAll())
         handle.close()
-        return func
+        return {
+            execute = function(...)
+                return pcall(func,...)
+            end
+        }
     elseif wh[mode] then
         local handle = open(translate(dir),mode)
+        return {
+            close = function(...)
+                return handle.close(...)
+            end,
+            write = function(...)
+                return handle.write(...)
+            end,
+            writeLine = function(...)
+                return handle.writeLine(...)
+            end,
+            seek = function(...)
+                return handle.seek(...)
+            end,
+            flush = function(...)
+                return handle.flush(...)
+            end
+        }
     elseif rh[mode] then
         local handle = open(translate(dir),mode)
+        return {
+            close = function(...)
+                return handle.close(...)
+            end,
+            read = function(...)
+                return handle.read(...)
+            end,
+            readLine = function(...)
+                return handle.readLine(...)
+            end,
+            seek = function(...)
+                return handle.seek(...)
+            end,
+            readAll = function(...)
+                return handle.readAll(...)
+            end
+        }
+    elseif rwh[mode] then
+        local handle = open(translate(dir),mode)
+        return {
+            close = function(...)
+                return handle.close(...)
+            end,
+            write = function(...)
+                return handle.write(...)
+            end,
+            writeLine = function(...)
+                return handle.writeLine(...)
+            end,
+            seek = function(...)
+                return handle.seek(...)
+            end,
+            flush = function(...)
+                return handle.flush(...)
+            end,
+            read = function(...)
+                return handle.read(...)
+            end,
+            readLine = function(...)
+                return handle.readLine(...)
+            end,
+            seek = function(...)
+                return handle.seek(...)
+            end,
+            readAll = function(...)
+                return handle.readAll(...)
+            end
+        }
     else error("Invalid mode")
     end
 end
