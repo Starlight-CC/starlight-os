@@ -4,8 +4,12 @@ fs={}
 local rh = {r=true,rb=true}
 local wh = {w=true,wb=true,a=true,ab=true}
 local rwh = {["r+"]=true,["r+b"]=true,{"w+"}=true,["w+b"]}
-
-OLDFS.open("/.metadata.ltn","r+")
+local file = OLDFS.open("/.metadata.ltn","r")
+local perms = load("return "..file.readAll())\
+local ok,perms=pcall(perms)
+if not ok then
+    driver.fatalErr("Error with metadata")
+end
 local VFS = {}
 local function translate(dir)
     local tdir = ""
@@ -26,7 +30,7 @@ local function perm(dir,mode)
     dir = translate(dir)
 
 function fs.open(dir,mode)
-    if not fs.exests(translate(dir)) and not wh[mode] then error("File does not exist") end
+    if not OLDFS.exests(translate(dir)) and not wh[mode] then error("File does not exist") end
     if not perm(dir,mode) then error("Noperms") end
     if mode == "x" then 
         local handle = open(translate(dir),mode)
