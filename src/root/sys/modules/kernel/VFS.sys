@@ -1,6 +1,11 @@
 local args={...}
 local OLDFS = fs
 fs={}
+local rh = {r=true,rb=true}
+local wh = {w=true,wb=true,a=true,ab=true}
+local rwh = {["r+"]=true,["r+b"]=true,{"w+"}=true,["w+b"]}
+
+OLDFS.open("/.metadata.ltn","r+")
 local VFS = {}
 local function translate(dir)
     local tdir = ""
@@ -14,12 +19,14 @@ local function open(dir,mode)
     if mode == "x" then
         return OLDFS.open(dir,"r")
     else
-        return OLDFS.open(dir,"r")
+        return OLDFS.open(dir,mode)
     end
 end
 local function perm(dir,mode)
     dir = translate(dir)
+
 function fs.open(dir,mode)
+    if not fs.exests(translate(dir)) and not wh[mode] then error("File does not exist") end
     if not perm(dir,mode) then error("Noperms") end
     if mode == "x" then 
         local handle = open(translate(dir),mode)
@@ -92,13 +99,9 @@ function fs.open(dir,mode)
             readLine = function(...)
                 return handle.readLine(...)
             end,
-            seek = function(...)
-                return handle.seek(...)
-            end,
             readAll = function(...)
                 return handle.readAll(...)
             end
         }
-    else error("Invalid mode")
-    end
+    else error("Invalid mode") end
 end
