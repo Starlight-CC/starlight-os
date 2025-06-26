@@ -1,14 +1,47 @@
 local args={...}
 local OLDFS = fs
 fs={}
+local SLutils = dofile("/lib/SLutils")
 local rh = {r=true,rb=true}
 local wh = {w=true,wb=true,a=true,ab=true}
 local rwh = {["r+"]=true,["r+b"]=true,{"w+"}=true,["w+b"]}
-local file = OLDFS.open("/.metadata.ltn","r")
-local perms = load("return "..file.readAll())\
-local ok,perms=pcall(perms)
-if not ok then
-    driver.fatalErr("Error with metadata")
+function fs.emptyMeta()
+    return {
+        t="", -- Type
+        c=0, -- Created
+        m=0, -- Modifiied
+        o="", -- Owner
+        p={ -- permisions
+            root=7
+        },
+        w=5, -- Everyone else
+        u=false, -- Execution sets to owner?
+        a={} -- addon data
+    }
+end
+local function generateMeta(dir)
+    for _,v in ipairs(OLDFS.list(dir)) do
+
+    end
+end
+local perms={}
+if not fs.exists(".metadata.ltn") then
+
+else
+    local file = OLDFS.open("/.metadata.ltn","r")
+    local func = load("return "..file.readAll())
+    file.close()
+    local ok,data=pcall(func)
+    if not ok then
+        OLDFS.delete(".metadata.ltn")
+        local file = OLDFS.open("/.metadata.ltn","w")
+        local meta = generateMeta("/")
+        perms=meta
+        file.write(SLutils.Table2Lua(meta))
+        file.close()
+    else
+        perms=data
+    end
 end
 local VFS = {}
 local function translate(dir)
@@ -26,9 +59,33 @@ local function open(dir,mode)
         return OLDFS.open(dir,mode)
     end
 end
+local function num2perm(num)
+    local f=false
+    local t=true
+    if num == 0 then
+        return f,f,f
+    elseif num == 1 then
+        return t,f,f
+    elseif num == 2 then
+        return f,t,f
+    elseif num == 3 then
+        return t,t,f
+    elseif num == 4 then
+        return f,f,t
+    elseif num == 5 then
+        return t,f,t
+    elseif num == 6 then
+        return f,t,t
+    elseif num == 7 then
+        return t,t,t
+    else
+        error("Invalid value")
+    end
+end
 local function perm(dir,mode)
     dir = translate(dir)
-
+    local user = syscall.kernel.getUser()
+    if 
 function fs.open(dir,mode)
     if not OLDFS.exests(translate(dir)) and not wh[mode] then error("File does not exist") end
     if not perm(dir,mode) then error("Noperms") end
